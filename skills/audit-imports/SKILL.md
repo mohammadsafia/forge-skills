@@ -1,5 +1,5 @@
 ---
-name: audit-imports
+name: forge:audit-imports
 description: "Audit and auto-fix import statements — barrel violations, path aliases, import ordering. Use when the user wants to check imports, fix ordering, find barrel violations, or says 'fix imports', 'check import order', 'audit imports', 'clean up imports'."
 ---
 

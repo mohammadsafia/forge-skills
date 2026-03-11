@@ -1,5 +1,5 @@
 ---
-name: migrate-endpoint
+name: forge:migrate-endpoint
 description: "Update an existing API endpoint — change URL, update DTOs, fix handler, and propagate through hooks and components. Use when the user needs to update an API endpoint, change an endpoint URL, migrate API response shape, or says 'update endpoint', 'API changed', 'backend changed the response', 'migrate endpoint', 'endpoint URL changed'. Triggers whenever an existing API integration needs to be updated due to backend changes."
 ---
 

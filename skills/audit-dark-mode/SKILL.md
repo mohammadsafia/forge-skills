@@ -1,5 +1,5 @@
 ---
-name: audit-dark-mode
+name: forge:audit-dark-mode
 description: "Audit components for dark mode compliance — find hardcoded colors that break in dark mode. Use when the user mentions dark mode, theme issues, hardcoded colors, or says 'check dark mode', 'fix colors', 'audit theme', 'find hardcoded colors'. Triggers when reviewing UI that should work in both light and dark themes."
 ---
 

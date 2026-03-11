@@ -1,5 +1,5 @@
 ---
-name: create-table
+name: forge:create-table
 description: "Create data tables using TanStack React Table 8 with search, pagination, and sorting. Use when the user wants to build a data table, add a list view with table, create a sortable/filterable table, or says 'create table', 'add data table', 'build list table', 'table with pagination', 'new table view'. Triggers whenever tabular data display needs to be built."
 ---
 

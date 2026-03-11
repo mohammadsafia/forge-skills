@@ -1,5 +1,5 @@
 ---
-name: add-translations
+name: forge:add-translations
 description: "Add new translation keys to both en.json and ar.json locale files. Use when the user wants to add new i18n keys, translate new UI text, add labels for a new feature, or says 'add translations', 'add i18n keys', 'translate this', 'add labels for', 'new translation keys'. Triggers whenever new translation entries need to be added to both locale files."
 ---
 

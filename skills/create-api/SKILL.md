@@ -1,5 +1,5 @@
 ---
-name: create-api
+name: forge:create-api
 description: "Create a full API integration pipeline — endpoint, DTOs, handler, and React Query hook. Use when the user wants to add a new API endpoint, integrate a backend endpoint, create an API handler, set up a query/mutation hook, or says things like 'add endpoint for', 'create API for', 'integrate this endpoint', 'wire up the backend', 'add a new query hook'. Triggers whenever new backend integration work is needed."
 ---
 

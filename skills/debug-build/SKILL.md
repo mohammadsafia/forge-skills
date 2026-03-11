@@ -1,5 +1,5 @@
 ---
-name: debug-build
+name: forge:debug-build
 description: "Diagnose and fix TypeScript and Vite build failures systematically. Use when the user has a build error, type error, compilation failure, or says 'build failing', 'fix build', 'type error', 'tsc error', 'vite build broken', 'npm run build fails'. Triggers whenever the build process is broken and needs diagnosis."
 ---
 

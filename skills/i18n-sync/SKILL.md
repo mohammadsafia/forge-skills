@@ -1,5 +1,5 @@
 ---
-name: i18n-sync
+name: forge:i18n-sync
 description: "Audit and sync locale files — find missing keys, untranslated values, and structural mismatches between en.json and ar.json. Use when the user wants to check translations, find missing keys, sync locale files, or says 'sync translations', 'check i18n', 'find missing translations', 'audit locales', 'are translations complete'. Triggers whenever locale file consistency needs to be verified."
 ---
 

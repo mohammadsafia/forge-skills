@@ -1,5 +1,5 @@
 ---
-name: audit-a11y
+name: forge:audit-a11y
 description: "Audit components for accessibility issues — ARIA, keyboard navigation, focus management, screen readers. Use when the user asks about accessibility, a11y, ARIA, or says 'check accessibility', 'is this accessible', 'audit a11y', 'add aria labels'. Also triggers when reviewing interactive UI components."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: refactor-to-standards
+name: forge:refactor-to-standards
 description: "Refactor existing code to comply with project coding standards — fix imports, types, patterns, and styling. Use when the user wants to bring code into compliance, fix violations, standardize code, or says 'refactor to standards', 'fix this file', 'make this compliant', 'clean up this code', 'standardize imports', 'apply conventions'. Triggers whenever existing code needs to be brought in line with project rules."
 ---
 

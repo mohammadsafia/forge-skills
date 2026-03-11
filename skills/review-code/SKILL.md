@@ -1,5 +1,5 @@
 ---
-name: review-code
+name: forge:review-code
 description: "Review code against project standards and best practices. Use this skill when the user asks to review code, check code quality, audit a file, validate standards compliance, or says things like 'review this', 'check my code', 'is this correct', 'audit this file', 'does this follow our standards'. Also use when the user has finished implementing something and wants verification before committing."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: document-component
+name: forge:document-component
 description: "Generate usage documentation for a component — props, variants, examples, and guidelines. Use when the user wants to document a component, create usage docs, write component API docs, or says 'document this component', 'write docs for', 'component API', 'usage examples', 'how to use this component'. Triggers whenever component documentation or usage guides need to be created."
 ---
 

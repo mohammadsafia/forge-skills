@@ -1,5 +1,5 @@
 ---
-name: add-icon
+name: forge:add-icon
 description: "Convert SVG markup into a properly exported icon component. Use when the user wants to add a custom icon, convert SVG to component, create an icon from SVG, or says 'add icon', 'new icon', 'convert SVG', 'create icon component', 'add custom icon'. Triggers whenever SVG markup needs to become a reusable icon component in the assets/icons directory."
 ---
 

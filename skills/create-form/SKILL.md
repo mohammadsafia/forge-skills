@@ -1,5 +1,5 @@
 ---
-name: create-form
+name: forge:create-form
 description: "Create forms using React Hook Form + Zod + FormProvider pattern. Use when the user wants to build a form, add a create/edit form, set up form validation, or says 'create form', 'add form for', 'build edit form', 'new form with validation', 'set up form schema'. Triggers whenever form UI with validation needs to be built."
 ---
 

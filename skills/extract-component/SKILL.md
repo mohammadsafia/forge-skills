@@ -1,5 +1,5 @@
 ---
-name: extract-component
+name: forge:extract-component
 description: "Extract repeated JSX into a reusable component — identify duplication and DRY it up. Use when the user wants to extract a component, reduce duplication, DRY up repeated JSX, or says 'extract component', 'this is repeated', 'DRY this up', 'make this reusable', 'too much duplication'. Triggers whenever repeated UI code should become a shared component."
 ---
 

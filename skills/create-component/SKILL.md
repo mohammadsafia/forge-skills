@@ -1,5 +1,5 @@
 ---
-name: create-component
+name: forge:create-component
 description: "Create reusable shared components following the compound component pattern with CVA variants. Use when the user wants to create a new reusable component, build a shared component, make a composite component, or says things like 'create component', 'build a card component', 'new shared component', 'make a reusable widget'. Triggers whenever new reusable UI components need to be built in src/components/shared/."
 ---
 

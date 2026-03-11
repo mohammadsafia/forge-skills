@@ -1,5 +1,5 @@
 ---
-name: figma-to-code
+name: forge:figma-to-code
 description: "Convert Figma designs into production-ready React components with correct design tokens, spacing, dark mode, RTL, and responsive behavior. Use this skill whenever the user shares a Figma URL, asks to implement a design, mentions 'Figma', 'design to code', 'implement this UI', 'match this design', or wants to turn a mockup into a working component. Also triggers when the user pastes a figma.com link or references a design file."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: audit-rtl
+name: forge:audit-rtl
 description: "Audit components for RTL (right-to-left) support — find directional styling issues. Use when the user mentions RTL, Arabic, bidirectional layout, or says 'check RTL', 'does this work in Arabic', 'fix RTL', 'audit bidirectional'. Important for projects supporting Arabic or Hebrew."
 ---
 

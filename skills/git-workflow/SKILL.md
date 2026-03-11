@@ -1,5 +1,5 @@
 ---
-name: git-workflow
+name: forge:git-workflow
 description: "Follow a structured git workflow — branch naming with ticket numbers, commit messages, and PR creation. Use when the user wants to create a branch, write a commit message, open a pull request, or says 'create branch', 'commit this', 'open PR', 'start working on PROJ-xxx', 'push changes'. Triggers whenever git operations need to follow ticket-linked conventions."
 ---
 

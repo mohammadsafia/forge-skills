@@ -1,5 +1,5 @@
 ---
-name: scaffold-feature
+name: forge:scaffold-feature
 description: "Scaffold a complete feature with all necessary files — page, DTOs, handler, hooks, views, routes. Use when the user wants to create a full feature from scratch, scaffold an entire module, bootstrap a new feature, or says 'scaffold feature', 'create full feature', 'bootstrap module', 'new feature for', 'set up everything for'. Triggers when the user needs the complete vertical slice for a new feature."
 ---
 

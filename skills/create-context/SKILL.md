@@ -1,5 +1,5 @@
 ---
-name: create-context
+name: forge:create-context
 description: "Create React Context with provider and custom hook following project conventions. Use when the user wants to add global state, create a context provider, share state across components, or says 'create context', 'add context for', 'new provider', 'global state for', 'shared state'. Triggers whenever React Context + Provider + hook needs to be set up."
 ---
 

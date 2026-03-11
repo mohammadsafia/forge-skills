@@ -1,5 +1,5 @@
 ---
-name: changelog
+name: forge:changelog
 description: "Generate a changelog from git history, grouped by type and linked to tickets. Use when the user wants to create a changelog, generate release notes, summarize recent changes, or says 'generate changelog', 'what changed since', 'release notes', 'summarize commits', 'changes since last release'. Triggers whenever commit history needs to be summarized."
 ---
 

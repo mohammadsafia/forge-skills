@@ -1,5 +1,5 @@
 ---
-name: create-page
+name: forge:create-page
 description: "Create new pages with routing, lazy loading, and layout guards. Use when the user wants to add a new page, create a route, set up a new view with routing, or says 'create page', 'add new page', 'new route for', 'add page with guard', 'create dashboard page'. Triggers whenever a new route-level component needs to be set up."
 ---
 
