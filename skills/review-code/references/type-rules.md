@@ -77,11 +77,11 @@ type OrderDto = {
 };
 ```
 
-## Shared Liferay Types
+## Shared API Types
 
-Reuse instead of redefining:
+Reuse instead of redefining per feature:
 - `ResultDto<T>` — Paginated list wrapper
-- `PrimaryImageForReadDto` — Image with link
+- `PrimaryImageForReadDto` — Image with URL
 - `EntityStatusForReadDto` — Status with code/label
 - `CreatorForReadDto` — Creator info
 - `TranslatedProperty` — i18n fields (`Record<string, string>`)

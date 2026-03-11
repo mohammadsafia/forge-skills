@@ -76,7 +76,7 @@ className="flex flex-row gap-8 p-6 sm:flex-col sm:gap-4 sm:p-4"
 
 ## Font Families
 
-Use `font-sans` (Dubai/Inter) — no custom font declarations.
+Use `font-sans` — no custom font declarations. Check your project's Tailwind config for the configured font stack.
 
 ## Shadows and Border Radius
 

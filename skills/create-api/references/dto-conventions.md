@@ -11,7 +11,7 @@
 | `ListResponseDto` | Paginated list wrapper | `OrderListResponseDto`, `ProductListResponseDto` |
 | `ParamsDto` | Query/filter parameters | `UsersListParamsDto`, `ProductsListParamsDto` |
 
-## Shared Liferay Types
+## Shared API Types
 
 Reuse these instead of redefining per feature:
 

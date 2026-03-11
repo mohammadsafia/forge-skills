@@ -69,7 +69,7 @@ Both must pass. Fix errors iteratively — some fixes reveal new errors.
 ## Common Gotchas
 
 - `tsc -b` must pass before Vite bundles — all type errors first
-- Production base path (`/o/market-place-app/`) differs from dev (`/`)
+- Production base path may differ from dev (`/`) — check `vite.config.ts` for `base` setting
 - ESLint intentionally disables: `no-explicit-any`, `no-unused-vars`, `no-empty-object-type`, `no-unused-expressions`
 - Path aliases must be defined in BOTH `tsconfig.json` and `vite.config.ts`
 - `.tsx` extension required for files containing JSX

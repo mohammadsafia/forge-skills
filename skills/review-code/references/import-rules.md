@@ -47,7 +47,7 @@ import { Conditional } from '@components/shared/conditional/Conditional';
 **Custom icons — barrel only:**
 ```typescript
 // CORRECT
-import { HeroCheckmark, DataDubaiLogo } from '@assets/icons';
+import { AppLogo, CheckCircleIcon } from '@assets/icons';
 
 // WRONG
 import HeroCheckmark from '@assets/icons/HeroCheckmark';
@@ -90,7 +90,7 @@ import { AppConfig } from '@app-config';
 
 // 8. Icons (Lucide standard, then custom from barrel)
 import { Plus, Trash, Calendar, ChevronRight } from 'lucide-react';
-import { HeroCheckmark, DataDubaiLogo } from '@assets/icons';
+import { AppLogo, CheckCircleIcon } from '@assets/icons';
 
 // 9. Types (always use `import type`)
 import type { OrderForReadDto, OrderListDto } from '@app-types';

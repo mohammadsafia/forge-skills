@@ -12,7 +12,7 @@ Generate the complete API integration chain: endpoint → DTOs → handler → R
 Ask the user if not provided:
 - **Entity name** (e.g., "Order", "Product", "Community")
 - **HTTP methods** needed (GET list, GET by ID, POST create, PUT update, DELETE)
-- **Endpoint URL pattern** (e.g., `/o/headless-marketplace/v1.0/orders`)
+- **Endpoint URL pattern** (e.g., `/api/v1/orders`)
 - **Request/response shape** (fields and types)
 
 ## Step 2 — Scan Existing Patterns
@@ -35,11 +35,11 @@ See `references/query-hook-pattern.md` for hook templates.
 Plain strings only, no function callbacks:
 ```typescript
 ENTITY_NAME: {
-  LIST: '/o/headless-marketplace/v1.0/entity-name',
-  DETAILS: '/o/headless-marketplace/v1.0/entity-name/:id',
-  CREATE: '/o/headless-marketplace/v1.0/entity-name',
-  UPDATE: '/o/headless-marketplace/v1.0/entity-name/:id',
-  DELETE: '/o/headless-marketplace/v1.0/entity-name/:id',
+  LIST: '/api/v1/entity-name',
+  DETAILS: '/api/v1/entity-name/:id',
+  CREATE: '/api/v1/entity-name',
+  UPDATE: '/api/v1/entity-name/:id',
+  DELETE: '/api/v1/entity-name/:id',
 },
 ```
 

@@ -14,7 +14,7 @@ Verify every item before delivering a Figma-to-code component.
 - [ ] Consistent spacing rhythm (not mixing random values)
 
 ## Typography
-- [ ] Uses `font-sans` (Dubai/Inter) — no custom font declarations
+- [ ] Uses `font-sans` — no custom font declarations
 - [ ] Font sizes use Tailwind scale (`text-sm`, `text-base`, etc.)
 - [ ] Font weights use Tailwind classes (`font-medium`, `font-semibold`)
 

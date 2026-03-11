@@ -42,10 +42,9 @@
 | `--blue-900` | `bg-blue-900` | |
 | `--blue-950` | `bg-blue-950` | Darkest |
 
-### DDA Blue Scale
-| Token | Tailwind |
-|-------|----------|
-| `--dda-blue-25` to `--dda-blue-950` | `bg-dda-blue-*`, `text-dda-blue-*` |
+### Brand Color Scale (Optional)
+
+Projects may define additional brand-specific color scales (e.g., `--brand-25` to `--brand-950`). Check your project's `src/index.css` for custom scales beyond the defaults.
 
 ### Gray Scale
 | Token | Tailwind |

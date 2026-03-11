@@ -43,10 +43,10 @@ If the response shape changed:
 If the URL changed:
 ```typescript
 // Before
-ENTITY: { LIST: '/o/headless-marketplace/v1.0/old-path' }
+ENTITY: { LIST: '/api/v1/old-path' }
 
 // After
-ENTITY: { LIST: '/o/headless-marketplace/v1.0/new-path' }
+ENTITY: { LIST: '/api/v1/new-path' }
 ```
 
 ### 3c. Update Handler
