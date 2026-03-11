@@ -6,46 +6,40 @@ Professional Claude Code skills for React + TypeScript development. Standards-dr
 
 ## Install
 
-### Claude Code (Plugin Marketplace)
-
-**Step 1** — Register the marketplace:
-```
-/plugin marketplace add mohammadsafia/forge-skills
-```
-
-**Step 2** — Install all skills at once:
-```
-/plugin install forge-all@forge-skills
-```
-
-Or install by category:
-```
-/plugin install forge-design@forge-skills
-/plugin install forge-create@forge-skills
-/plugin install forge-quality@forge-skills
-/plugin install forge-refactor@forge-skills
-/plugin install forge-workflow@forge-skills
-```
-
-### Manual Install (any agent)
-
-Clone and copy to your personal skills directory:
+### Quick Install (all skills, user-global)
 
 ```bash
-git clone https://github.com/mohammadsafia/forge-skills.git
-cp -r forge-skills/skills/* ~/.claude/skills/
+git clone https://github.com/mohammadsafia/forge-skills.git /tmp/forge-skills && \
+  cp -r /tmp/forge-skills/skills/* ~/.claude/skills/ && \
+  rm -rf /tmp/forge-skills
 ```
 
-## Plugins
+This installs all 23 skills globally — available in every project.
 
-| Plugin | Skills | Description |
-|--------|--------|-------------|
-| `forge-all` | All 23 | Everything in one install |
-| `forge-design` | 1 | Figma-to-code workflow |
-| `forge-create` | 7 | Code generation (API, components, forms, tables, pages, contexts, features) |
-| `forge-quality` | 5 | Code review and auditing (imports, dark mode, RTL, a11y) |
-| `forge-refactor` | 3 | Refactoring (standards, extraction, migration) |
-| `forge-workflow` | 7 | Git, changelog, i18n, icons, build debugging, docs |
+### Install Specific Skills
+
+```bash
+git clone https://github.com/mohammadsafia/forge-skills.git /tmp/forge-skills
+
+# Pick what you need
+cp -r /tmp/forge-skills/skills/figma-to-code ~/.claude/skills/
+cp -r /tmp/forge-skills/skills/review-code ~/.claude/skills/
+cp -r /tmp/forge-skills/skills/create-api ~/.claude/skills/
+
+rm -rf /tmp/forge-skills
+```
+
+### Install to a Single Project
+
+```bash
+git clone https://github.com/mohammadsafia/forge-skills.git /tmp/forge-skills && \
+  cp -r /tmp/forge-skills/skills/* .claude/skills/ && \
+  rm -rf /tmp/forge-skills
+```
+
+### Update
+
+Re-run the install command to get the latest version.
 
 ## Skills
 
