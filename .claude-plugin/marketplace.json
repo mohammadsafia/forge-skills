@@ -1,0 +1,107 @@
+{
+  "name": "forge-skills",
+  "owner": {
+    "name": "Mohammad Safia",
+    "email": "mohammadsafia@users.noreply.github.com"
+  },
+  "metadata": {
+    "description": "Professional React/TypeScript development skills — design, creation, quality, refactoring, and workflow",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "forge-design",
+      "description": "Design-to-code workflow with Figma integration, token mapping, and spacing conversion",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/figma-to-code"
+      ]
+    },
+    {
+      "name": "forge-create",
+      "description": "Code generation skills — API handlers, components, forms, tables, pages, contexts, and full feature scaffolding",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/create-api",
+        "./skills/create-component",
+        "./skills/create-form",
+        "./skills/create-table",
+        "./skills/create-page",
+        "./skills/create-context",
+        "./skills/scaffold-feature"
+      ]
+    },
+    {
+      "name": "forge-quality",
+      "description": "Code review and audit skills — imports, dark mode, RTL, accessibility, and full code review",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/review-code",
+        "./skills/audit-imports",
+        "./skills/audit-dark-mode",
+        "./skills/audit-rtl",
+        "./skills/audit-a11y"
+      ]
+    },
+    {
+      "name": "forge-refactor",
+      "description": "Refactoring skills — standards compliance, component extraction, and API endpoint migration",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/refactor-to-standards",
+        "./skills/extract-component",
+        "./skills/migrate-endpoint"
+      ]
+    },
+    {
+      "name": "forge-workflow",
+      "description": "Workflow skills — git conventions, changelog, i18n sync, translations, icons, build debugging, and docs",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/git-workflow",
+        "./skills/changelog",
+        "./skills/i18n-sync",
+        "./skills/add-translations",
+        "./skills/add-icon",
+        "./skills/debug-build",
+        "./skills/document-component"
+      ]
+    },
+    {
+      "name": "forge-all",
+      "description": "All 23 forge skills — design, creation, quality, refactoring, and workflow",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/figma-to-code",
+        "./skills/create-api",
+        "./skills/create-component",
+        "./skills/create-form",
+        "./skills/create-table",
+        "./skills/create-page",
+        "./skills/create-context",
+        "./skills/scaffold-feature",
+        "./skills/review-code",
+        "./skills/audit-imports",
+        "./skills/audit-dark-mode",
+        "./skills/audit-rtl",
+        "./skills/audit-a11y",
+        "./skills/refactor-to-standards",
+        "./skills/extract-component",
+        "./skills/migrate-endpoint",
+        "./skills/git-workflow",
+        "./skills/changelog",
+        "./skills/i18n-sync",
+        "./skills/add-translations",
+        "./skills/add-icon",
+        "./skills/debug-build",
+        "./skills/document-component"
+      ]
+    }
+  ]
+}

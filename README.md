@@ -6,58 +6,91 @@ Professional Claude Code skills for React + TypeScript development. Standards-dr
 
 ## Install
 
-```bash
-claude install-skill gh:mohammadsafia/forge-skills
+### Claude Code (Plugin Marketplace)
+
+**Step 1** — Register the marketplace:
 ```
+/plugin marketplace add mohammadsafia/forge-skills
+```
+
+**Step 2** — Install all skills at once:
+```
+/plugin install forge-all@forge-skills
+```
+
+Or install by category:
+```
+/plugin install forge-design@forge-skills
+/plugin install forge-create@forge-skills
+/plugin install forge-quality@forge-skills
+/plugin install forge-refactor@forge-skills
+/plugin install forge-workflow@forge-skills
+```
+
+### Manual Install (any agent)
+
+Clone and copy to your personal skills directory:
+
+```bash
+git clone https://github.com/mohammadsafia/forge-skills.git
+cp -r forge-skills/skills/* ~/.claude/skills/
+```
+
+## Plugins
+
+| Plugin | Skills | Description |
+|--------|--------|-------------|
+| `forge-all` | All 23 | Everything in one install |
+| `forge-design` | 1 | Figma-to-code workflow |
+| `forge-create` | 7 | Code generation (API, components, forms, tables, pages, contexts, features) |
+| `forge-quality` | 5 | Code review and auditing (imports, dark mode, RTL, a11y) |
+| `forge-refactor` | 3 | Refactoring (standards, extraction, migration) |
+| `forge-workflow` | 7 | Git, changelog, i18n, icons, build debugging, docs |
 
 ## Skills
 
 ### Design
-| Skill | Command | Description |
-|-------|---------|-------------|
-| Figma to Code | `forge:figma-to-code` | Convert Figma designs into production-ready React components with correct design tokens, spacing, dark mode, RTL, and responsive behavior |
+| Skill | Description |
+|-------|-------------|
+| `figma-to-code` | Convert Figma designs into production-ready React components with correct design tokens, spacing, dark mode, RTL, and responsive behavior |
 
 ### Creation
-| Skill | Command | Description |
-|-------|---------|-------------|
-| Create API | `forge:create-api` | Full API integration pipeline — endpoint, DTOs, handler, React Query hook |
-| Create Component | `forge:create-component` | Reusable component with audit → build → verify workflow |
-| Create Form | `forge:create-form` | Form with Zod validation, FormProvider, and API integration |
-| Create Table | `forge:create-table` | TanStack React Table with columns, search, pagination, sorting |
-| Create Page | `forge:create-page` | New page with routing, layout, guards, and translations |
-| Create Context | `forge:create-context` | React Context with provider and custom hook |
-| Scaffold Feature | `forge:scaffold-feature` | Complete feature skeleton — page, views, API, hooks, types, translations |
-| Add Icon | `forge:add-icon` | Add custom SVG icon to the icon system with barrel export |
-| Add Translations | `forge:add-translations` | Add i18n keys to both locale files simultaneously |
+| Skill | Description |
+|-------|-------------|
+| `create-api` | Full API integration pipeline — endpoint, DTOs, handler, React Query hook |
+| `create-component` | Reusable component with audit → build → verify workflow |
+| `create-form` | Form with Zod validation, FormProvider, and API integration |
+| `create-table` | TanStack React Table with columns, search, pagination, sorting |
+| `create-page` | New page with routing, layout, guards, and translations |
+| `create-context` | React Context with provider and custom hook |
+| `scaffold-feature` | Complete feature skeleton — page, views, API, hooks, types, translations |
 
 ### Quality
-| Skill | Command | Description |
-|-------|---------|-------------|
-| Review Code | `forge:review-code` | Full standards audit with structured report |
-| Audit Accessibility | `forge:audit-a11y` | Check ARIA, keyboard nav, focus management, screen readers |
-| Audit Dark Mode | `forge:audit-dark-mode` | Find hardcoded colors that break in dark mode |
-| Audit RTL | `forge:audit-rtl` | Find directional styling issues for right-to-left support |
-| Audit Imports | `forge:audit-imports` | Check barrel usage, path aliases, import ordering |
+| Skill | Description |
+|-------|-------------|
+| `review-code` | Full standards audit with structured report |
+| `audit-a11y` | Check ARIA, keyboard nav, focus management, screen readers |
+| `audit-dark-mode` | Find hardcoded colors that break in dark mode |
+| `audit-rtl` | Find directional styling issues for right-to-left support |
+| `audit-imports` | Check barrel usage, path aliases, import ordering |
 
 ### Refactoring
-| Skill | Command | Description |
-|-------|---------|-------------|
-| Refactor to Standards | `forge:refactor-to-standards` | Bring non-compliant code to full compliance |
-| Extract Component | `forge:extract-component` | DRY up repeated JSX into reusable components |
-| Migrate Endpoint | `forge:migrate-endpoint` | Update full API chain when backend endpoint changes |
+| Skill | Description |
+|-------|-------------|
+| `refactor-to-standards` | Bring non-compliant code to full compliance |
+| `extract-component` | DRY up repeated JSX into reusable components |
+| `migrate-endpoint` | Update full API chain when backend endpoint changes |
 
 ### Workflow
-| Skill | Command | Description |
-|-------|---------|-------------|
-| Git Workflow | `forge:git-workflow` | Branch naming, commit messages, PR creation with Jira conventions |
-| i18n Sync | `forge:i18n-sync` | Keep en.json and ar.json locale files in sync |
-| Debug Build | `forge:debug-build` | Diagnose and fix TypeScript, Vite, and ESLint build failures |
-
-### Documentation
-| Skill | Command | Description |
-|-------|---------|-------------|
-| Document Component | `forge:document-component` | Generate usage docs for existing components |
-| Changelog | `forge:changelog` | Generate changelog from git history with Jira ticket grouping |
+| Skill | Description |
+|-------|-------------|
+| `git-workflow` | Branch naming, commit messages, PR creation with ticket conventions |
+| `i18n-sync` | Keep locale files in sync (find missing keys, orphaned entries) |
+| `add-translations` | Add i18n keys to both locale files simultaneously |
+| `add-icon` | Add custom SVG icon to the icon system with barrel export |
+| `debug-build` | Diagnose and fix TypeScript, Vite, and ESLint build failures |
+| `changelog` | Generate changelog from git history grouped by type |
+| `document-component` | Generate usage docs for existing components |
 
 ## Tech Stack Support
 
@@ -85,7 +118,7 @@ Every skill enforces these standards automatically:
 - **Styling**: theme-aware tokens (no hardcoded colors), Tailwind spacing scale, dark mode, RTL
 - **API**: handler pattern with string queryKeys, typed DTOs, React Query hooks
 - **Forms**: FormProvider-based, Zod validation, no raw useForm
-- **Git**: Jira ticket conventions for branches, commits, and PRs
+- **Git**: ticket conventions for branches, commits, and PRs
 
 ## Configuration
 
