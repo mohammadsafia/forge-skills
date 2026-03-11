@@ -6,40 +6,43 @@ Professional Claude Code skills for React + TypeScript development. Standards-dr
 
 ## Install
 
-### Quick Install (all skills, user-global)
+### All Skills
 
 ```bash
-git clone https://github.com/mohammadsafia/forge-skills.git /tmp/forge-skills && \
-  cp -r /tmp/forge-skills/skills/* ~/.claude/skills/ && \
-  rm -rf /tmp/forge-skills
+npx skills add mohammadsafia/forge-skills --skill '*'
 ```
 
-This installs all 23 skills globally — available in every project.
-
-### Install Specific Skills
+### Specific Skills
 
 ```bash
-git clone https://github.com/mohammadsafia/forge-skills.git /tmp/forge-skills
-
-# Pick what you need
-cp -r /tmp/forge-skills/skills/figma-to-code ~/.claude/skills/
-cp -r /tmp/forge-skills/skills/review-code ~/.claude/skills/
-cp -r /tmp/forge-skills/skills/create-api ~/.claude/skills/
-
-rm -rf /tmp/forge-skills
+npx skills add mohammadsafia/forge-skills --skill figma-to-code --skill review-code --skill create-api
 ```
 
-### Install to a Single Project
+### List Available Skills
 
 ```bash
-git clone https://github.com/mohammadsafia/forge-skills.git /tmp/forge-skills && \
-  cp -r /tmp/forge-skills/skills/* .claude/skills/ && \
-  rm -rf /tmp/forge-skills
+npx skills add mohammadsafia/forge-skills --list
+```
+
+### Global Install (available in all projects)
+
+```bash
+npx skills add mohammadsafia/forge-skills --skill '*' -g
+```
+
+### Target a Specific Agent
+
+```bash
+npx skills add mohammadsafia/forge-skills --skill '*' -a claude-code
+npx skills add mohammadsafia/forge-skills --skill '*' -a cursor
+npx skills add mohammadsafia/forge-skills --skill '*' -a codex
 ```
 
 ### Update
 
-Re-run the install command to get the latest version.
+```bash
+npx skills update
+```
 
 ## Skills
 
