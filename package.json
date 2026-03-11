@@ -1,0 +1,22 @@
+{
+  "name": "forge-skills",
+  "version": "1.0.0",
+  "description": "Professional Claude Code skills for React + TypeScript development",
+  "author": "Mohammad Safia",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohammadsafia/forge-skills.git"
+  },
+  "keywords": [
+    "claude-code",
+    "skills",
+    "react",
+    "typescript",
+    "tailwind",
+    "code-review",
+    "figma-to-code",
+    "scaffolding",
+    "developer-tools"
+  ]
+}
