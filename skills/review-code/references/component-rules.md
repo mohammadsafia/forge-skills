@@ -106,13 +106,36 @@ function OrdersPage() {
 }
 ```
 
+## View Component Organization
+
+Each view component must be in its own folder with an `index.ts`:
+
+```
+views/
+└── communities/
+    ├── community-card/
+    │   ├── CommunityCard.tsx
+    │   └── index.ts              # export { default as CommunityCard } from './CommunityCard'
+    ├── community-list/
+    │   ├── CommunityList.tsx
+    │   └── index.ts
+    ├── CommunitiesView.tsx        # Main view (can be at root level)
+    └── index.ts                   # export * from './community-card'; etc.
+```
+
+## Component Size Limits
+
+- If JSX exceeds ~150 lines, break into sub-components
+- Extract repeated JSX blocks (3+ usages) into their own component
+- Prefer composition (children/slots) over configuration (many boolean props)
+
 ## Folder Naming
 
 All folders use kebab-case:
 
 ```
-views/communities/community-card/    ✓ CORRECT
-views/Communities/CommunityCard/     ✗ WRONG (PascalCase)
+views/communities/community-card/    CORRECT
+views/Communities/CommunityCard/     WRONG (PascalCase)
 ```
 
 ## No Separator Comments
@@ -135,3 +158,10 @@ Add `data-slot` attributes to semantic elements in shared components:
   {children}
 </header>
 ```
+
+## Routing Patterns
+
+- Use `React.lazy` for lazy-loaded pages
+- Route constants must use `as const`
+- Use `AuthGuard` to wrap protected routes
+- Nested route structure with layout components (`MainLayout`, `DashboardLayout`)
