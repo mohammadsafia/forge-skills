@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**forge-skills** is a collection of 23 Claude Code skills for React + TypeScript development. It is a content-only package — no build step, no tests, no runtime code. All deliverables are markdown files distributed via `npx skills add mohammadsafia/forge-skills`.
+**forge-skills** is a collection of 24 Claude Code skills for React + TypeScript development. It is a content-only package — no build step, no tests, no runtime code. All deliverables are markdown files distributed via `npx skills add mohammadsafia/forge-skills`.
 
 ## Repository Structure
 
@@ -49,7 +49,7 @@ The `description` field is critical — it determines when the skill is invoked.
 | Category | Skills | Has References |
 |----------|--------|---------------|
 | Design | figma-to-code | Yes |
-| Creation | create-api, create-component, create-form, create-table, create-page, create-context, scaffold-feature | Most do |
+| Creation | create-api, create-component, create-form, create-table, create-page, create-context, scaffold-feature, add-motion | Most do |
 | Quality | review-code, audit-a11y, audit-dark-mode, audit-rtl, audit-imports | review-code does |
 | Refactoring | refactor-to-standards, extract-component, migrate-endpoint | refactor-to-standards does |
 | Workflow | git-workflow, i18n-sync, add-translations, add-icon, debug-build, changelog, document-component | git-workflow does |

@@ -13,7 +13,7 @@ Analyze what the user wants to build and automatically invoke the right forge sk
 
 ## Skill Catalog
 
-You have 17 creation and workflow skills available. Use the trigger signals below to match the user's message. Signals are grouped by register — technical (developer jargon), casual (plain language), and problem-oriented (describing the need, not the solution). Match against ALL three levels.
+You have 18 creation and workflow skills available. Use the trigger signals below to match the user's message. Signals are grouped by register — technical (developer jargon), casual (plain language), and problem-oriented (describing the need, not the solution). Match against ALL three levels.
 
 ### scaffold-feature
 
@@ -102,6 +102,17 @@ You have 17 creation and workflow skills available. Use the trigger signals belo
 - **Problem:** "I have a design that needs to become code", "here's the Figma, build it"
 
 **Inputs needed:** Figma URL, target location
+
+### add-motion
+
+**What it does:** Add Motion (Framer Motion) animations — enter/exit, staggered lists, hover/tap/scroll gestures, layout/shared-element transitions, and page transitions. Enforces reduced-motion a11y, GPU-friendly performance, RTL-aware direction, and centralized variants.
+
+**Trigger signals:**
+- **Technical:** "Motion", "Framer Motion", "AnimatePresence", "variants", "whileHover", "layout animation", "layoutId", "page transition", "stagger"
+- **Casual:** "animate this", "add an animation", "make it slide/fade/scale in", "add a transition", "animate the modal/list", "hover effect", "animate on scroll", "smooth it out"
+- **Problem:** "this appears too abruptly", "the list should reveal in sequence", "I want the route change to feel smooth", "needs some life/polish"
+
+**Inputs needed:** target element/component, desired effect (enter/exit, gesture, layout, page)
 
 ### extract-component
 
@@ -226,7 +237,7 @@ Execute selected skills in layer order. Within the same layer, order does not ma
 | 0 | Standalone | debug-build, i18n-sync |
 | 1 | Infrastructure | create-api, create-context, migrate-endpoint |
 | 2 | Structure | scaffold-feature, create-page |
-| 3 | UI | create-component, create-form, create-table, figma-to-code, extract-component |
+| 3 | UI | create-component, create-form, create-table, figma-to-code, extract-component, add-motion |
 | 4 | Assets | add-icon, add-translations |
 | 5 | Workflow | git-workflow, changelog, document-component |
 

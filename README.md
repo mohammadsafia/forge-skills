@@ -2,7 +2,7 @@
 
 Professional Claude Code skills for React + TypeScript development. Standards-driven code generation, review, and scaffolding.
 
-23 skills covering the full development lifecycle — from Figma design to production code, API integration, component creation, code review, and git workflow.
+24 skills covering the full development lifecycle — from Figma design to production code, API integration, component creation, motion animation, code review, and git workflow.
 
 ## Install
 
@@ -61,6 +61,7 @@ npx skills update
 | `create-page` | New page with routing, layout, guards, and translations |
 | `create-context` | React Context with provider and custom hook |
 | `scaffold-feature` | Complete feature skeleton — page, views, API, hooks, types, translations |
+| `add-motion` | Add Motion (Framer Motion) animations — enter/exit, staggered lists, gestures, layout/shared-element, page transitions — with reduced-motion a11y, performance, and RTL safety |
 
 ### Quality
 | Skill | Description |
