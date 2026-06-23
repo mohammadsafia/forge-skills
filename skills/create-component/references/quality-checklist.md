@@ -22,7 +22,7 @@ Verify ALL items before exporting any reusable component.
 ## 3. RTL Support
 
 - [ ] Directional margin/padding uses `rtl:` prefix or logical properties (`ms-*`, `me-*`)
-- [ ] Border radius uses `rtl:` mirroring where directional
+- [ ] Directional border radius uses logical properties (`rounded-s-*`/`rounded-e-*`) or `rtl:` mirroring
 - [ ] Icons with directional meaning flip: `rtl:rotate-180`
 - [ ] Flex layouts that need mirroring use `rtl:flex-row-reverse`
 

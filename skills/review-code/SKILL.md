@@ -285,12 +285,12 @@ After the standards check, run the four audit skills on the same file scope to c
    - Inline hex/rgb/rgba/hsl color values in className or style
    - CSS custom properties defined in `:root` but missing from `.dark`
 
-3. **RTL audit** (`forge:audit-rtl`):
+3. **RTL audit** (`forge:audit-rtl`) — see `audit-rtl/references/rtl-rules.md`:
    - Directional margins/padding (`ml-*`, `mr-*`, `pl-*`, `pr-*`) without RTL counterpart or logical properties (`ms-*`, `me-*`, `ps-*`, `pe-*`)
-   - Directional border-radius without RTL mirroring
-   - `left-*`/`right-*` positioning without RTL counterpart
-   - `text-left`/`text-right` without RTL counterpart
-   - Directional borders without RTL counterpart
+   - Directional border-radius without RTL handling (logical `rounded-s-*`/`rounded-e-*` or `rtl:` mirroring)
+   - `left-*`/`right-*` positioning without RTL handling (logical `start-*`/`end-*` or `rtl:` counterpart)
+   - `text-left`/`text-right` without RTL handling (logical `text-start`/`text-end` or `rtl:` counterpart)
+   - Directional borders without RTL handling (logical `border-s`/`border-e` or `rtl:` counterpart)
    - Directional icons (arrows, chevrons) not flipping with `rtl:rotate-180`
    - Flex layouts where visual order matters without `rtl:flex-row-reverse`
 

@@ -119,7 +119,7 @@ import type { EntityDto } from '@app-types';
 **Responsive & RTL:**
 - Mobile-first: base styles for mobile, breakpoint overrides for larger
 - Use Tailwind breakpoints: `sm`, `md`, `lg`, `xl`, `2xl`
-- Add `rtl:` prefix for directional styles
+- Use logical properties (`ms`/`me`, `start`/`end`, …) or an `rtl:` prefix for directional styles (see `audit-rtl/references/rtl-rules.md`)
 - Directional icons flip in RTL
 
 **Accessibility:**

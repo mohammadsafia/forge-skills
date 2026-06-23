@@ -65,7 +65,7 @@ These standards are embedded in skill instructions and reference files — they 
 - `type` over `interface`; no `any`; DTO naming: `ForReadDto`, `ForCreateDto`, `ForUpdateDto`, `ListDto`, `ListResponseDto`, `ParamsDto`
 - Barrel-only imports; path aliases; strict import group ordering (React → third-party → UI → shared → contexts/hooks → utils → icons → types)
 - `cn()` for conditional classes; `Conditional.If` instead of `&&` for conditional rendering; `data-slot` attributes
-- Theme-aware tokens only (no hardcoded colors like `bg-white`); Tailwind spacing scale; mobile-first; RTL via `rtl:` prefix
+- Theme-aware tokens only (no hardcoded colors like `bg-white`); Tailwind spacing scale; mobile-first; RTL via logical properties (`ms`/`me`, `start`/`end`, …) or `rtl:` prefix
 - Handler pattern with string queryKeys; typed DTOs; React Query hooks with no explicit return types
 - FormProvider-based forms with Zod validation
 - Component code order: hooks → context → shared hooks → queries → state → memo → callbacks → effects → JSX

@@ -7,71 +7,48 @@ description: "Audit components for RTL (right-to-left) support — find directio
 
 Scan components for directional styling that breaks in RTL mode and suggest fixes.
 
+## The Rule
+
+Directional styling must use logical properties (`ms`/`me`, `ps`/`pe`, `start`/`end`,
+`rounded-s`/`rounded-e`, `border-s`/`border-e`, `text-start`/`text-end`) **or** an explicit
+`rtl:` counterpart — never a bare directional class. For things with no logical equivalent
+(icon flips, flex visual ordering, transform origins), use the `rtl:` variant.
+
+A bare `ml-4` / `rounded-l-lg` / `text-left` with **neither** is the violation. Both fixes
+are correct — recommend the one matching the project's existing convention.
+
+The full find→fix table lives in `references/rtl-rules.md` — treat it as the source of truth.
+
 ## What to Scan For
 
-### Directional Margins and Padding
-```typescript
-// Find → Replace
-ml-* without rtl: counterpart → use ms-* (margin-inline-start) or add rtl:mr-*
-mr-* without rtl: counterpart → use me-* (margin-inline-end) or add rtl:ml-*
-pl-* without rtl: counterpart → use ps-* (padding-inline-start) or add rtl:pr-*
-pr-* without rtl: counterpart → use pe-* (padding-inline-end) or add rtl:pl-*
-```
+Every directional category has both a logical fix and an `rtl:` fix:
 
-### Directional Border Radius
-```typescript
-// Find → Fix
-rounded-l-* → add rtl:rounded-l-none rtl:rounded-r-*
-rounded-r-* → add rtl:rounded-r-none rtl:rounded-l-*
-rounded-tl-* → add rtl:rounded-tl-none rtl:rounded-tr-*
-rounded-tr-* → add rtl:rounded-tr-none rtl:rounded-tl-*
-rounded-bl-* → add rtl:rounded-bl-none rtl:rounded-br-*
-rounded-br-* → add rtl:rounded-br-none rtl:rounded-bl-*
-```
+| Bare (violation) | Logical fix | `rtl:` fix |
+|---|---|---|
+| `ml-*`, `mr-*` | `ms-*`, `me-*` | `rtl:mr-* rtl:ml-0`, `rtl:ml-* rtl:mr-0` |
+| `pl-*`, `pr-*` | `ps-*`, `pe-*` | `rtl:pr-* rtl:pl-0`, `rtl:pl-* rtl:pr-0` |
+| `rounded-l-*`, `rounded-r-*` | `rounded-s-*`, `rounded-e-*` | `rtl:rounded-l-none rtl:rounded-r-*`, etc. |
+| `rounded-tl/tr/bl/br-*` | `rounded-ss/se/es/ee-*` | `rtl:rounded-tl-none rtl:rounded-tr-*`, etc. |
+| `left-*`, `right-*` | `start-*`, `end-*` | `rtl:left-auto rtl:right-*`, `rtl:right-auto rtl:left-*` |
+| `text-left`, `text-right` | `text-start`, `text-end` | `rtl:text-right`, `rtl:text-left` |
+| `border-l`, `border-r` | `border-s`, `border-e` | `rtl:border-l-0 rtl:border-r`, `rtl:border-r-0 rtl:border-l` |
 
-### Directional Positioning
-```typescript
-// Find → Fix
-left-* → add rtl:left-auto rtl:right-*
-right-* → add rtl:right-auto rtl:left-*
-```
+> The logical fix auto-flips with `dir="rtl"`. The `rtl:` fix must include **both** halves
+> (reset + mirror); omitting one silently breaks a direction.
 
-### Text Alignment
-```typescript
-// Find → Fix
-text-left → add rtl:text-right
-text-right → add rtl:text-left
-```
+## `rtl:`-Only (No Logical Equivalent)
 
-### Directional Borders
-```typescript
-// Find → Fix
-border-l → add rtl:border-l-0 rtl:border-r
-border-r → add rtl:border-r-0 rtl:border-l
-border-l-* → add rtl:border-l-0 rtl:border-r-*
-```
+Always use the `rtl:` variant — no logical property exists:
 
-### Directional Icons
-Icons with directional meaning (arrows, chevrons) need to flip:
-```typescript
-// CORRECT
+```tsx
+// Directional icons (arrows, chevrons)
 <ChevronRight className="h-4 w-4 rtl:rotate-180" />
 <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
 
-// WRONG — no flip
-<ChevronRight className="h-4 w-4" />
-```
-
-### Flex Layouts
-Layouts where visual order matters may need mirroring:
-```typescript
-// When content order is directional
+// Flex visual ordering, when content order is directional
 className="flex flex-row rtl:flex-row-reverse"
-```
 
-### Transform Origins
-```typescript
-// Find → Fix
+// Transform origins
 origin-left → add rtl:origin-right
 origin-right → add rtl:origin-left
 ```
@@ -88,14 +65,16 @@ These are fine without RTL counterparts:
 
 ## Report Format
 
+Each issue shows both fix options so the reader can match their project's convention:
+
 ```markdown
 ## RTL Audit
 
 ### Issues
-- `Component.tsx:15` — `ml-4` without RTL counterpart → use `ms-4` or add `rtl:mr-4 rtl:ml-0`
-- `Component.tsx:28` — `rounded-l-lg` without RTL mirroring
+- `Component.tsx:15` — `ml-4` without RTL handling → use `ms-4` or `rtl:mr-4 rtl:ml-0`
+- `Component.tsx:28` — `rounded-l-lg` without RTL handling → use `rounded-s-lg` or `rtl:rounded-l-none rtl:rounded-r-lg`
 - `Component.tsx:42` — `ChevronRight` icon not flipping in RTL → add `rtl:rotate-180`
-- `Component.tsx:55` — `text-left` without `rtl:text-right`
+- `Component.tsx:55` — `text-left` without RTL handling → use `text-start` or `rtl:text-right`
 
 ### Summary
 X directional issues found
