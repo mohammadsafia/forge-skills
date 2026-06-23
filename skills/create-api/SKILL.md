@@ -17,16 +17,17 @@ Ask the user if not provided:
 
 ## Step 2 — Scan Existing Patterns
 
-Before writing code, read these files to match the exact project style:
-1. `src/api/config/ApiEndpoints.ts` — endpoint structure
-2. An existing handler in `src/api/handlers/` — mirror the pattern
-3. Existing hooks in `src/lib/hooks/queries/` and `mutations/`
-4. `src/types/api/index.ts` — barrel export pattern
-5. `src/api/config/HttpClient.ts` — understand the HTTP client API
+Before writing code, read:
+1. Endpoint config: `src/api/config/ApiEndpoints.ts`
+2. An existing handler in `src/api/handlers/` for the handler pattern
+3. Query hooks in `src/lib/hooks/queries/` for the query hook pattern
+4. Mutation hooks in `src/lib/hooks/mutations/` for the mutation hook pattern
+5. DTO files in `src/types/api/` for naming conventions
 
-See `references/handler-pattern.md` for the complete handler template.
-See `references/dto-conventions.md` for DTO naming rules.
-See `references/query-hook-pattern.md` for hook templates.
+See `references/handler-pattern.md` for the handler template.
+See `references/query-hook-pattern.md` for the hook template.
+See `references/dto-conventions.md` for DTO naming.
+See `_shared/code-standards.md` for all project rules (sections 3, 4).
 
 ## Step 3 — Generate Files
 

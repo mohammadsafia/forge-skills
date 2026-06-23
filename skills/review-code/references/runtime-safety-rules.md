@@ -9,17 +9,17 @@ Every page or view that fetches data must handle **all three states**. Missing a
 ```typescript
 // WRONG — data accessed before it's loaded, crashes on undefined
 function OrdersPage() {
-  const { data } = useOrdersQuery();
-  return <DataTable data={data.items} />; // data is undefined during loading
+  const ordersQuery = useOrdersQuery();
+  return <DataTable data={ordersQuery.data.items} />; // data is undefined during loading
 }
 
 // CORRECT — show loading indicator
 function OrdersPage() {
-  const { data, isLoading } = useOrdersQuery();
+  const ordersQuery = useOrdersQuery();
 
-  if (isLoading) return <PageLoader />;
+  if (ordersQuery.isLoading) return <PageLoader />;
 
-  return <DataTable data={data.items} />;
+  return <DataTable data={ordersQuery.data.items} />;
 }
 ```
 
@@ -28,22 +28,22 @@ function OrdersPage() {
 ```typescript
 // WRONG — no feedback when list is empty, user sees blank screen
 function OrdersPage() {
-  const { data, isLoading } = useOrdersQuery();
+  const ordersQuery = useOrdersQuery();
 
-  if (isLoading) return <PageLoader />;
+  if (ordersQuery.isLoading) return <PageLoader />;
 
-  return <DataTable data={data.items} />;
+  return <DataTable data={ordersQuery.data.items} />;
 }
 
 // CORRECT — show empty state
 function OrdersPage() {
-  const { data, isLoading } = useOrdersQuery();
+  const ordersQuery = useOrdersQuery();
 
-  if (isLoading) return <PageLoader />;
+  if (ordersQuery.isLoading) return <PageLoader />;
 
   return (
-    <Conditional.If condition={data.items.length > 0} fallback={<EmptyState />}>
-      <DataTable data={data.items} />
+    <Conditional.If condition={ordersQuery.data.items.length > 0} fallback={<EmptyState />}>
+      <DataTable data={ordersQuery.data.items} />
     </Conditional.If>
   );
 }
@@ -54,21 +54,21 @@ function OrdersPage() {
 ```typescript
 // WRONG — error silently ignored, user sees blank or stale data
 function OrdersPage() {
-  const { data, isLoading } = useOrdersQuery();
+  const ordersQuery = useOrdersQuery();
 
-  if (isLoading) return <PageLoader />;
+  if (ordersQuery.isLoading) return <PageLoader />;
 
-  return <DataTable data={data.items} />;
+  return <DataTable data={ordersQuery.data.items} />;
 }
 
 // CORRECT — show error state
 function OrdersPage() {
-  const { data, isLoading, isError, error } = useOrdersQuery();
+  const ordersQuery = useOrdersQuery();
 
-  if (isLoading) return <PageLoader />;
-  if (isError) return <ErrorState message={error.message} />;
+  if (ordersQuery.isLoading) return <PageLoader />;
+  if (ordersQuery.isError) return <ErrorState message={ordersQuery.error.message} />;
 
-  return <DataTable data={data.items} />;
+  return <DataTable data={ordersQuery.data.items} />;
 }
 ```
 

@@ -95,7 +95,7 @@ export const entityUpdateSchema = z.object({
 
 Schemas always live with the feature:
 ```
-src/views/<feature>/schemas.ts    ← CORRECT
+src/views/<feature>/Feature.schemas.ts    ← CORRECT
 src/types/schemas.ts              ← WRONG
 src/validations/<feature>.ts      ← WRONG (legacy, avoid)
 ```

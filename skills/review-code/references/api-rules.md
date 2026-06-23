@@ -145,13 +145,13 @@ export const useCreateUserMutation = () => {
 
 ```typescript
 // CORRECT — use query data directly
-const { data: users } = useUsersQuery();
-const filteredUsers = useMemo(() => users?.filter(...), [users]);
+const usersQuery = useUsersQuery();
+const filteredUsers = useMemo(() => usersQuery.data?.filter(...), [usersQuery.data]);
 
-// WRONG — duplicating server state
-const { data: users } = useUsersQuery();
-const [userList, setUserList] = useState(users); // NO!
-useEffect(() => setUserList(users), [users]);     // NO!
+// WRONG — duplicating server state into useState
+const usersQuery = useUsersQuery();
+const [userList, setUserList] = useState(usersQuery.data); // NO!
+useEffect(() => setUserList(usersQuery.data), [usersQuery.data]); // NO!
 ```
 
 ## Error Handling

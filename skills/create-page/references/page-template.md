@@ -21,17 +21,17 @@ function EntitiesPage() {
   const { t } = useAppTranslation('entities');
 
   // 2. Query hooks
-  const { data, isLoading } = useEntityListQuery();
+  const entitiesQuery = useEntityListQuery();
 
   // 3. Component state
   const [searchQuery, setSearchQuery] = useState('');
 
   // 4. Computed values
   const filteredItems = useMemo(
-    () => data?.items?.filter(item =>
+    () => entitiesQuery.data?.items?.filter(item =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
     ) ?? [],
-    [data, searchQuery],
+    [entitiesQuery.data, searchQuery],
   );
 
   // 5. Callbacks
@@ -47,15 +47,15 @@ function EntitiesPage() {
         <Button onClick={handleCreate}>{t('create')}</Button>
       </div>
 
-      <Conditional.If condition={isLoading}>
+      <Conditional.If condition={entitiesQuery.isLoading}>
         {/* Loading state */}
       </Conditional.If>
 
-      <Conditional.If condition={!isLoading && filteredItems.length > 0}>
+      <Conditional.If condition={!entitiesQuery.isLoading && filteredItems.length > 0}>
         {/* Content */}
       </Conditional.If>
 
-      <Conditional.If condition={!isLoading && filteredItems.length === 0}>
+      <Conditional.If condition={!entitiesQuery.isLoading && filteredItems.length === 0}>
         {/* Empty state */}
       </Conditional.If>
     </div>
@@ -79,15 +79,15 @@ import { useEntityDetailsQuery } from '@hooks/queries';
 function EntityDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data: entity, isLoading } = useEntityDetailsQuery(id!, !!id);
+  const entityQuery = useEntityDetailsQuery(id!, !!id);
 
   return (
     <div className="space-y-6">
-      <Conditional.If condition={isLoading}>
+      <Conditional.If condition={entityQuery.isLoading}>
         {/* Loading skeleton */}
       </Conditional.If>
 
-      <Conditional.If condition={!isLoading && !!entity}>
+      <Conditional.If condition={!entityQuery.isLoading && !!entityQuery.data}>
         {/* Detail content */}
       </Conditional.If>
     </div>

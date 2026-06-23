@@ -25,7 +25,7 @@ type EntityFormProps = {
 
 export default function EntityForm({ onSuccess, onCancel }: EntityFormProps) {
   const { t } = useAppTranslation('entity');
-  const { mutateAsync, isPending } = useCreateEntityMutation();
+  const createMutation = useCreateEntityMutation();
 
   const methods = useForm<EntityFormValues>({
     resolver: zodResolver(entityFormSchema),
@@ -36,7 +36,7 @@ export default function EntityForm({ onSuccess, onCancel }: EntityFormProps) {
   });
 
   const handleSubmit = async (values: EntityFormValues) => {
-    await mutateAsync(values);
+    await createMutation.mutateAsync(values);
     onSuccess?.();
   };
 
@@ -51,7 +51,7 @@ export default function EntityForm({ onSuccess, onCancel }: EntityFormProps) {
               {t('cancel')}
             </Button>
           </Conditional.If>
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={createMutation.isPending}>
             {t('create')}
           </Button>
         </div>
@@ -87,8 +87,8 @@ type EntityEditFormProps = {
 
 export default function EntityEditForm({ entityId, onSuccess, onCancel }: EntityEditFormProps) {
   const { t } = useAppTranslation('entity');
-  const { data: entity } = useEntityDetailsQuery(entityId);
-  const { mutateAsync, isPending } = useUpdateEntityMutation();
+  const entityQuery = useEntityDetailsQuery(entityId);
+  const updateMutation = useUpdateEntityMutation();
 
   const methods = useForm<EntityFormValues>({
     resolver: zodResolver(entityFormSchema),
@@ -100,16 +100,16 @@ export default function EntityEditForm({ entityId, onSuccess, onCancel }: Entity
 
   // Populate form when data loads
   useEffect(() => {
-    if (entity) {
+    if (entityQuery.data) {
       methods.reset({
-        name: entity.name,
-        description: entity.description ?? '',
+        name: entityQuery.data.name,
+        description: entityQuery.data.description ?? '',
       });
     }
-  }, [entity, methods]);
+  }, [entityQuery.data, methods]);
 
   const handleSubmit = async (values: EntityFormValues) => {
-    await mutateAsync({ id: entityId, data: values });
+    await updateMutation.mutateAsync({ id: entityId, data: values });
     onSuccess?.();
   };
 
@@ -122,7 +122,7 @@ export default function EntityEditForm({ entityId, onSuccess, onCancel }: Entity
           <Button type="button" variant="outline" onClick={onCancel}>
             {t('cancel')}
           </Button>
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={updateMutation.isPending}>
             {t('save')}
           </Button>
         </div>

@@ -20,6 +20,13 @@ Check these locations — if an existing component covers 80%+ of the need, exte
 4. `src/components/tables/` — table variants
 5. `src/views/` — feature components that could be promoted
 
+Scan existing shared components for patterns:
+- `src/components/shared/` — look at `PrimeCard`, `CollapsibleCard`, `PrimeDialog` for compound pattern examples
+- `src/components/shared/combobox/Combobox.tsx` for CVA + forwardRef pattern
+- `src/components/ui/` for base component primitives
+
+See `_shared/code-standards.md` for all project rules (sections 5, 8, 10).
+
 ### Build the variant matrix
 
 Scan every page/view that will use this component and document:

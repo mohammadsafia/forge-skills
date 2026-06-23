@@ -20,14 +20,16 @@ Ask the user if not provided:
 
 ## Step 2 — Scan Existing Patterns
 
-Read one complete existing feature to mirror the exact structure:
-1. A handler in `src/api/handlers/`
-2. Query hooks in `src/lib/hooks/queries/`
-3. Mutation hooks in `src/lib/hooks/mutations/`
-4. A page in `src/pages/`
-5. View components in `src/views/`
+Before writing code, read:
+1. An existing feature folder in `src/views/` for structure conventions
+2. API layer: `src/api/handlers/`, `src/api/config/ApiEndpoints.ts`
+3. Hooks: `src/lib/hooks/queries/`, `src/lib/hooks/mutations/`
+4. Pages: `src/pages/`
+5. Routes: `src/routes/`
+6. Types: `src/types/api/`
 
-See `references/folder-structure.md` for the complete scaffold template.
+See `references/folder-structure.md` for the folder structure.
+See `_shared/code-standards.md` for all project rules.
 
 ## Step 3 — Generate Files (in order)
 
@@ -57,13 +59,12 @@ See `references/folder-structure.md` for the complete scaffold template.
 
 ## Rules
 
-- Generate files bottom-up (types → API → hooks → UI → routes)
-- Each layer must compile before moving to the next
-- All folder names: **kebab-case**
-- All component files: **PascalCase**
-- Follow every convention from the project's CLAUDE.md
+See `_shared/code-standards.md` for all project rules. Scaffold-specific rules:
+
+- Follow the folder structure in `references/folder-structure.md` exactly
 - No placeholders or TODOs — produce complete code
-- Run through the checklist at the end
+- Translation keys must be added to both `en.json` and `ar.json`
+- Every layer must be wired: DTOs exported, handler exported, hook wired into page
 
 ## Checklist
 

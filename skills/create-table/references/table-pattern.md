@@ -23,7 +23,7 @@ function EntitiesPage() {
   const debouncedSearch = useDebounce(searchQuery, 300);
 
   // 3. Query
-  const { data, isLoading } = useEntityListQuery({ search: debouncedSearch });
+  const entitiesQuery = useEntityListQuery({ search: debouncedSearch });
 
   return (
     <div data-slot="page" className="space-y-4">
@@ -44,7 +44,7 @@ function EntitiesPage() {
       </div>
 
       {/* Table */}
-      <Conditional.If condition={isLoading}>
+      <Conditional.If condition={entitiesQuery.isLoading}>
         <div data-slot="table-skeleton" className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="h-12 animate-pulse rounded-md bg-muted" />
@@ -52,11 +52,11 @@ function EntitiesPage() {
         </div>
       </Conditional.If>
 
-      <Conditional.If condition={!isLoading && !!data && data.items.length > 0}>
-        <DataTable columns={columns} data={data.items} />
+      <Conditional.If condition={!entitiesQuery.isLoading && !!entitiesQuery.data && entitiesQuery.data.items.length > 0}>
+        <DataTable columns={columns} data={entitiesQuery.data.items} />
       </Conditional.If>
 
-      <Conditional.If condition={!isLoading && (!data || data.items.length === 0)}>
+      <Conditional.If condition={!entitiesQuery.isLoading && (!entitiesQuery.data || entitiesQuery.data.items.length === 0)}>
         <div data-slot="empty-state" className="flex flex-col items-center justify-center py-12 text-center">
           <p className="text-muted-foreground">No entities found.</p>
         </div>
@@ -99,7 +99,9 @@ export const columns: ColumnDef<EntityListDto>[] = [
   {
     accessorKey: 'dateCreated',
     header: 'Created',
-    cell: ({ row }) => <DateCell value={row.original.dateCreated} />,
+    cell: ({ row }) => (
+      <span className="text-muted-foreground">{row.original.dateCreated}</span>
+    ),
   },
   {
     id: 'actions',
@@ -108,4 +110,4 @@ export const columns: ColumnDef<EntityListDto>[] = [
 ];
 ```
 
-> **Date/time columns:** Use a small cell component (`DateCell`) that calls `useDate()` internally — this keeps hooks at the component level while columns stay as a plain array.
+> **Date/time columns:** Render the raw ISO string in a `<span>`. Use `dateFilterFn` or `dateRangeFilterFn` from the data table utils for date filtering. See `references/column-types.md` for examples.

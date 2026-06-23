@@ -14,20 +14,38 @@
 
 ## Date Column
 
-> **Important:** Never call `useDate()` directly inside the `cell` function — that violates the Rules of Hooks. Instead, use a small cell component that calls the hook internally.
-
 ```typescript
-// DateCell component (src/components/shared/date-cell/DateCell.tsx)
-const DateCell: FC<{ value: string }> = ({ value }) => {
-  const { formatDate } = useDate();
-  return <span className="text-muted-foreground">{formatDate(value)}</span>;
-};
-
-// Column definition (plain array):
 {
   accessorKey: 'dateCreated',
   header: t('created'),
-  cell: ({ row }) => <DateCell value={row.original.dateCreated} />,
+  enableSorting: true,
+  sortDescFirst: true,
+  cell: ({ row }) => (
+    <span className="text-muted-foreground">{row.original.dateCreated}</span>
+  ),
+}
+```
+
+For date filtering, use the filter functions from the data table utils:
+
+```typescript
+import { dateFilterFn, dateRangeFilterFn, createFilterMeta } from '@utils';
+
+{
+  accessorKey: 'joined',
+  header: t('joined'),
+  enableSorting: true,
+  filterFn: dateRangeFilterFn,
+  cell: ({ row }) => (
+    <span className="text-muted-foreground">{row.original.joined}</span>
+  ),
+  meta: {
+    label: t('joined'),
+    filterMeta: createFilterMeta({
+      variant: 'dateRange',
+      label: t('joined'),
+    }),
+  },
 }
 ```
 

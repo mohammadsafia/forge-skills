@@ -34,7 +34,7 @@ src/
 │   ├── community-form/
 │   │   ├── CommunityForm.tsx
 │   │   └── index.ts
-│   ├── schemas.ts                         # Zod form schemas
+│   ├── Community.schemas.ts                # Zod form schemas
 │   └── index.ts                           # Barrel export
 │
 ├── routes/
@@ -57,7 +57,7 @@ src/
 | Page file | PascalCase + Page | `CommunitiesPage.tsx` |
 | View folder | kebab-case | `community-card/` |
 | View component | PascalCase | `CommunityCard.tsx` |
-| Schema file | camelCase | `schemas.ts` |
+| Schema file | PascalCase + `.schemas.ts` | `Community.schemas.ts` |
 | Route constant | UPPER_SNAKE | `ROUTES.COMMUNITIES.LIST` |
 
 ## Minimal vs Full Scaffold

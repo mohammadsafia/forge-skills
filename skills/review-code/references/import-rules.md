@@ -1,27 +1,6 @@
-# Import Rules Reference
+> Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
-## Path Aliases
-
-Always use these — never relative imports like `../../../`:
-
-| Alias | Maps to |
-|-------|---------|
-| `@api/*` | `src/api/*` |
-| `@components/*` | `src/components/*` |
-| `@hooks/*` | `src/lib/hooks/*` |
-| `@contexts` | `src/lib/contexts/index` |
-| `@constants` | `src/lib/constants/index` |
-| `@utils` | `src/lib/utils/index` |
-| `@hoc` | `src/lib/hoc` |
-| `@app-types` | `src/types/index` |
-| `@routes` | `src/routes/index` |
-| `@pages/*` | `src/pages/*` |
-| `@views/*` | `src/views/*` |
-| `@layouts/*` | `src/layouts/*` |
-| `@validations/*` | `src/validations/*` |
-| `@locales/*` | `src/locales/*` |
-| `@assets/*` | `src/assets/*` |
-| `@app-config` | `src/app-config` |
+# Import Rules — Code Examples
 
 ## Barrel Import Rules
 
@@ -95,14 +74,3 @@ import { AppLogo, CheckCircleIcon } from '@assets/icons';
 // 9. Types (always use `import type`)
 import type { OrderForReadDto, OrderListDto } from '@app-types';
 ```
-
-## Common Violations
-
-| Violation | Fix |
-|-----------|-----|
-| `import { Button } from '@components/ui/button'` | `import { Button } from '@components/ui'` |
-| `import { X } from '../../../components/shared/X'` | `import { X } from '@components/shared'` |
-| `import { OrderDto } from '@app-types'` | `import type { OrderDto } from '@app-types'` |
-| Icons imported from individual files | Import from `@assets/icons` barrel |
-| Import groups not separated by blank line | Add one blank line between groups |
-| Hooks mixed with UI imports | Separate into correct groups |

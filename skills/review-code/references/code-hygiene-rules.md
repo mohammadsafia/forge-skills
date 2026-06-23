@@ -1,10 +1,8 @@
-# Code Hygiene Rules Reference
+> Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
-## Debug Artifacts
+# Code Hygiene — Code Examples
 
-### Console Statements
-
-Remove all console statements from production code:
+## Console Statements
 
 ```typescript
 // WRONG — left in production code
@@ -14,14 +12,9 @@ console.error('something went wrong', error);
 debugger;
 
 // CORRECT — use toast for user-facing errors, remove the rest
-// For development debugging, use React DevTools or breakpoints
 ```
 
-**Exceptions**: `console.error` inside a top-level error boundary or global error handler is acceptable.
-
-### Commented-Out Code
-
-Dead code disguised as comments must be deleted — version control preserves history:
+## Commented-Out Code
 
 ```typescript
 // WRONG — dead code, not an explanation
@@ -34,11 +27,7 @@ Dead code disguised as comments must be deleted — version control preserves hi
 if (order.status === 'draft') return;
 ```
 
-**Rule**: If the comment contains executable code, it should be deleted. If it explains WHY something is the way it is, it should stay.
-
-## TypeScript Escape Hatches
-
-### @ts-ignore / @ts-expect-error
+## @ts-ignore / @ts-expect-error
 
 ```typescript
 // WRONG — suppressing without explanation
@@ -50,9 +39,7 @@ const value = someUntypedLib.getData();
 const value = someUntypedLib.getData();
 ```
 
-Every `@ts-ignore` or `@ts-expect-error` MUST have an explanation of why the type system can't handle this case. Prefer `@ts-expect-error` over `@ts-ignore` — it fails if the error is fixed, preventing stale suppressions.
-
-### Type Assertions (as)
+## Type Assertions (as)
 
 ```typescript
 // WRONG — bypassing the type system
@@ -69,9 +56,7 @@ if (isUserDto(response.data)) {
 }
 ```
 
-**When `as` is acceptable**: JSON parsing results, event targets (`e.target as HTMLInputElement`), and discriminated union narrowing where TypeScript can't infer.
-
-### Non-null Assertions (!)
+## Non-null Assertions (!)
 
 ```typescript
 // WRONG — hides a null check bug
@@ -89,11 +74,7 @@ useEffect(() => {
 }, []);
 ```
 
-## Dead Code
-
-### Unused Exports
-
-Functions, types, or constants that are exported but never imported anywhere:
+## Unused Exports
 
 ```typescript
 // WRONG — exported but no file imports it
@@ -101,9 +82,7 @@ export function formatLegacyDate(date: string): string { ... }
 export type OldOrderDto = { ... };
 ```
 
-**How to check**: Search the entire `src/` directory for imports of the export name. If zero results, it's dead code.
-
-### Unreachable Code
+## Unreachable Code
 
 ```typescript
 // WRONG — code after early return
@@ -115,8 +94,6 @@ function getStatus(order: Order): string {
 ```
 
 ## Magic Numbers & Strings
-
-Unexplained literal values that should be named constants:
 
 ```typescript
 // WRONG — what does 5 mean? what does 'active' mean?
@@ -133,11 +110,7 @@ if (user.role === ROLES.OPERATOR) showDashboard();
 const DEFAULT_PAGE_SIZE = 10;
 ```
 
-**Exceptions**: 0, 1, -1, empty string `''`, and boolean values are generally self-explanatory.
-
 ## Async Consistency
-
-Don't mix `async/await` with `.then()` chains in the same file:
 
 ```typescript
 // WRONG — mixed styles in same file
@@ -162,11 +135,7 @@ async function deleteOrder(id: string) {
 }
 ```
 
-## i18n Completeness
-
-### Hardcoded User-Facing Strings
-
-Every string visible to the user must go through `t()`:
+## Hardcoded User-Facing Strings
 
 ```typescript
 // WRONG — hardcoded English strings
@@ -181,27 +150,3 @@ toast({ title: 'Order created successfully' });
 <Dialog.Title>{t('common.confirmAction')}</Dialog.Title>
 toast({ title: t('orders.createSuccess') });
 ```
-
-**Exceptions**: Technical strings not shown to users (log messages, error codes, query keys).
-
-### Missing Translation Keys
-
-If code uses `t('orders.newField')` but the key doesn't exist in `en.json` or `ar.json`, it will render the raw key string to the user.
-
-**How to check**: Search locale files for every `t('...')` key used in the reviewed files.
-
-### Orphaned Translation Keys
-
-Keys that exist in locale files but are no longer referenced in any component. These add translation burden for no value.
-
-**How to check**: For each key in the translation namespace, search `src/` for usage.
-
-## Commit Hygiene (PR Reviews Only)
-
-When reviewing a PR (not a single file), also check:
-
-- Each commit has the Jira ticket number: `DM-XXX: imperative description`
-- One logical change per commit — don't mix unrelated fixes
-- No `Co-Authored-By` lines
-- No `fixup!` or `squash!` commits left unrebased
-- No commits that only fix lint/type errors from a previous commit in the same PR (should be squashed)
