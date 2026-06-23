@@ -14,14 +14,20 @@
 
 ## Date Column
 
+> **Important:** Never call `useDate()` directly inside the `cell` function — that violates the Rules of Hooks. Instead, use a small cell component that calls the hook internally.
+
 ```typescript
+// DateCell component (src/components/shared/date-cell/DateCell.tsx)
+const DateCell: FC<{ value: string }> = ({ value }) => {
+  const { formatDate } = useDate();
+  return <span className="text-muted-foreground">{formatDate(value)}</span>;
+};
+
+// Column definition (plain array):
 {
   accessorKey: 'dateCreated',
   header: t('created'),
-  cell: ({ row }) => {
-    const { formatDate } = useDate();
-    return <span className="text-muted-foreground">{formatDate(row.original.dateCreated)}</span>;
-  },
+  cell: ({ row }) => <DateCell value={row.original.dateCreated} />,
 }
 ```
 
@@ -103,19 +109,19 @@
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleView(row.original.id)}>
-          <Eye className="mr-2 h-4 w-4" />
+          <Eye className="me-2 h-4 w-4" />
           {t('view')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleEdit(row.original.id)}>
-          <Pencil className="mr-2 h-4 w-4" />
+          <Pencil className="me-2 h-4 w-4" />
           {t('edit')}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="text-error-600"
+          className="text-destructive"
           onClick={() => handleDelete(row.original.id)}
         >
-          <Trash className="mr-2 h-4 w-4" />
+          <Trash className="me-2 h-4 w-4" />
           {t('delete')}
         </DropdownMenuItem>
       </DropdownMenuContent>

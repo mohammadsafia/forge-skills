@@ -44,9 +44,11 @@ export const columns: ColumnDef<EntityListDto>[] = [
     accessorKey: 'name',
     header: 'Name',
   },
-  // ... more columns
+  // ... more columns — see references/column-types.md
 ];
 ```
+
+> If a column needs hooks (e.g., `useDate` for formatting, `useTranslation` for headers), call the hook in the **parent page component** and pass the result into columns, or use a small cell component.
 
 ### 3b. Create Table Page/View
 
@@ -67,11 +69,14 @@ const debouncedSearch = useDebounce(searchQuery, 300);
 
 - Use existing table components from `src/components/tables/` — don't rebuild
 - Debounce search inputs (300ms) before API calls
-- Use `useDate` and `useTime` hooks for date/time columns
-- Status columns use badge components with semantic variants
-- Action columns use dropdown menus
+- Define columns as a plain `const` array for simplicity
+- If a column needs hooks (`useDate`, `useTranslation`), call them in the parent page component and pass results down, or use a small cell component — never call hooks inside `cell` renderers directly
+- Status columns use badge components with semantic variants (no hardcoded colors)
+- Action columns use dropdown menus with `text-destructive` for dangerous actions (never `text-error-600`)
 - Use `Conditional.If` for empty states and loading
-- Column headers should use translation keys
+- Column headers should use translation keys via `t()`
+- Add `data-slot` attributes to table wrapper elements
+- Add `aria-label` to search inputs for accessibility
 
 ## Reference Files
 

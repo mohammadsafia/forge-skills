@@ -51,7 +51,7 @@ src/
 |------|-----------|---------|
 | DTO file | PascalCase | `CommunityDto.ts` |
 | Handler file | kebab-case | `community.ts` |
-| Handler export | camelCase + Handler | `communityHandler` |
+| Handler export | PascalCase + Handler | `CommunityHandler` |
 | Query hook file | PascalCase | `useCommunityQuery.ts` |
 | Mutation hook file | PascalCase | `useCommunityMutation.ts` |
 | Page file | PascalCase + Page | `CommunitiesPage.tsx` |
