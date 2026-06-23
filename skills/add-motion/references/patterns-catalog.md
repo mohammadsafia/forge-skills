@@ -16,7 +16,6 @@ variant runs before it leaves the DOM.
 import { AnimatePresence, m } from 'motion/react';
 
 import { fadeInUp } from '@utils/motion';
-import { Conditional } from '@components/shared';
 
 type ToastProps = {
   open: boolean;
@@ -25,7 +24,7 @@ type ToastProps = {
 
 const Toast: FC<ToastProps> = ({ open, message }) => (
   <AnimatePresence>
-    <Conditional.If condition={open}>
+    {open && (
       <m.div
         key="toast"
         data-slot="toast"
@@ -37,7 +36,7 @@ const Toast: FC<ToastProps> = ({ open, message }) => (
       >
         {message}
       </m.div>
-    </Conditional.If>
+    )}
   </AnimatePresence>
 );
 ```
@@ -45,6 +44,10 @@ const Toast: FC<ToastProps> = ({ open, message }) => (
 Notes:
 - Each `AnimatePresence` child needs a **stable, unique `key`**.
 - Use `end-4` (logical) not `right-4` so positioning is RTL-safe.
+- **`AnimatePresence` is the one place to use raw `{cond && …}`, not `Conditional.If`.**
+  `AnimatePresence` detects unmounts by diffing the keys of its **direct children**; a
+  `Conditional.If` wrapper is always present (it returns `null` internally), so the child never
+  appears to leave and the `exit` variant never runs. Keep the conditional inline here.
 
 ### Staggered list
 
@@ -123,6 +126,10 @@ For interactive **buttons/links**, keep gestures subtle and pair with focus styl
 ---
 
 ## §3 — Layout & shared-element transitions
+
+> **Requires `domMax`.** `layout` and `layoutId` are not part of `domAnimation`. Before using
+> these patterns, upgrade the root `LazyMotion` provider to `features={domMax}` (see
+> motion-setup.md) — otherwise, with `strict`, they silently do nothing.
 
 ### Auto-animate size/position changes with `layout`
 

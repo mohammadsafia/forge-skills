@@ -18,9 +18,9 @@ import { LazyMotion, domAnimation, m, AnimatePresence, useReducedMotion } from '
 
 ## App-level provider: LazyMotion + MotionConfig
 
-Wrap the app once at the root. `LazyMotion` with `domAnimation` lets feature code use the
-lightweight `m` component (~5kb) instead of `motion` (~34kb). `MotionConfig reducedMotion="user"`
-makes every animation automatically respect `prefers-reduced-motion`.
+Wrap the app once at the root. `LazyMotion` lets feature code use the lightweight `m` component
+(~5kb) instead of `motion` (~34kb). `MotionConfig reducedMotion="user"` makes every animation
+automatically respect `prefers-reduced-motion`.
 
 ```tsx
 import { LazyMotion, domAnimation, MotionConfig } from 'motion/react';
@@ -43,6 +43,30 @@ Place `<MotionProvider>` near the root (e.g. wrapping the router in `App.tsx`).
 
 The `strict` prop on `LazyMotion` throws if any code uses the heavy `motion.*` component,
 keeping the bundle small by forcing `m.*` everywhere.
+
+### Choose the feature bundle: `domAnimation` vs `domMax`
+
+`LazyMotion` only loads the features you give it. Pick the smallest one that covers your patterns:
+
+| Feature pack | Size | Includes | Use when |
+|--------------|------|----------|----------|
+| `domAnimation` | ~17kb | animations, variants, exit (`AnimatePresence`), hover/tap/focus gestures | enter/exit, stagger, gestures, scroll reveal (§1, §2) |
+| `domMax` | ~25kb | everything in `domAnimation` **plus layout animations (`layout`/`layoutId`) and drag** | you use `layout`, `layoutId`, or shared-element transitions (§3) |
+
+> **Important:** `layout` and `layoutId` are **not** in `domAnimation`. With `strict`, they will
+> silently do nothing. If any code in the app uses layout/shared-element transitions (§3), the
+> root provider MUST load `domMax`:
+>
+> ```tsx
+> import { LazyMotion, domMax, MotionConfig } from 'motion/react';
+>
+> <LazyMotion features={domMax} strict>
+>   <MotionConfig reducedMotion="user">{children}</MotionConfig>
+> </LazyMotion>;
+> ```
+>
+> Use `domAnimation` by default; upgrade the single root provider to `domMax` only when a layout
+> pattern is introduced.
 
 ## Use `m`, not `motion`
 

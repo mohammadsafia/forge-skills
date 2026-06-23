@@ -24,10 +24,11 @@ export const transitions = {
 
 ## Fade / slide variants
 
+All variants below live in the same `presets.ts` as the `transitions` tokens above, so they
+reference `transitions.*` directly — no cross-file import needed.
+
 ```typescript
 import { type Variants } from 'motion/react';
-
-import { transitions } from './tokens-or-inline';
 
 export const fade: Variants = {
   hidden: { opacity: 0 },

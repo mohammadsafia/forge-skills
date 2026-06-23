@@ -79,8 +79,8 @@ Run this checklist before finishing. Full correct/incorrect examples are in refe
 - [ ] `prefers-reduced-motion` is respected (`useReducedMotion` or `MotionConfig reducedMotion="user"`)
 - [ ] Directional/slide animations flip for RTL (no hardcoded `x: -N`)
 - [ ] Reused variants are imported from the presets file, not inlined
-- [ ] `LazyMotion` + `domAnimation` is in place; feature code uses `m.*` not `motion.*`
-- [ ] Every conditionally-rendered element that animates out is inside `AnimatePresence`
+- [ ] `LazyMotion` is in place and feature code uses `m.*` not `motion.*`; the feature pack is `domMax` if any `layout`/`layoutId` is used, otherwise `domAnimation`
+- [ ] Every conditionally-rendered element that animates out is inside `AnimatePresence`, using raw `{cond && …}` (not `Conditional.If`) so exit is detected
 - [ ] Elements inside `AnimatePresence` have a stable, unique `key`
 - [ ] Transitions use shared duration/easing tokens, not magic numbers
 - [ ] No `import type` needed for runtime values; imports come from barrels/path aliases

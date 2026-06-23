@@ -156,10 +156,16 @@ unique `key`, or the exit animation is skipped / janky.
 
 ```tsx
 <AnimatePresence>
-  <Conditional.If condition={open}>
+  {open && (
     <m.div key="panel" variants={fade} initial="hidden" animate="visible" exit="exit">
       …
     </m.div>
-  </Conditional.If>
+  )}
 </AnimatePresence>
 ```
+
+> **Exception to the `Conditional.If` house rule.** Inside `AnimatePresence`, use the raw
+> `{open && …}` form. `AnimatePresence` tracks unmounts by diffing the keys of its direct
+> children — a `Conditional.If` wrapper is always mounted (it returns `null` internally), so the
+> animating child never appears to leave and `exit` never runs. This is the one place `&&` is
+> required over `Conditional.If`.
