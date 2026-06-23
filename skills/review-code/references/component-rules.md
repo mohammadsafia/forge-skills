@@ -66,8 +66,8 @@ function MyComponent() {
   const { t } = useAppTranslation('feature');
 
   // 4. Query/mutation hooks
-  const { data, isLoading } = useOrdersQuery();
-  const { mutateAsync } = useCreateOrderMutation();
+  const ordersQuery = useOrdersQuery();
+  const createOrderMutation = useCreateOrderMutation();
 
   // 5. Component state
   const [isOpen, setIsOpen] = useState(false);
@@ -96,7 +96,7 @@ function MyComponent() {
 ```typescript
 // CORRECT — logic in page
 function OrdersPage() {
-  const { data } = useOrdersQuery();
+  const ordersQuery = useOrdersQuery();
   return <div>...</div>;
 }
 

@@ -9,6 +9,12 @@ Identify repeated JSX patterns and extract them into reusable components.
 
 ## Step 1 — Find Duplication
 
+Before extracting, scan existing shared components:
+- `src/components/shared/` — check if a similar component already exists
+- Look at compound pattern examples (`PrimeCard`, `PrimeDialog`) for the target structure
+
+See `_shared/code-standards.md` for all project rules (sections 5, 8).
+
 Scan the target file(s) for:
 - JSX blocks that appear 3+ times (or 2 times with slight variations)
 - Similar structures with different data (cards, list items, badges)
@@ -75,10 +81,10 @@ If the extracted component has 2+ semantic parts, use the compound pattern:
 
 ## Rules
 
-- Extract at **3+ repetitions** (or 2 with clear future reuse)
-- Varying parts become props — never hardcode
-- Always accept `className?` for style extension
-- Use `cn()` to merge base styles with passed className
-- Follow the component quality checklist (accessibility, dark mode, RTL)
-- Do not over-abstract — if variations are too different, they might not be the same component
-- Prefer composition (children/slots) over configuration (many boolean props)
+See `_shared/code-standards.md` for all project rules. Extraction-specific rules:
+
+- Check `src/components/shared/` before creating — may already exist
+- Add `data-slot` to the extracted component's root element
+- Ensure all visible strings use `t()` for i18n
+- Interactive components must include `aria-label` or `aria-labelledby`
+- Use compound pattern if the component has 3+ distinct sections

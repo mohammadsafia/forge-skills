@@ -1,41 +1,8 @@
-# Reusability Rules Reference
+> Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
-## Before Creating Any Component
+# Reusability Rules — Code Examples
 
-Scan for existing implementations before creating anything new:
-
-1. `src/components/ui/` — Does a shadcn/ui primitive cover this?
-2. `src/components/shared/` — Does a composite component exist?
-3. `src/components/forms/` — Is there a form wrapper for this input type?
-4. `src/components/tables/` — Is there a table variant?
-5. `src/views/` — Has another feature built something similar?
-
-If an existing component covers 80%+ of the need, **extend or compose it** — don't create a new one.
-
-## When to Use Compound Pattern
-
-```
-Does the component have 2+ semantic sub-parts (header, content, footer)?
-  YES → Use compound component pattern
-  NO  → Plain FC (e.g., StatusBadge, Loader)
-
-Does the component have 3+ visual variants?
-  YES → Use CVA (class-variance-authority)
-  NO  → Use simple cn() conditionals
-
-Does state need to be shared across 3+ sub-components?
-  YES → Add React.createContext inside the compound
-  NO  → Simple composition, no Context needed
-```
-
-Compound pattern is MANDATORY for `src/components/shared/`. Skip only for:
-- One-off view-specific components
-- Simple leaf components (badge, status dot, loader)
-- `src/components/ui/` (follows shadcn/ui conventions)
-
-## Sub-Component Signature Rules (MANDATORY)
-
-Every sub-component MUST have all of these:
+## Sub-Component Signature (MANDATORY)
 
 ```typescript
 // CORRECT — full signature
@@ -56,17 +23,14 @@ Checklist for every sub-component:
 - [ ] Uses `cn('defaults', className)` for class merging
 - [ ] Spreads `...props` for native HTML attribute passthrough
 - [ ] Has `data-slot="component-name-slot-name"` attribute
-- [ ] Uses semantic HTML element (`header`, `section`, `footer`, `nav`) when appropriate
+- [ ] Uses semantic HTML element when appropriate
 
-## CVA Rules
-
-Use CVA when a component has **3+ visual variants**:
+## CVA Example
 
 ```typescript
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const badgeVariants = cva(
-  // Base styles (shared by all variants)
   'inline-flex items-center rounded-full font-medium',
   {
     variants: {
@@ -90,16 +54,7 @@ const badgeVariants = cva(
 );
 ```
 
-CVA requirements:
-- Always set `defaultVariants`
-- Use semantic token colors — never hardcoded hex
-- Include disabled state in base: `disabled:pointer-events-none disabled:opacity-50`
-- Include focus styles in base: `focus-visible:ring-2 focus-visible:ring-tokens-primary focus-visible:ring-offset-2`
-- For 1-2 variants, use simple `cn()` conditionals instead of CVA
-
 ## Context Inside Compound Components
-
-Use `React.createContext` ONLY when 3+ sub-components share state:
 
 ```typescript
 // CORRECT — Context for shared state across 3+ sub-components
@@ -110,18 +65,7 @@ const DialogContext = createContext<DialogContextValue>({} as DialogContextValue
 // Just pass the prop directly instead
 ```
 
-## forwardRef Rules
-
-Use `forwardRef` ONLY when the consumer needs direct DOM access:
-
-| Use forwardRef | Skip forwardRef |
-|----------------|-----------------|
-| Inputs | Cards |
-| Buttons | Panels |
-| Trigger elements | Sections |
-| Elements needing focus management | Layout wrappers |
-
-When using forwardRef, always set `displayName`:
+## forwardRef with displayName
 
 ```typescript
 const Input = forwardRef<HTMLInputElement, InputProps>(({ className, ...props }, ref) => (
@@ -131,8 +75,6 @@ Input.displayName = 'Input';
 ```
 
 ## Export & Barrel Pattern
-
-Default export from the component file, barrel re-export from `index.ts`:
 
 ```typescript
 // src/components/shared/my-component/MyComponent.tsx
@@ -144,10 +86,3 @@ export { default as MyComponent } from './MyComponent';
 // src/components/shared/index.ts
 export * from './my-component';
 ```
-
-## Component Size
-
-- Single responsibility — one component does one thing
-- If JSX exceeds ~150 lines, break into sub-components
-- Extract repeated JSX blocks (3+ usages) into their own component
-- Prefer composition (children/slots) over configuration (many boolean props)

@@ -17,21 +17,21 @@ Ask the user if not provided:
 
 ## Step 2 — Scan Existing Patterns
 
-Before writing code, read these files:
-1. An existing form in `src/views/` that uses the reusable Form component
-2. Existing form components in `src/components/forms/`
-3. An existing Zod schema in a `views/<feature>/schemas.ts` file
-4. The mutation hook that will handle submission
+Before writing code, read:
+1. The project's form components: `src/components/forms/form-container/FormContainer.tsx`
+2. Field components: `form-input/FormInput.tsx`, `form-select/FormSelect.tsx`, `form-checkbox/FormCheckbox.tsx`, `form-date-picker/FormDatePicker.tsx`, `form-textarea/FormTextarea.tsx`
+3. An existing form in `src/views/` for wiring patterns
+4. Shared submit buttons: `src/components/shared/form-submit-button/FormSubmitButton.tsx`
 
-See `references/form-pattern.md` for the complete form template.
-See `references/validation-patterns.md` for Zod validation examples.
-See `references/form-components.md` for available form components.
+See `references/form-pattern.md` for the form template.
+See `references/validation-patterns.md` for Zod patterns.
+See `_shared/code-standards.md` for all project rules.
 
 ## Step 3 — Generate Files
 
 ### 3a. Create Zod Schema
 
-File: `src/views/<feature>/schemas.ts`
+File: `src/views/<feature>/Feature.schemas.ts`
 
 Schemas live with the feature, NOT in `src/types/`:
 ```typescript
@@ -56,10 +56,10 @@ The form MUST use the reusable Form component with FormProvider — never manage
 
 Connect the form's `onSubmit` to the mutation hook:
 ```typescript
-const { mutateAsync } = useCreateEntityMutation();
+const createEntityMutation = useCreateEntityMutation();
 
 const handleSubmit = async (values: EntityFormValues) => {
-  await mutateAsync(values);
+  await createEntityMutation.mutateAsync(values);
 };
 ```
 
@@ -69,13 +69,13 @@ Add exports to the feature's `index.ts`.
 
 ## Rules
 
-- All forms use the reusable Form component (FormProvider-based)
-- Zod schemas in `src/views/<feature>/schemas.ts`, never in `src/types/`
-- Use `import type` for Zod-inferred types when importing elsewhere
-- Inputs integrate through existing form components
-- No manual `register()` calls — use the form component abstraction
-- Do not add asterisks to translation labels — use `required` prop
-- Debounce search inputs (300ms) that trigger API calls
+See `_shared/code-standards.md` for all project rules (sections 5, 7). Form-specific rules:
+
+- All forms use `FormProvider`-based `FormContainer` — no raw `useForm` in pages
+- Use existing form field wrappers (`FormInput`, `FormSelect`, etc.) — don't rebuild
+- Zod schema in `src/views/<feature>/Feature.schemas.ts`
+- Guard optional callbacks with `Conditional.If`
+- All validation messages use `t()` translation keys
 
 ## Reference Files
 

@@ -18,15 +18,14 @@ Ask the user if not provided:
 ## Step 2 — Scan Existing Patterns
 
 Before writing code, read:
-1. An existing table page in `src/pages/` or `src/views/`
-2. Table components in `src/components/tables/`
-3. The query hook that fetches list data
-4. Data table config in `src/app-config/` if applicable
-5. Check for existing column type patterns (status badges, date formatting, action menus)
+1. The project's table components: `src/components/tables/data-table/DataTable.tsx`, `DataTableContent.tsx`, `DataTablePagination.tsx`, `DataTableToolbar.tsx`
+2. Table filter components in `src/components/tables/data-table-filters/`
+3. An existing table page in `src/pages/` for wiring patterns
+4. The query hook that fetches list data
 
-See `references/table-pattern.md` for the complete table template.
 See `references/column-types.md` for column definition examples.
 See `references/search-pagination.md` for search and pagination patterns.
+See `_shared/code-standards.md` for all project rules.
 
 ## Step 3 — Generate Code
 
@@ -44,9 +43,11 @@ export const columns: ColumnDef<EntityListDto>[] = [
     accessorKey: 'name',
     header: 'Name',
   },
-  // ... more columns
+  // ... more columns — see references/column-types.md
 ];
 ```
+
+> Date columns render the raw value in a `<span>`. Use `dateFilterFn` or `dateRangeFilterFn` for date filtering. For translated headers, use `t()` directly in the `header` field.
 
 ### 3b. Create Table Page/View
 
@@ -65,13 +66,14 @@ const debouncedSearch = useDebounce(searchQuery, 300);
 
 ## Rules
 
+See `_shared/code-standards.md` for all project rules. Table-specific rules:
+
 - Use existing table components from `src/components/tables/` — don't rebuild
 - Debounce search inputs (300ms) before API calls
-- Use `useDate` and `useTime` hooks for date/time columns
-- Status columns use badge components with semantic variants
-- Action columns use dropdown menus
-- Use `Conditional.If` for empty states and loading
-- Column headers should use translation keys
+- Define columns as a plain `const` array for simplicity
+- Date columns render the raw value — no hook-based formatters in cell renderers
+- Add `data-slot` attributes to table wrapper elements
+- Add `aria-label` to search inputs for accessibility
 
 ## Reference Files
 

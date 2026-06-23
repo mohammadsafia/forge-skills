@@ -22,13 +22,11 @@ If the state comes from an API, use React Query instead.
 
 ## Step 2 — Scan Existing Contexts
 
-Read `src/lib/contexts/` to mirror the pattern. The project already has:
-- `AuthContext` — authentication state and roles
-- `ThemeContext` — light/dark theme
-- `ProductsContext` — product state
-- `BookmarksContext` — bookmark state
+Before writing code, read:
+1. Existing contexts in `src/lib/contexts/` for the project's context pattern
+2. Check if a similar context already exists before creating a new one
 
-Check if the existing contexts already cover the need.
+See `_shared/code-standards.md` for all project rules (section 10 for hook order).
 
 ## Step 3 — Generate Files
 
@@ -90,9 +88,9 @@ Add the provider at the appropriate level in the component tree (typically in a 
 
 ## Rules
 
-- Use `type` not `interface` for context value
-- Memoize the value object with `useMemo` to prevent unnecessary re-renders
-- Always create a custom hook with a descriptive error message
-- Export both Provider and hook through the barrel `@contexts`
-- Separate setters from getters in the context type for clarity
-- Do not put server state in Context — use React Query
+See `_shared/code-standards.md` for all project rules. Context-specific rules:
+
+- Memoize context value with `useMemo` to prevent unnecessary re-renders
+- Provide named actions (e.g., `openDialog()`) instead of raw setters
+- Custom hook must throw if used outside Provider
+- Use `type` for context value shape, not `interface`

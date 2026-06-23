@@ -14,6 +14,12 @@ Accept SVG from:
 - Figma export (via Figma MCP tools)
 - An SVG file path
 
+## Step 1b — Scan Existing Icons
+
+Read `src/assets/icons/index.ts` to understand the barrel export pattern and naming conventions.
+
+See `_shared/code-standards.md` for all project rules (section 5.7).
+
 ## Step 2 — Create Icon Component
 
 File: `src/assets/icons/<IconName>.tsx`
@@ -67,9 +73,10 @@ import { IconName } from '@assets/icons';
 
 ## Rules
 
-- Icon components live in `src/assets/icons/`
-- Always export through the barrel `@assets/icons`
-- Never inline SVG in components — create a component
-- Use `currentColor` for fills/strokes so icons inherit text color
-- Component name: PascalCase matching the icon purpose
-- Accept `SVGProps<SVGSVGElement>` for full prop passthrough
+See `_shared/code-standards.md` for all project rules (section 5.7). Icon-specific rules:
+
+- No inline SVG in components — all icons in `src/assets/icons/`
+- Named export from barrel `index.ts`
+- Add `data-slot="icon"` to the `<svg>` element
+- Decorative icons: `aria-hidden="true"`. Standalone interactive icons: `aria-label`
+- Directional icons: use `className="rtl:rotate-180"` when needed

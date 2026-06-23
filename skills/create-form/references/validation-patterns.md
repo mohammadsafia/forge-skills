@@ -2,42 +2,46 @@
 
 ## Common Field Validations
 
+> **Important:** All user-facing validation messages must use `t()` translation keys, not hardcoded English strings. Import `t` from your i18n setup or pass it as a parameter to the schema factory.
+
 ```typescript
 import { z } from 'zod';
 
+import { t } from '@i18n'; // or accept t as a parameter: (t: TFunction) => z.object({...})
+
 // Required string
-name: z.string().min(1, 'Name is required')
+name: z.string().min(1, t('validation.required'))
 
 // Email
-email: z.string().email('Invalid email address')
+email: z.string().email(t('validation.invalid_email'))
 
 // URL
-website: z.string().url('Invalid URL').optional()
+website: z.string().url(t('validation.invalid_url')).optional()
 
 // Phone
-phone: z.string().regex(/^\+?[0-9]{7,15}$/, 'Invalid phone number')
+phone: z.string().regex(/^\+?[0-9]{7,15}$/, t('validation.invalid_phone'))
 
 // Number range
-age: z.number().min(18, 'Must be at least 18').max(120)
-price: z.number().positive('Price must be positive')
+age: z.number().min(18, t('validation.min_age', { min: 18 })).max(120)
+price: z.number().positive(t('validation.must_be_positive'))
 
 // String length
-description: z.string().max(500, 'Max 500 characters').optional()
-code: z.string().length(6, 'Code must be 6 characters')
+description: z.string().max(500, t('validation.max_characters', { max: 500 })).optional()
+code: z.string().length(6, t('validation.exact_length', { length: 6 }))
 
 // Enum / literal union
 status: z.enum(['active', 'inactive', 'pending'])
 role: z.union([z.literal('admin'), z.literal('user'), z.literal('moderator')])
 
 // Date string
-startDate: z.string().min(1, 'Start date is required')
+startDate: z.string().min(1, t('validation.required'))
 endDate: z.string().optional()
 
 // Boolean
-agreeToTerms: z.boolean().refine(val => val === true, 'You must agree')
+agreeToTerms: z.boolean().refine(val => val === true, t('validation.must_agree'))
 
 // Array
-tags: z.array(z.string()).min(1, 'At least one tag required')
+tags: z.array(z.string()).min(1, t('validation.min_items', { min: 1 }))
 
 // File upload
 file: z.instanceof(File).optional()
@@ -52,7 +56,7 @@ const schema = z.object({
   discountAmount: z.number().optional(),
 }).refine(
   data => !data.hasDiscount || (data.hasDiscount && data.discountAmount),
-  { message: 'Discount amount required', path: ['discountAmount'] }
+  { message: t('validation.discount_required'), path: ['discountAmount'] }
 );
 
 // Cross-field validation
@@ -61,7 +65,7 @@ const dateSchema = z.object({
   endDate: z.string().min(1),
 }).refine(
   data => new Date(data.endDate) > new Date(data.startDate),
-  { message: 'End date must be after start date', path: ['endDate'] }
+  { message: t('validation.end_date_after_start'), path: ['endDate'] }
 );
 ```
 
@@ -70,14 +74,14 @@ const dateSchema = z.object({
 ```typescript
 // Compose schemas for create vs edit
 const baseEntityFields = {
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, t('validation.required')),
   description: z.string().max(500).optional(),
   status: z.enum(['active', 'inactive']),
 };
 
 export const entityCreateSchema = z.object({
   ...baseEntityFields,
-  password: z.string().min(8, 'Minimum 8 characters'),
+  password: z.string().min(8, t('validation.min_characters', { min: 8 })),
 });
 
 export const entityUpdateSchema = z.object({
@@ -91,7 +95,7 @@ export const entityUpdateSchema = z.object({
 
 Schemas always live with the feature:
 ```
-src/views/<feature>/schemas.ts    ← CORRECT
+src/views/<feature>/Feature.schemas.ts    ← CORRECT
 src/types/schemas.ts              ← WRONG
 src/validations/<feature>.ts      ← WRONG (legacy, avoid)
 ```

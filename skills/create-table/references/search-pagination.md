@@ -14,7 +14,7 @@ const [searchQuery, setSearchQuery] = useState('');
 const debouncedSearch = useDebounce(searchQuery, 300);
 
 // Pass debounced value to query
-const { data } = useEntityListQuery({ search: debouncedSearch });
+const entitiesQuery = useEntityListQuery({ search: debouncedSearch });
 
 // Search input
 <Input
@@ -43,12 +43,12 @@ const [page, setPage] = useState(1);
 const [pageSize] = useState(20);
 
 // Pass to query
-const { data } = useEntityListQuery({ page, pageSize, search: debouncedSearch });
+const entitiesQuery = useEntityListQuery({ page, pageSize, search: debouncedSearch });
 
 // Pagination controls
 <div className="flex items-center justify-between">
   <span className="text-sm text-muted-foreground">
-    {t('showing_of', { count: data?.items.length, total: data?.totalCount })}
+    {t('showing_of', { count: entitiesQuery.data?.items.length, total: entitiesQuery.data?.totalCount })}
   </span>
   <div className="flex gap-2">
     <Button

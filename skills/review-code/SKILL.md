@@ -18,7 +18,23 @@ Figure out what to review:
 
 ### Step 2 — Read Each File and Check Against Rules
 
-For each file, check these categories. Read the corresponding reference file for detailed rules when needed.
+Use `_shared/code-standards.md` as the primary rule source (12 categories).
+Use the reference files below for detailed wrong/correct code examples:
+
+- `references/api-rules.md` — handler and hook code templates
+- `references/component-rules.md` — component pattern examples
+- `references/architecture-rules.md` — architecture violation examples
+- `references/code-hygiene-rules.md` — hygiene violation examples
+- `references/correctness-rules.md` — correctness violation examples
+- `references/import-rules.md` — import pattern examples
+- `references/naming-rules.md` — naming convention examples
+- `references/reusability-rules.md` — reusability pattern examples
+- `references/styling-rules.md` — styling violation examples
+- `references/type-rules.md` — type pattern examples
+- `references/react-patterns-rules.md` — React pattern examples
+- `references/runtime-safety-rules.md` — runtime safety examples
+
+For each file under review, check it against all 12 categories in `_shared/code-standards.md`.
 
 **Import Rules** (see `references/import-rules.md`):
 - UI components from barrel `@components/ui` only — not individual files
@@ -35,7 +51,7 @@ For each file, check these categories. Read the corresponding reference file for
 - Exported functions have explicit return types (except React Query hooks — those infer)
 - DTO naming: `ForReadDto`, `ForCreateDto`, `ForUpdateDto`, `ListDto`, `ParamsDto`
 - Status/type fields use enums or type literals — never raw `string`
-- Feature-specific Zod schemas go in `views/<feature>/schemas.ts` — NOT in `src/types/`
+- Feature-specific Zod schemas go in `views/<feature>/Feature.schemas.ts` — NOT in `src/types/`
 - DTOs live in `src/types/api/` and are exported through the barrel
 - Nested sub-objects get their own named type — no inline object literals in DTOs
 - Mark truly optional BE fields with `?` — don't make everything optional
@@ -89,7 +105,7 @@ For each file, check these categories. Read the corresponding reference file for
 **Form Rules:**
 - Must use FormProvider-based `FormContainer` — no raw `useForm` in pages
 - No asterisks (`*`) in translation labels — `required` prop handles the indicator
-- Feature-specific Zod schemas go in `views/<feature>/schemas.ts`
+- Feature-specific Zod schemas go in `views/<feature>/Feature.schemas.ts`
 
 **State Management:**
 - Local UI state → `useState`
@@ -167,7 +183,7 @@ For each file, check these categories. Read the corresponding reference file for
 - Route constants must use `as const`
 - Produce complete code — no TODOs or placeholders
 
-**PR Completeness** (see `references/pr-completeness-rules.md`):
+**PR Completeness**:
 - New component/DTO/handler/icon created but NOT exported from its barrel `index.ts` — MUST read the barrel file and verify the export exists
 - New page created but no route defined — MUST read `src/routes/index.ts` and verify
 - New page in route but not lazy-loaded — MUST verify `React.lazy(() => import(...))` is used
@@ -176,14 +192,14 @@ For each file, check these categories. Read the corresponding reference file for
 - New hook created but no component imports it — search reviewed files for the hook import
 - Mutation hook missing `onSuccess` (no query invalidation) or `onError` (silent error) — MUST read the hook and verify both callbacks exist
 
-**Cross-file Consistency** (see `references/pr-completeness-rules.md`):
+**Cross-file Consistency**:
 - Handler returns `Promise<ResultDto<SomeDto>>` but `SomeDto` doesn't exist or isn't exported — MUST read the DTO file and barrel
 - Zod schema field names don't match the corresponding DTO field names — MUST read both files and compare field by field
 - Route defines param `:communityId` but page destructures `{ id }` from `useParams()` — MUST read route config and page file
 - Mutation invalidates a queryKey that doesn't match any handler's queryKey — MUST read the handler and verify the key string matches exactly
 - `pathBuilder` params object keys don't match the `:param` placeholders in the endpoint string — MUST read `ApiEndpoints` and verify
 
-**Git Hygiene** (see `references/pr-completeness-rules.md`):
+**Git Hygiene**:
 - Branch name missing ticket number — run `git branch --show-current` and verify format `<type>/<TICKET>-<description>`
 - Commit messages missing ticket number — run `git log main..HEAD --oneline` and verify each starts with `DM-XXX:`
 - Merge conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) in any file — search all reviewed files

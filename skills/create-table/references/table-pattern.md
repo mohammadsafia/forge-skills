@@ -10,28 +10,23 @@ import { useState } from 'react';
 import { Input } from '@components/ui';
 
 import { Conditional } from '@components/shared';
+import { DataTable } from '@components/tables';
 
 import { useDebounce } from '@hooks/shared';
 import { useEntityListQuery } from '@hooks/queries';
 
 import { columns } from './columns';
-// Import the project's DataTable component from src/components/tables/
 
 function EntitiesPage() {
   // 1. State
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // 2. Query
-  const { data, isLoading } = useEntityListQuery({ search: debouncedSearch });
-
-  // 3. Handlers
-  const handleSearchChange = (value: string) => {
-    setSearchQuery(value);
-  };
+  // 3. Query
+  const entitiesQuery = useEntityListQuery({ search: debouncedSearch });
 
   return (
-    <div className="space-y-4">
+    <div data-slot="page" className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-foreground">Entities</h1>
@@ -40,24 +35,31 @@ function EntitiesPage() {
       {/* Search */}
       <div className="flex items-center gap-3">
         <Input
+          aria-label="Search entities"
           placeholder="Search..."
           value={searchQuery}
-          onChange={(e) => handleSearchChange(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="max-w-sm"
         />
       </div>
 
       {/* Table */}
-      <Conditional.If condition={isLoading}>
-        {/* Loading skeleton */}
+      <Conditional.If condition={entitiesQuery.isLoading}>
+        <div data-slot="table-skeleton" className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-12 animate-pulse rounded-md bg-muted" />
+          ))}
+        </div>
       </Conditional.If>
 
-      <Conditional.If condition={!isLoading && !!data}>
-        {/* DataTable component={columns} data={data.items} */}
+      <Conditional.If condition={!entitiesQuery.isLoading && !!entitiesQuery.data && entitiesQuery.data.items.length > 0}>
+        <DataTable columns={columns} data={entitiesQuery.data.items} />
       </Conditional.If>
 
-      <Conditional.If condition={!isLoading && (!data || data.items.length === 0)}>
-        {/* Empty state */}
+      <Conditional.If condition={!entitiesQuery.isLoading && (!entitiesQuery.data || entitiesQuery.data.items.length === 0)}>
+        <div data-slot="empty-state" className="flex flex-col items-center justify-center py-12 text-center">
+          <p className="text-muted-foreground">No entities found.</p>
+        </div>
       </Conditional.If>
     </div>
   );
@@ -75,39 +77,37 @@ import { type ColumnDef } from '@tanstack/react-table';
 
 import { Badge, Button } from '@components/ui';
 
-import { useDate } from '@hooks/shared';
-
 import type { EntityListDto } from '@app-types';
 
-export const useEntityColumns = (): ColumnDef<EntityListDto>[] => {
-  const { formatDate } = useDate();
-
-  return [
-    {
-      accessorKey: 'name',
-      header: 'Name',
-      cell: ({ row }) => (
-        <span className="font-medium text-foreground">{row.original.name}</span>
-      ),
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => (
-        <Badge variant={getStatusVariant(row.original.status)}>
-          {row.original.status.label}
-        </Badge>
-      ),
-    },
-    {
-      accessorKey: 'dateCreated',
-      header: 'Created',
-      cell: ({ row }) => formatDate(row.original.dateCreated),
-    },
-    {
-      id: 'actions',
-      cell: ({ row }) => <ActionsMenu entity={row.original} />,
-    },
-  ];
-};
+export const columns: ColumnDef<EntityListDto>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => (
+      <span className="font-medium text-foreground">{row.original.name}</span>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge variant={getStatusVariant(row.original.status)}>
+        {row.original.status.label}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: 'dateCreated',
+    header: 'Created',
+    cell: ({ row }) => (
+      <span className="text-muted-foreground">{row.original.dateCreated}</span>
+    ),
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => <ActionsMenu entity={row.original} />,
+  },
+];
 ```
+
+> **Date/time columns:** Render the raw ISO string in a `<span>`. Use `dateFilterFn` or `dateRangeFilterFn` from the data table utils for date filtering. See `references/column-types.md` for examples.

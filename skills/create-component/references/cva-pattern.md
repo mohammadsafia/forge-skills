@@ -16,10 +16,10 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        success: 'bg-success/10 text-success-700 border border-success/20',
-        warning: 'bg-warning/10 text-warning-700 border border-warning/20',
-        error: 'bg-error/10 text-error-700 border border-error/20',
-        info: 'bg-blue-50 text-blue-700 border border-blue/20',
+        success: 'bg-success-50 text-success-700 border border-success-200',
+        warning: 'bg-warning-50 text-warning-700 border border-warning-200',
+        destructive: 'bg-error-50 text-error-700 border border-error-200',
+        info: 'bg-blue-50 text-blue-700 border border-blue-200',
         neutral: 'bg-tokens-neutral text-tokens-secondary-content border border-tokens-outline',
       },
       size: {
@@ -102,7 +102,7 @@ const buttonVariants = cva('inline-flex items-center justify-center rounded-md f
     variant: {
       primary: 'bg-tokens-primary text-white',
       secondary: 'bg-tokens-neutral text-foreground',
-      destructive: 'bg-error-600 text-white',
+      destructive: 'bg-destructive text-destructive-foreground',
     },
     size: {
       sm: 'h-8 px-3 text-sm',

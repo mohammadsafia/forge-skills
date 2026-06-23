@@ -38,11 +38,15 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { EntityNameHandler } from '@api/handlers';
 
 import { useToast } from '@hooks/shared';
+import { useAppTranslation } from '@hooks/shared';
+
+import type { EntityNameForCreateDto, EntityNameForUpdateDto } from '@app-types';
 
 // Create mutation
 export const useCreateEntityNameMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { t } = useAppTranslation('entityName');
 
   return useMutation({
     mutationKey: [EntityNameHandler.create.mutationKey],
@@ -51,10 +55,10 @@ export const useCreateEntityNameMutation = () => {
       queryClient.invalidateQueries({
         queryKey: [EntityNameHandler.list.queryKey],
       });
-      toast({ title: 'Created successfully', variant: 'success' });
+      toast({ title: t('created_successfully'), variant: 'success' });
     },
     onError: () => {
-      toast({ title: 'Failed to create', variant: 'destructive' });
+      toast({ title: t('failed_to_create'), variant: 'destructive' });
     },
   });
 };
@@ -63,6 +67,7 @@ export const useCreateEntityNameMutation = () => {
 export const useUpdateEntityNameMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { t } = useAppTranslation('entityName');
 
   return useMutation({
     mutationKey: [EntityNameHandler.update.mutationKey],
@@ -72,10 +77,10 @@ export const useUpdateEntityNameMutation = () => {
       queryClient.invalidateQueries({
         queryKey: [EntityNameHandler.list.queryKey],
       });
-      toast({ title: 'Updated successfully', variant: 'success' });
+      toast({ title: t('updated_successfully'), variant: 'success' });
     },
     onError: () => {
-      toast({ title: 'Failed to update', variant: 'destructive' });
+      toast({ title: t('failed_to_update'), variant: 'destructive' });
     },
   });
 };
@@ -84,6 +89,7 @@ export const useUpdateEntityNameMutation = () => {
 export const useDeleteEntityNameMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { t } = useAppTranslation('entityName');
 
   return useMutation({
     mutationKey: [EntityNameHandler.delete.mutationKey],
@@ -92,10 +98,10 @@ export const useDeleteEntityNameMutation = () => {
       queryClient.invalidateQueries({
         queryKey: [EntityNameHandler.list.queryKey],
       });
-      toast({ title: 'Deleted successfully', variant: 'success' });
+      toast({ title: t('deleted_successfully'), variant: 'success' });
     },
     onError: () => {
-      toast({ title: 'Failed to delete', variant: 'destructive' });
+      toast({ title: t('failed_to_delete'), variant: 'destructive' });
     },
   });
 };

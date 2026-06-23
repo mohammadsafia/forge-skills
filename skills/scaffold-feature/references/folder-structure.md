@@ -34,7 +34,7 @@ src/
 │   ├── community-form/
 │   │   ├── CommunityForm.tsx
 │   │   └── index.ts
-│   ├── schemas.ts                         # Zod form schemas
+│   ├── Community.schemas.ts                # Zod form schemas
 │   └── index.ts                           # Barrel export
 │
 ├── routes/
@@ -51,13 +51,13 @@ src/
 |------|-----------|---------|
 | DTO file | PascalCase | `CommunityDto.ts` |
 | Handler file | kebab-case | `community.ts` |
-| Handler export | camelCase + Handler | `communityHandler` |
+| Handler export | PascalCase + Handler | `CommunityHandler` |
 | Query hook file | PascalCase | `useCommunityQuery.ts` |
 | Mutation hook file | PascalCase | `useCommunityMutation.ts` |
 | Page file | PascalCase + Page | `CommunitiesPage.tsx` |
 | View folder | kebab-case | `community-card/` |
 | View component | PascalCase | `CommunityCard.tsx` |
-| Schema file | camelCase | `schemas.ts` |
+| Schema file | PascalCase + `.schemas.ts` | `Community.schemas.ts` |
 | Route constant | UPPER_SNAKE | `ROUTES.COMMUNITIES.LIST` |
 
 ## Minimal vs Full Scaffold

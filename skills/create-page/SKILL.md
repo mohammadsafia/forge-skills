@@ -19,13 +19,13 @@ Ask the user if not provided:
 ## Step 2 — Scan Existing Patterns
 
 Before writing code, read:
-1. `src/routes/index.ts` — route configuration structure
-2. An existing page in `src/pages/` — mirror the pattern
-3. Layout components in `src/layouts/` — understand MainLayout vs DashboardLayout
-4. AuthGuard usage for protected routes
+1. An existing page in `src/pages/` for page structure
+2. Route config in `src/routes/` for lazy loading and guards
+3. Layout components in `src/layouts/` for page wrappers
 
-See `references/page-template.md` for the page component template.
-See `references/routing-patterns.md` for route configuration patterns.
+See `references/page-template.md` for the page template.
+See `references/routing-patterns.md` for route setup.
+See `_shared/code-standards.md` for all project rules (sections 5, 9, 12).
 
 ## Step 3 — Generate Files
 
@@ -64,14 +64,13 @@ Wire navigation from sidebar, navbar, or other entry points.
 
 ## Rules
 
-- Pages are route-level — they contain feature logic directly
-- Do NOT create a View just to wrap a page
-- Use `React.lazy()` for lazy loading
-- Follow component internal code order
-- Use `Conditional.If` for conditional rendering
-- Route paths must be constants using `as const`
-- Folder name: kebab-case (`order-detail/`)
-- Component file: PascalCase (`OrderDetailPage.tsx`)
+See `_shared/code-standards.md` for all project rules. Page-specific rules:
+
+- Route pages use `React.lazy` for code splitting
+- Pages contain logic directly — no wrapper Views for single-use
+- Use `pathBuilder` for URL params, not string interpolation
+- Add `<main>` landmark wrapper for accessibility
+- Use `Conditional.If` for loading/empty/error states
 
 ## Reference Files
 

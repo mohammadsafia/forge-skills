@@ -47,9 +47,12 @@
 Projects may define additional brand-specific color scales (e.g., `--brand-25` to `--brand-950`). Check your project's `src/index.css` for custom scales beyond the defaults.
 
 ### Gray Scale
-| Token | Tailwind |
-|-------|----------|
-| `--gray-25` to `--gray-950` | `bg-gray-*`, `text-gray-*`, `border-gray-*` |
+
+> **Dark mode caveat:** The project defines its own `gray-*` custom properties in `src/index.css` with `:root` and `.dark` variants. These are NOT the same as Tailwind's built-in `gray-*` palette. Always verify your gray tokens come from the project's CSS custom properties. When in doubt, prefer semantic tokens (`bg-muted`, `text-muted-foreground`, `border-border`) which are guaranteed to be dark-mode safe.
+
+| Token | Tailwind | Preferred Semantic Alternative |
+|-------|----------|-------------------------------|
+| `--gray-25` to `--gray-950` | `bg-gray-*`, `text-gray-*`, `border-gray-*` | `bg-muted`, `text-muted-foreground`, `border-border` |
 
 ### Error Scale
 | Token | Tailwind | Usage |

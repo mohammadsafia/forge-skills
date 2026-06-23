@@ -18,9 +18,33 @@
 {
   accessorKey: 'dateCreated',
   header: t('created'),
-  cell: ({ row }) => {
-    const { formatDate } = useDate();
-    return <span className="text-muted-foreground">{formatDate(row.original.dateCreated)}</span>;
+  enableSorting: true,
+  sortDescFirst: true,
+  cell: ({ row }) => (
+    <span className="text-muted-foreground">{row.original.dateCreated}</span>
+  ),
+}
+```
+
+For date filtering, use the filter functions from the data table utils:
+
+```typescript
+import { dateFilterFn, dateRangeFilterFn, createFilterMeta } from '@utils';
+
+{
+  accessorKey: 'joined',
+  header: t('joined'),
+  enableSorting: true,
+  filterFn: dateRangeFilterFn,
+  cell: ({ row }) => (
+    <span className="text-muted-foreground">{row.original.joined}</span>
+  ),
+  meta: {
+    label: t('joined'),
+    filterMeta: createFilterMeta({
+      variant: 'dateRange',
+      label: t('joined'),
+    }),
   },
 }
 ```
@@ -103,19 +127,19 @@
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleView(row.original.id)}>
-          <Eye className="mr-2 h-4 w-4" />
+          <Eye className="me-2 h-4 w-4" />
           {t('view')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleEdit(row.original.id)}>
-          <Pencil className="mr-2 h-4 w-4" />
+          <Pencil className="me-2 h-4 w-4" />
           {t('edit')}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="text-error-600"
+          className="text-destructive"
           onClick={() => handleDelete(row.original.id)}
         >
-          <Trash className="mr-2 h-4 w-4" />
+          <Trash className="me-2 h-4 w-4" />
           {t('delete')}
         </DropdownMenuItem>
       </DropdownMenuContent>

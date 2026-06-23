@@ -97,14 +97,21 @@ export const useUsersQuery = (enabled = true): UseQueryResult<...> => { ... }
 
 ### Mutation Pattern
 ```typescript
-// CORRECT — no return type, invalidate on success
+// CORRECT — no return type, invalidate on success, handle errors with toast
 export const useCreateUserMutation = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { t } = useAppTranslation('users');
+
   return useMutation({
     mutationKey: [usersHandler.create.mutationKey],
     mutationFn: (data) => usersHandler.create.request(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [usersHandler.getList.queryKey] });
+      toast({ title: t('created_successfully'), variant: 'success' });
+    },
+    onError: (error) => {
+      toast({ title: error.message, variant: 'destructive' });
     },
   });
 };
@@ -138,13 +145,13 @@ export const useCreateUserMutation = () => {
 
 ```typescript
 // CORRECT — use query data directly
-const { data: users } = useUsersQuery();
-const filteredUsers = useMemo(() => users?.filter(...), [users]);
+const usersQuery = useUsersQuery();
+const filteredUsers = useMemo(() => usersQuery.data?.filter(...), [usersQuery.data]);
 
-// WRONG — duplicating server state
-const { data: users } = useUsersQuery();
-const [userList, setUserList] = useState(users); // NO!
-useEffect(() => setUserList(users), [users]);     // NO!
+// WRONG — duplicating server state into useState
+const usersQuery = useUsersQuery();
+const [userList, setUserList] = useState(usersQuery.data); // NO!
+useEffect(() => setUserList(usersQuery.data), [usersQuery.data]); // NO!
 ```
 
 ## Error Handling

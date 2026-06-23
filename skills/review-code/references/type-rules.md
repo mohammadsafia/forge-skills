@@ -1,8 +1,8 @@
-# Type Rules Reference
+> Rules: see `_shared/code-standards.md`. This file contains code examples only.
+
+# Type Rules — Code Examples
 
 ## type vs interface
-
-Use `type` everywhere. Use `interface` only when extending/merging is absolutely necessary.
 
 ```typescript
 // CORRECT
@@ -20,8 +20,6 @@ interface UserProps {
 
 ## No any
 
-Never use `any`. Use proper types, generics, or `unknown` if truly needed.
-
 ```typescript
 // CORRECT
 function processData(data: unknown): void { ... }
@@ -32,8 +30,6 @@ function processData(data: any): void { ... }
 ```
 
 ## Return Types
-
-Exported functions need explicit return types — EXCEPT React Query hooks (let TypeScript infer from handlers).
 
 ```typescript
 // CORRECT — explicit return type on exported function
@@ -48,37 +44,10 @@ export const useOrdersQuery = (enabled = true) => {
 export const useOrdersQuery = (enabled = true): UseQueryResult<...> => { ... }
 ```
 
-## DTO Naming Conventions
-
-| Suffix | Purpose | Example |
-|--------|---------|---------|
-| `ForReadDto` | GET response (single item) | `OrderForReadDto` |
-| `ForCreateDto` | POST payload | `OrderForCreateDto` |
-| `ForUpdateDto` | PUT/PATCH payload | `OrderForUpdateDto` |
-| `ListDto` | Single item in list response | `OrderListDto` |
-| `ListResponseDto` | Full paginated wrapper | `OrderListResponseDto` |
-| `ParamsDto` | Query/filter parameters | `OrderParamsDto` |
-
-## DTO Location & Organization
-
-- All API DTOs live in `src/types/api/` — one file per domain entity
-- Every DTO file must be exported through the barrel: `src/types/api/index.ts`
-- Liferay-specific types go in `src/types/liferay/`
-- Feature-specific Zod schemas go in `src/views/<Feature>/schemas.ts` — NOT in `src/types/`
+## DTO Quality
 
 ```typescript
-// CORRECT — DTO in types/api/
-src/types/api/order.ts → export through src/types/api/index.ts
-
-// WRONG — Zod schema in types/
-src/types/order-schema.ts // NO — put in views/<feature>/schemas.ts
-```
-
-## DTO Quality Rules
-
-- Nested sub-objects get their own named type — no inline object literals:
-```typescript
-// CORRECT
+// CORRECT — nested sub-objects get their own named type
 type ProductMetadataDto = {
   weight: number;
   dimensions: string;
@@ -96,7 +65,8 @@ type ProductForReadDto = {
 };
 ```
 
-- Map BE snake_case to camelCase — keep FE types idiomatic:
+## snake_case to camelCase mapping
+
 ```typescript
 // CORRECT
 type UserForReadDto = {
@@ -110,22 +80,7 @@ type UserForReadDto = {
 };
 ```
 
-- Mark truly optional BE fields with `?` — don't make everything optional out of laziness
-- Every API response must be typed — never use `any` or untyped responses
-
-## Shared API Types
-
-Reuse instead of redefining per feature:
-- `ResultDto<T>` — Paginated list wrapper
-- `PrimaryImageForReadDto` — Image with URL
-- `EntityStatusForReadDto` — Status with code/label
-- `CreatorForReadDto` — Creator info
-- `TranslatedProperty` — i18n fields (`Record<string, string>`)
-- `PicklistValueDto` — Picklist value with key/name
-
 ## Status/Type Fields
-
-Never use raw `string` for status or type fields. Use type literals or enums:
 
 ```typescript
 // CORRECT
@@ -135,12 +90,6 @@ type OrderDto = {
   status: OrderStatus;
 };
 
-// ALSO CORRECT
-enum OrderStatus {
-  Pending = 'pending',
-  Approved = 'approved',
-}
-
 // WRONG
 type OrderDto = {
   status: string; // Never raw string for status
@@ -148,8 +97,6 @@ type OrderDto = {
 ```
 
 ## import type
-
-Use `import type` when importing only types:
 
 ```typescript
 // CORRECT

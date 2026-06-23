@@ -16,16 +16,22 @@ Determine what to refactor:
 
 ## Step 2 — Scan for Violations
 
-Read the target file(s) and check against all rules. See `references/common-violations.md` for the top violations.
+Scan each file in scope against `_shared/code-standards.md` (all 12 categories).
+Use `references/transformation-catalog.md` for before/after code examples of common transformations.
 
-### Check Categories
-
-1. **Imports** — barrel violations, path aliases, import order, `import type`
-2. **Types** — `interface` → `type`, missing types, `any` usage, DTO naming
-3. **Patterns** — `&&` → `Conditional.If`, raw RHF → FormProvider, raw date formatting → hooks
-4. **Styling** — hardcoded colors → tokens, arbitrary pixels → scale values, template literals → `cn()`
-5. **API layer** — inline functions → handler pattern, array queryKeys → strings
-6. **Structure** — PascalCase folders → kebab-case, deep imports → barrels
+Check categories:
+1. Imports (aliases, barrels, ordering)
+2. Types (type vs interface, DTOs, any)
+3. API layer (handlers, queryKeys)
+4. React Query hooks (return types, invalidation)
+5. Components (pages vs views, compound pattern, size)
+6. Conditional rendering (Conditional.If)
+7. Forms (FormProvider, field wrappers)
+8. Styling (tokens, cn(), scale values)
+9. File organization (kebab-case folders, barrels)
+10. Component internal order (hooks → state → memo → callbacks → effects → JSX)
+11. Date/time & i18n (useDate, useAppTranslation)
+12. General (no TODOs, handle* naming, lazy routes)
 
 ## Step 3 — Apply Transformations
 
@@ -47,13 +53,13 @@ After refactoring:
 
 ## Rules
 
-- Refactoring must be purely structural — no functional changes
-- Every change must be traceable to a specific project rule
-- If a change is ambiguous, ask the user
-- Do not add features, comments, or documentation during refactoring
-- Do not change variable names unless they violate naming conventions
+See `_shared/code-standards.md` for the complete rule set. Refactoring-specific rules:
+
+- Fix violations in priority order: Errors first, then Warnings
+- Preserve existing behavior — refactoring must not change functionality
+- Run the build after changes to verify no regressions
+- Use `references/transformation-catalog.md` for correct before/after patterns
 
 ## Reference Files
 
 - `references/transformation-catalog.md` — Before/after for each transformation
-- `references/common-violations.md` — Top 20 violations ranked by frequency

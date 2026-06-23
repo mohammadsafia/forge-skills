@@ -23,15 +23,15 @@ Use the Figma MCP tool `get_design_context` with the extracted fileKey and nodeI
 
 ### Step 2 — Scan the Project
 
-Before writing any code, understand what the project already has:
+Read the following project files before generating code:
+1. Design tokens: `src/index.css` — all CSS custom properties (`:root` and `.dark`)
+2. UI primitives: `src/components/ui/` — base components from shadcn/ui
+3. Shared components: `src/components/shared/` — existing reusable components
+4. An existing page or view for code style reference
 
-1. **Read `src/index.css`** — Discover all available design tokens (CSS custom properties in `:root` and `.dark`)
-2. **Read `src/components/ui/index.ts`** — See all available UI primitives (Button, Input, Dialog, Card, Badge, etc.)
-3. **Read `src/components/shared/index.ts`** — See all composite components
-4. **Read `src/components/forms/`** — See form components (FormInput, FormSelect, etc.)
-5. **Scan `src/views/`** — Check for similar existing features to reference or reuse
-
-This scan prevents reinventing components that already exist.
+See `references/design-tokens.md` for the token mapping.
+See `references/spacing-scale.md` for the spacing table.
+See `_shared/code-standards.md` for all project rules (sections 5, 8, 10).
 
 ### Step 3 — Map Design Tokens
 

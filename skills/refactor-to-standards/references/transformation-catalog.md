@@ -142,13 +142,13 @@ className="p-6 gap-4 mt-8"
 ### Inline request → Handler pattern
 ```typescript
 // BEFORE
-const { data } = useQuery({
+const usersQuery = useQuery({
   queryKey: ['users', 'list'],
   queryFn: () => axios.get('/api/users'),
 });
 
 // AFTER
-const { data } = useQuery({
+const usersQuery = useQuery({
   queryKey: [usersHandler.getList.queryKey],
   queryFn: () => usersHandler.getList.request(),
 });
