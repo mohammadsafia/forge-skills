@@ -291,8 +291,8 @@ After the standards check, run the four audit skills on the same file scope to c
    - `left-*`/`right-*` positioning without RTL handling (logical `start-*`/`end-*` or `rtl:` counterpart)
    - `text-left`/`text-right` without RTL handling (logical `text-start`/`text-end` or `rtl:` counterpart)
    - Directional borders without RTL handling (logical `border-s`/`border-e` or `rtl:` counterpart)
-   - Directional icons (arrows, chevrons) not flipping with `rtl:rotate-180`
-   - Flex layouts where visual order matters without `rtl:flex-row-reverse`
+   - Directional icons (arrows, chevrons) not flipping with `rtl:-scale-x-100` (preferred over `rtl:rotate-180`)
+   - Erroneous `rtl:flex-row-reverse` that double-reverses an already `dir`-mirrored `flex-row`
 
 4. **Import audit** (`forge:audit-imports`):
    - Barrel violations (individual file imports instead of barrel)

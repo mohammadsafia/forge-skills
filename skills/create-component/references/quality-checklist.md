@@ -23,8 +23,8 @@ Verify ALL items before exporting any reusable component.
 
 - [ ] Directional margin/padding uses `rtl:` prefix or logical properties (`ms-*`, `me-*`)
 - [ ] Directional border radius uses logical properties (`rounded-s-*`/`rounded-e-*`) or `rtl:` mirroring
-- [ ] Icons with directional meaning flip: `rtl:rotate-180`
-- [ ] Flex layouts that need mirroring use `rtl:flex-row-reverse`
+- [ ] Icons with directional meaning flip: `rtl:-scale-x-100` (preferred over `rtl:rotate-180`)
+- [ ] Flex rows rely on `dir`-driven auto-mirroring (plain `flex-row`); no stray `rtl:flex-row-reverse` double-reversing an already-mirrored row
 
 ## 4. Responsive
 

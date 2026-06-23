@@ -44,16 +44,25 @@ existing convention.
 
 These have no logical property — always use the `rtl:` variant:
 
-- **Directional icons** (arrows, chevrons): `rtl:rotate-180`
+- **Directional icons** (arrows, chevrons): prefer `rtl:-scale-x-100`
   ```tsx
-  <ChevronRight className="h-4 w-4 rtl:rotate-180" />
-  <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
+  <ChevronRight className="h-4 w-4 rtl:-scale-x-100" />
+  <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
   ```
-- **Flex visual ordering** (when content order is directional): `rtl:flex-row-reverse`
-  ```tsx
-  className="flex flex-row rtl:flex-row-reverse"
-  ```
+  Prefer `rtl:-scale-x-100` (mirror on the X axis) over `rtl:rotate-180`: rotation also
+  flips the glyph vertically, which is wrong for icons with vertical asymmetry. `rotate-180`
+  is acceptable only for visually symmetric glyphs. Non-directional icons (close, search,
+  settings) must **not** flip.
 - **Transform origins**: `origin-left` → add `rtl:origin-right`; `origin-right` → add `rtl:origin-left`
+
+## Common Mistakes (Do NOT Flag / Do NOT "Fix")
+
+- **`rtl:flex-row-reverse` is almost always wrong.** When `dir="rtl"` is set, a `flex flex-row`
+  row *already* lays its children out right-to-left. Adding `rtl:flex-row-reverse` double-reverses
+  it back to LTR order — a bug, not a fix. Plain `flex-row` is correct in both directions. Only
+  consider `flex-row-reverse` when the visual order must intentionally differ from source order in
+  one direction — rare, and verify against the design before suggesting it.
+- Do not "fix" `gap-*`, `flex-row`, or `flex-col` — they follow document direction automatically.
 
 ## Safe Patterns (No Fix Needed)
 
@@ -61,4 +70,6 @@ These have no logical property — always use the `rtl:` variant:
 - `mt-*`, `mb-*`, `pt-*`, `pb-*` (vertical, not directional)
 - `rounded-t-*`, `rounded-b-*` (vertical)
 - `text-center` (no direction)
+- `top-*`, `bottom-*` (vertical positioning)
+- `flex-row` / `flex-col` (follow document direction automatically)
 - Flexbox `gap-*` and CSS Grid gaps (handled by the browser)
