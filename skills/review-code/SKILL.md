@@ -144,6 +144,7 @@ For each file, check these categories. Read the corresponding reference file for
 - User input interpolated into URLs without validation (open redirect)
 - Secrets, tokens, or API keys hardcoded in source files
 - Sensitive data logged to console in production code paths
+- **Deeper security pass** — these four are the quick everyday checks. For a focused security review covering token storage, client-bundle secrets (`VITE_*`/`NEXT_PUBLIC_*`), CORS vs CSP, dependency/supply-chain risk, client-only authorization, `postMessage`/`window.opener`, prototype pollution, source maps, and clickjacking, run the dedicated on-demand skill `forge:super-security-review`
 
 **Code Hygiene** (see `references/code-hygiene-rules.md`):
 - `console.log`, `console.warn`, `console.error`, `debugger` statements left in production code
