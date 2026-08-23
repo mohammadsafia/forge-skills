@@ -1,5 +1,7 @@
 > Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
+The `type`/`interface` choice and DTO naming shown here are Forge project conventions. Unsafe types and incorrect external-data assumptions are correctness concerns in every project.
+
 # Type Rules — Code Examples
 
 ## type vs interface

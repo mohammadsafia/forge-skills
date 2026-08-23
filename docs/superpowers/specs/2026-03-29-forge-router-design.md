@@ -1,234 +1,196 @@
-# Forge Router Skill Design
+# Forge Router Design
 
-A single entry-point skill (`forge:forge`, invoked as `/forge`) that analyzes the user's message and automatically dispatches the right creation and workflow skills in sequence.
+## Status
 
-## Problem
+Implemented and maintained by `skills/forge/SKILL.md`. This document describes current behavior; the skill file is the executable source of truth.
 
-The forge-skills collection has 23 skills. Team members must know which skill to invoke for each task. This creates friction — they either invoke the wrong one, forget one, or don't know the skill exists.
+## Purpose
 
-## Solution
+`forge:forge` is a portable entry point for selecting and coordinating Forge building and workflow skills from a natural-language request. It reduces the need to know individual skill names while preserving direct invocation for specialized reviews and audits.
 
-One router skill that:
-1. Reads the user's natural-language request
-2. Matches it against a catalog of 17 creation/workflow skills
-3. Selects the right combination, orders them by dependency, and runs them sequentially
+The repository currently contains 34 skills. The router catalog intentionally includes only skills that can participate in a building workflow. Focused quality reviews remain direct entry points so ordinary implementation does not trigger overlapping audits.
 
-Quality skills (review-code, audits, refactor-to-standards) are excluded — they're handled by `forge:review-code`.
+## Design principles
 
-## Skill Identity
+- Preserve user intent and authorization boundaries.
+- Discover repository structure, versions, and conventions before applying defaults.
+- Prefer the smallest non-overlapping skill set.
+- Carry shared context forward instead of asking for the same information repeatedly.
+- Order dependencies while allowing independent work to run concurrently when the host supports it safely.
+- Remain portable across agents; never assume a particular `Skill(...)` tool exists.
+- Work without optional third-party companion skills.
+- Use confirmation based on risk or material ambiguity, not as a gate for every reversible edit.
 
-- **Name**: `forge:forge`
-- **Location**: `skills/forge/SKILL.md`
-- **Invocation**: `/forge <describe what you need>`
-- **Scope**: Creation and workflow skills only (17 of 23)
+## Routed capabilities
 
-## Skill Catalog
+### Discovery
 
-The router contains a catalog of 17 skills. Each entry has: name, purpose, trigger signals (technical + casual + problem-oriented), and required inputs.
+- `brainstorm-feature` — product, UX, and architecture exploration before implementation
 
-### Skills and Trigger Signals
+When brainstorming is explicitly requested, it runs without implementation skills. For a clear implementation request, brainstorming is not imposed as a mandatory gate.
 
-**scaffold-feature** — Full feature vertical slice (DTOs, handler, hooks, page, views, routes)
-- Technical: "scaffold", "bootstrap", "vertical slice", "CRUD module", "feature skeleton", "full feature", "module"
-- Casual: "build everything for", "set up the whole thing", "I need a full [X]", "create all files for", "start [X] from scratch", "new section in the app", "I have a new entity"
-- Problem: "I need pages, API, forms, the whole thing for [X]", "new entity and need all the pieces"
-- Inputs: feature name, entity name, CRUD operations, route path
+### Standalone diagnosis and migration
 
-**create-api** — API endpoint + DTOs + handler + React Query hook
-- Technical: "API integration", "endpoint", "handler", "query hook", "mutation hook", "REST endpoint", "API layer", "backend integration"
-- Casual: "connect to backend", "fetch data from", "call the server", "hook up the API", "wire up", "get data from", "send data to", "talk to the backend"
-- Problem: "I need to get [X] from the server", "backend has an endpoint for [X] and I need to use it"
-- Inputs: entity name, endpoint URL, operations
+- `debug-build`
+- `i18n-sync`
+- `migrate-react`
 
-**create-component** — Reusable shared component with CVA variants
-- Technical: "shared component", "reusable component", "compound component", "CVA variants", "component library"
-- Casual: "build a [card/badge/chip]", "make a UI piece", "new component", "make something I can reuse", "build a [widget]"
-- Problem: "I need a [X] that I can use in multiple places", "this UI element is needed across pages"
-- Inputs: component name, variants
+These run alone when they are the primary task because combining diagnosis or framework migration with unrelated generation obscures scope and verification.
 
-**create-form** — React Hook Form + Zod form
-- Technical: "form", "Zod schema", "form validation", "React Hook Form", "form fields", "create/edit form"
-- Casual: "build a form", "add inputs", "user fills in", "data entry for", "sign up form", "edit screen", "input fields", "submission form"
-- Problem: "users need to enter [data]", "I need to collect info", "need a way to create/edit [X]"
-- Inputs: entity name, fields, validation rules
+### Infrastructure
 
-**create-table** — TanStack table with search/pagination/sorting
-- Technical: "data table", "TanStack table", "list view", "sortable table", "paginated list", "columns", "grid view"
-- Casual: "show a list of", "display data in rows", "table with data", "show all [items]", "list of [items]", "rows and columns"
-- Problem: "I need to show lots of [items]", "users need to browse/search [items]", "display [items] with filtering"
-- Inputs: entity name, columns, features (search/sort/pagination)
+- `create-api`
+- `create-context`
+- `migrate-endpoint`
+- `design-system`
 
-**create-page** — Route-level page with lazy loading + guards
-- Technical: "route", "page component", "lazy loading", "AuthGuard", "layout", "route path", "nested route"
-- Casual: "new page", "new screen", "add a page for", "dashboard section", "add a place for [X]", "new view"
-- Problem: "users need to navigate to [X]", "need a new section at /[path]"
-- Inputs: page name, layout, guard, route path
+### Structure
 
-**create-context** — React Context + Provider + hook
-- Technical: "context", "provider", "global state", "shared state", "React Context", "context hook"
-- Casual: "share data between components", "global data", "state that everything can access", "pass data around", "need the same data everywhere"
-- Problem: "multiple components need the same [data]", "I keep passing the same props down through 3 levels"
-- Inputs: context name, state shape
+- `scaffold-feature`
+- `create-page`
 
-**figma-to-code** — Figma design to production component
-- Technical: "Figma", "design to code", "design spec", "pixel perfect", "design implementation"
-- Casual: any figma.com URL, "implement this UI", "build what the designer made", "match this mockup", "looks like this design", "designer gave me this"
-- Problem: "I have a design that needs to become code", "here's the Figma, build it"
-- Inputs: Figma URL, target location
+### UI
 
-**extract-component** — Extract repeated JSX into reusable component
-- Technical: "extract component", "DRY", "refactor duplication", "shared abstraction", "reduce repetition"
-- Casual: "this code is repeated", "same thing in multiple places", "too much copy paste", "reuse this block", "I keep writing the same thing"
-- Problem: "this JSX block appears in 3 files", "two components have the same chunk of code"
-- Inputs: source file, which JSX block
+- `create-component`
+- `create-form`
+- `create-table`
+- `figma-to-code`
+- `extract-component`
+- `add-motion`
 
-**migrate-endpoint** — Update existing API integration
-- Technical: "migrate endpoint", "DTO update", "endpoint URL changed", "response shape changed", "API contract changed"
-- Casual: "backend changed", "API is different now", "endpoint moved", "server response changed", "update the API call", "backend team changed something"
-- Problem: "the [X] endpoint broke because backend changed it", "API response doesn't match our types anymore"
-- Inputs: which endpoint, what changed
+### Assets and localization
 
-**add-icon** — SVG to icon component
-- Technical: "icon component", "SVG to component", "custom icon", "icon asset", "SVG markup"
-- Casual: "add icon", "new icon", "I have an SVG", "put an icon", "need a [X] icon"
-- Problem: "I need an icon that doesn't exist in Lucide", "designer gave me a custom SVG"
-- Inputs: SVG source
+- `add-icon`
+- `add-translations`
 
-**add-translations** — Add new i18n keys to both locales
-- Technical: "i18n keys", "translation keys", "locale entries", "internationalization", "localization"
-- Casual: "add translations", "translate this", "add labels", "text in Arabic", "need both languages", "add the Arabic version"
-- Problem: "new UI text needs to be in both languages", "I added a screen and it needs translations"
-- Inputs: keys and values
+### Verification
 
-**i18n-sync** — Audit and sync locale files
-- Technical: "sync locales", "translation audit", "missing keys", "locale diff", "orphaned keys"
-- Casual: "check translations", "are all translations there", "find missing translations", "translations out of sync"
-- Problem: "some text might not be translated", "en.json and ar.json might be out of sync"
-- Inputs: none
+- `test-frontend`
 
-**git-workflow** — Branch naming, commits, PR creation
-- Technical: "branch", "commit", "pull request", "PR", "push", "feature branch", "merge request"
-- Casual: "save my work", "create a branch", "push changes", "open a PR", "start working on ticket [X]", "ready to submit"
-- Problem: "I need to commit and push this", "how do I name this branch", "ready to open a PR"
-- Inputs: ticket number
+Testing is suggested when changed behavior has meaningful regression risk. The router must not silently install test infrastructure or add broad dependencies.
 
-**changelog** — Generate changelog from git history
-- Technical: "changelog", "release notes", "commit summary", "version history", "release log"
-- Casual: "what changed", "summarize changes", "list of changes", "what did we do since last release"
-- Problem: "need to tell the team what's in this release"
-- Inputs: date range or tag
+### Workflow
 
-**document-component** — Generate component usage docs
-- Technical: "component docs", "API documentation", "usage guide", "props documentation", "JSDoc"
-- Casual: "write docs for", "how to use this component", "document this", "usage examples", "explain how to use"
-- Problem: "someone new needs to know how to use this component", "there's no documentation for [X]"
-- Inputs: component path
+- `git-workflow`
+- `changelog`
+- `document-component`
 
-**debug-build** — Diagnose and fix build errors
-- Technical: "build error", "type error", "compilation failure", "tsc error", "Vite build failure"
-- Casual: "build is broken", "it won't compile", "red errors", "build fails", "can't build", "everything is red", "npm run build doesn't work"
-- Problem: "the project won't build", "getting errors when I run build", "CI is failing on build step"
-- Inputs: error message
+External mutations such as pulling, pushing, committing, or opening a PR remain subject to user authorization and host approval rules.
 
-## Routing Intelligence
+## Direct-entry quality skills
 
-### Subsumption Rules
+The router can recommend these skills but does not silently append them to ordinary building work:
 
-When a broader skill is selected, narrower skills it already covers are removed:
+- `review-code`
+- `review-ui-ux`
+- `review-frontend-architecture`
+- `performance-audit`
+- `observability-review`
+- `super-security-review`
+- `refactor-to-standards`
+- focused accessibility, dark-mode, RTL, and import audits
 
-- `scaffold-feature` selected -> remove `create-api` and `create-page`
-- Keep `create-form`, `create-table`, `add-translations` — scaffold doesn't cover those
+This separation prevents duplicate findings and avoids expanding a build request into an unsolicited audit.
 
-### Execution Order
+## Routing model
 
-Skills run in dependency order:
+### Intent matching
 
-| Layer | Skills | Rationale |
-|-------|--------|-----------|
-| 1 - Infrastructure | create-api, create-context, migrate-endpoint | No UI dependency |
-| 2 - Structure | scaffold-feature, create-page | Needs API/context to exist |
-| 3 - UI | create-component, create-form, create-table, figma-to-code, extract-component | Needs page/structure |
-| 4 - Assets | add-icon, add-translations | Needs UI to know what keys/icons are needed |
-| 5 - Workflow | git-workflow, changelog, document-component | After building |
-| 0 - Standalone | debug-build, i18n-sync | Always run alone, never combined |
+Catalog entries include purpose, trigger language, and required inputs. Matching considers:
 
-### Auto-Add Rules
+- explicit skill mentions
+- technical vocabulary
+- casual user language
+- problem-oriented descriptions
+- artifacts such as Figma URLs, endpoint paths, SVG markup, or ticket identifiers
 
-| Condition | Action |
-|-----------|--------|
-| Any UI-creating skill selected | Append `add-translations` |
-| Figma URL detected in message | Prepend `figma-to-code` |
-| Ticket number detected (e.g., DM-xxx) | Append `git-workflow` |
+Explicit skill selection takes precedence when it is compatible with the request.
 
-### Conflict Resolution
+### Subsumption
 
-When the message is ambiguous between paths, ask one clarifying question:
+`scaffold-feature` subsumes `create-api` and `create-page` because it produces those layers. It does not automatically subsume forms, tables, reusable shared components, icons, or translations.
 
-| Ambiguity | Question |
-|-----------|----------|
-| No trigger signals match | "Can you describe what you're building? I'll pick the right tools." |
-| "Create a component" — shared or view? | "Is this a reusable shared component, or a view component for a specific feature?" |
-| "Add an API" — standalone or full feature? | "Do you need just the API pipeline, or a full feature with page and UI?" |
-| "Build a form" — standalone or part of feature? | "Is this form for an existing feature, or should I scaffold the feature too?" |
+Subsumption is based on actual output overlap, not merely similar trigger words.
 
-## Workflow
+### Dependency layers
 
-### Step 1 — Analyze Message
+Execution follows this dependency order:
 
-Read the user's message and extract:
-- Intent signals: match against trigger catalog (technical + casual + problem-oriented)
-- Shared inputs: feature name, entity name, endpoint URLs, ticket numbers, Figma URLs
-- Explicit skill mentions: if the user names a skill directly, always include it
+1. Discovery
+2. Standalone diagnosis/migration
+3. Infrastructure
+4. Structure
+5. UI
+6. Assets/localization
+7. Verification
+8. Workflow
 
-### Step 2 — Select Skills
+Dependent skills run sequentially. Independent work may run concurrently when the host supports it and file ownership does not overlap.
 
-1. Match message against trigger signals to build candidate list
-2. Apply subsumption rules (remove redundant skills)
-3. Apply auto-add rules (append translations, prepend Figma, append git)
-4. Apply standalone rules (debug-build and i18n-sync run alone)
+### Auto-add behavior
 
-### Step 3 — Handle Ambiguity
+- UI creation may add translations when the feature does not already handle them.
+- A Figma URL selects `figma-to-code` before downstream UI work.
+- Ticket context may select `git-workflow`, but does not authorize commits, pushes, or PR creation by itself.
+- Testing is recommended based on regression risk rather than appended universally.
 
-If the message doesn't clearly map or maps to conflicting paths, ask one clarifying question.
+### Ambiguity
 
-### Step 4 — Present Plan
+The router asks one focused question only when the missing answer materially changes the selected workflow. Otherwise, it makes a narrow documented assumption and proceeds.
 
-Show the user what will run before executing:
+## React compatibility
 
-```
-Based on your request, I'll run these skills in order:
-1. forge:scaffold-feature — create the full orders feature
-2. forge:create-table — add the orders data table
-3. forge:create-form — add create/edit order forms
-4. forge:add-translations — add i18n keys for all new UI
+Every React workflow discovers:
 
-Shared context I'll pass to each:
-- Feature: orders
-- Entity: Order
-- CRUD: list, create, update, delete
+- installed `react` and `react-dom` versions
+- matching type-package versions
+- framework and rendering model
+- JSX transform
+- React Compiler presence and compilation mode
 
-Proceed? (y/n)
-```
+It then applies `skills/_shared/react-version-compatibility.md`, distinguishing React 18, React 19 without Compiler, and React 19 with Compiler. React 19 alone must never be treated as proof that automatic memoization is enabled.
 
-Wait for user confirmation.
+## Companion skills
 
-### Step 5 — Execute Sequentially
+`skills/forge/references/companion-skills.md` lists optional capabilities such as structured brainstorming, Vercel React performance/composition guidance, interface review, Playwright, and QA engineering.
 
-Invoke each skill via the Skill tool in the planned order. Before each invocation, include the shared context as the skill's arguments so skills don't re-ask for inputs the user already provided. For example: `Skill("forge:create-table", args: "Entity: Order, columns: name/status/total/date, features: search + pagination + sorting")`.
+Companions are used only when available and relevant. Forge remains self-contained, does not install them silently, and avoids combining overlapping reviewers.
 
-### Step 6 — Summary
+## Host portability
 
-After all skills complete, show a brief recap of what was created.
+The router uses the host's supported skill-loading mechanism. If programmatic invocation is unavailable, the agent reads and applies the selected skill instructions directly. The design does not prescribe a Claude-, Codex-, Cursor-, or IDE-specific API.
 
-## Excluded Skills
+## User interaction
 
-These 6 skills are NOT dispatched by the router — they have their own entry points:
+A short plan is useful for multi-skill or materially ambiguous work. Confirmation is required only when:
 
-| Skill | Entry Point |
-|-------|-------------|
-| review-code | `/forge:review-code` |
-| audit-a11y | Run by review-code |
-| audit-dark-mode | Run by review-code |
-| audit-rtl | Run by review-code |
-| audit-imports | Run by review-code |
-| refactor-to-standards | `/forge:refactor-to-standards` |
+- a material product or architecture choice remains unresolved
+- an action is destructive or externally mutating
+- new authority is required
+- the host environment requires approval
+
+Clear, reversible, in-scope edits can proceed from the user's implementation request.
+
+## Completion contract
+
+The router reports:
+
+- selected capabilities and meaningful assumptions
+- files or artifacts created or changed
+- verification performed and its result
+- unresolved risks or manual work
+- an appropriate follow-up review when useful
+
+It must not claim completion when a required downstream skill failed or relevant verification was not performed.
+
+## Validation
+
+Repository validation must confirm:
+
+- all skill names match their folders and remain unique
+- router references resolve
+- README and repository skill counts match the filesystem
+- Markdown fences are balanced
+- `npm run validate` and `git diff --check` pass
+
+Behavioral evaluation should additionally cover single-skill routing, multi-skill dependency ordering, subsumption, explicit brainstorming, React migration, unavailable companions, authorization boundaries, and ambiguous requests.

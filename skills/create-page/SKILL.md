@@ -25,7 +25,7 @@ Before writing code, read:
 
 See `references/page-template.md` for the page template.
 See `references/routing-patterns.md` for route setup.
-See `_shared/code-standards.md` for all project rules (sections 5, 9, 12).
+See `../_shared/code-standards.md` for the default project rules (sections 5, 9, 12).
 
 ## Step 3 — Generate Files
 
@@ -64,7 +64,7 @@ Wire navigation from sidebar, navbar, or other entry points.
 
 ## Rules
 
-See `_shared/code-standards.md` for all project rules. Page-specific rules:
+See `../_shared/code-standards.md` for the default project rules. Page-specific rules:
 
 - Route pages use `React.lazy` for code splitting
 - Pages contain logic directly — no wrapper Views for single-use

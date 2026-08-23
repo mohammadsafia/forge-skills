@@ -1,8 +1,10 @@
 # API & Handler Rules Reference
 
+> These examples illustrate the Forge handler profile. Apply their structure only when the target repository uses it; API-contract and cache-correctness checks remain applicable regardless of architecture.
+
 ## ApiEndpoints Pattern
 
-All endpoints declared in `src/api/config/ApiEndpoints.ts` as plain strings:
+In projects using the Forge endpoint registry, endpoints are declared in `src/api/config/ApiEndpoints.ts` as plain strings:
 
 ```typescript
 // CORRECT — plain strings

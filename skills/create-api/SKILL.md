@@ -27,7 +27,7 @@ Before writing code, read:
 See `references/handler-pattern.md` for the handler template.
 See `references/query-hook-pattern.md` for the hook template.
 See `references/dto-conventions.md` for DTO naming.
-See `_shared/code-standards.md` for all project rules (sections 3, 4).
+See `../_shared/code-standards.md` for the default project rules (sections 3, 4).
 
 ## Step 3 — Generate Files
 

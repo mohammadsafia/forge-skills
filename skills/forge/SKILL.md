@@ -13,7 +13,23 @@ Analyze what the user wants to build and automatically invoke the right forge sk
 
 ## Skill Catalog
 
-You have 18 creation and workflow skills available. Use the trigger signals below to match the user's message. Signals are grouped by register — technical (developer jargon), casual (plain language), and problem-oriented (describing the need, not the solution). Match against ALL three levels.
+Use the creation and workflow skills listed below. Match the user's message across technical, casual, and problem-oriented signals; do not rely on a hardcoded catalog count.
+
+### brainstorm-feature
+
+**What it does:** Explore product, UX, and architecture options before implementation.
+
+**Trigger signals:** "brainstorm", "ideate", "explore approaches", "help shape this feature", "compare options", or a complex request whose core behavior is not yet decided.
+
+**Inputs needed:** problem, target user, constraints
+
+### design-system
+
+**What it does:** Design or evolve tokens, component APIs, accessibility contracts, documentation, governance, and migrations.
+
+**Trigger signals:** "design system", "component library", "tokens", "UI consistency", "shared primitives", "component governance"
+
+**Inputs needed:** consumers, supported platforms/themes, current system
 
 ### scaffold-feature
 
@@ -213,6 +229,22 @@ You have 18 creation and workflow skills available. Use the trigger signals belo
 
 **Inputs needed:** error message
 
+### test-frontend
+
+**What it does:** Add or improve risk-based unit, component, integration, contract, and E2E tests.
+
+**Trigger signals:** "add tests", "test this", "coverage", "regression test", "Playwright", "Testing Library", "flaky test"
+
+**Inputs needed:** behavior or changed scope
+
+### migrate-react
+
+**What it does:** Upgrade React versions or adopt React Compiler incrementally.
+
+**Trigger signals:** "upgrade React", "React 18 to 19", "React migration", "React Compiler", "deprecated React API"
+
+**Inputs needed:** target version and scope
+
 ---
 
 ## Routing Intelligence
@@ -234,12 +266,14 @@ Execute selected skills in layer order. Within the same layer, order does not ma
 
 | Layer | Name | Skills |
 |---|---|---|
-| 0 | Standalone | debug-build, i18n-sync |
-| 1 | Infrastructure | create-api, create-context, migrate-endpoint |
-| 2 | Structure | scaffold-feature, create-page |
-| 3 | UI | create-component, create-form, create-table, figma-to-code, extract-component, add-motion |
-| 4 | Assets | add-icon, add-translations |
-| 5 | Workflow | git-workflow, changelog, document-component |
+| 0 | Discovery | brainstorm-feature |
+| 1 | Standalone | debug-build, i18n-sync, migrate-react |
+| 2 | Infrastructure | create-api, create-context, migrate-endpoint, design-system |
+| 3 | Structure | scaffold-feature, create-page |
+| 4 | UI | create-component, create-form, create-table, figma-to-code, extract-component, add-motion |
+| 5 | Assets | add-icon, add-translations |
+| 6 | Verification | test-frontend |
+| 7 | Workflow | git-workflow, changelog, document-component |
 
 ### Auto-Add Rules
 
@@ -250,6 +284,14 @@ These skills are automatically appended or prepended based on context.
 | Any UI skill selected (create-component, create-form, create-table, create-page, figma-to-code) — but NOT scaffold-feature (it handles translations internally) | Append | add-translations |
 | Message contains a figma.com URL | Prepend | figma-to-code |
 | Message contains a ticket number pattern (e.g., PROJ-123, #123) | Append | git-workflow |
+
+When the user explicitly asks to brainstorm, run `brainstorm-feature` without implementation skills and wait for the resulting direction. For complex work with unresolved product behavior, recommend brainstorming but do not impose it as a gate if the user has already authorized a clear implementation.
+
+For every React task, discover the installed React version and Compiler configuration and apply `../_shared/react-version-compatibility.md`. Do not select APIs or optimization rules based only on the repository README.
+
+Suggest `test-frontend` when new behavior has meaningful regression risk, but do not auto-add broad test infrastructure or dependencies. Run `migrate-react` alone when dependency/version migration is the primary task.
+
+When the host exposes additional skills, read `references/companion-skills.md` and use only companions that add a distinct capability. Forge must continue to work when none are installed.
 
 ### Conflict Resolution
 
@@ -290,9 +332,9 @@ If the candidate list is empty or contains a conflict from the Conflict Resoluti
 - Wait for the user's answer before proceeding
 - Do not ask multiple questions — pick the most impactful ambiguity
 
-### Step 4 — Present Plan
+### Step 4 — Present Plan When It Helps
 
-Show the user exactly what will run before executing anything:
+For multi-skill or materially ambiguous work, show a short execution plan. For a single clear, reversible task, proceed directly unless the user requested confirmation.
 
 ```
 Based on your request, I'll run these skills in order:
@@ -310,22 +352,17 @@ Shared context I'll pass to each:
 Proceed? (y/n)
 ```
 
-**Wait for user confirmation.** Do not invoke any skill until the user says yes.
-
-If the user says no or wants changes, adjust the plan and re-present.
+Wait for confirmation only when the plan contains external or destructive actions, requires a material choice, or the host environment requires approval. Otherwise, treat the user's implementation request as authorization for ordinary in-scope edits.
 
 ### Step 5 — Execute Sequentially
 
 For each skill in the plan:
-1. Invoke it via the `Skill` tool: `Skill("forge:<skill-name>", args: "<shared context>")`
-2. Include the shared inputs as the skill's arguments so the skill doesn't re-ask for information the user already provided
-3. Let the skill run to completion before invoking the next one
-4. Carry forward any outputs that downstream skills need (e.g., DTO names created by create-api are needed by create-form)
+1. Load or invoke the selected skill using the host agent's supported skill mechanism. Do not invent a tool or command that the environment does not provide.
+2. Carry the shared inputs into the next workflow so information already supplied is not requested again.
+3. Execute dependent skills sequentially; independent work may run in parallel when the host supports it and file ownership does not overlap.
+4. Carry forward outputs that downstream skills need, such as DTO names needed by a form.
 
-**Input forwarding format**: Pass the shared context as a natural-language string in the `args` parameter. Example:
-```
-Skill("forge:create-table", args: "Entity: Order. Columns: name, status, total, date. Features: search, pagination, sorting. This table is part of the orders feature at /dashboard/orders.")
-```
+If the host cannot invoke another skill programmatically, read the selected skill instructions and apply them directly.
 
 ### Step 6 — Summary
 
@@ -348,6 +385,10 @@ These skills are **not** dispatched by the router. They are invoked directly or 
 | audit-rtl | Run automatically by review-code |
 | audit-imports | Run automatically by review-code |
 | refactor-to-standards | Invoke directly as `/forge:refactor-to-standards` |
+| review-ui-ux | Invoke directly for interface and flow critique |
+| review-frontend-architecture | Invoke directly for system boundaries and major refactors |
+| performance-audit | Invoke directly for measured frontend performance work |
+| observability-review | Invoke directly for production telemetry and operational readiness |
 
 ---
 
@@ -358,6 +399,6 @@ These skills are **not** dispatched by the router. They are invoked directly or 
 - [ ] Auto-add rules were applied — translations added for UI skills, figma-to-code prepended for Figma URLs
 - [ ] Execution order follows the layer table (0 → 5)
 - [ ] Shared context (entity name, endpoint, fields) was passed to all skills that need it
-- [ ] Each skill was invoked sequentially, not in parallel
+- [ ] Dependencies ran in order; any parallel work was independent
 - [ ] Outputs from earlier skills were carried forward to later skills
 - [ ] Summary lists all created files and suggests forge:review-code

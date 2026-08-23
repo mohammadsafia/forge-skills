@@ -31,7 +31,7 @@ Read the following project files before generating code:
 
 See `references/design-tokens.md` for the token mapping.
 See `references/spacing-scale.md` for the spacing table.
-See `_shared/code-standards.md` for all project rules (sections 5, 8, 10).
+See `../_shared/code-standards.md` for the default project rules (sections 5, 8, 10).
 
 ### Step 3 — Map Design Tokens
 

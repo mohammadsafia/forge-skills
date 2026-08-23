@@ -1,5 +1,7 @@
 > Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
+Review hygiene in the changed scope. Do not turn a focused review into an inventory of unrelated legacy cleanup.
+
 # Code Hygiene — Code Examples
 
 ## Console Statements

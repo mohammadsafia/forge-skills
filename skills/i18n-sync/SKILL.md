@@ -28,7 +28,9 @@ Flag ar.json entries where the value is identical to en.json — these are likel
 
 ### Find unused keys
 
-Scan `src/` files for translation key usage (`t('key')`, `t("key")`) and identify keys in locale files that are never referenced in code.
+Discover how the project invokes translations, then scan for literal usages such as `t('key')`, `i18next.t('key')`, and `<Trans i18nKey="key" />`. Treat dynamic keys, namespace prefixes, and keys referenced outside `src/` conservatively.
+
+Classify keys with no discovered literal reference as **possibly unused**, not definitely orphaned. Explain the search limitations in the report.
 
 ## Step 3 — Generate Report
 
@@ -49,7 +51,7 @@ Scan `src/` files for translation key usage (`t('key')`, `t("key")`) and identif
 ### Structural Mismatches
 - `errors.validation` — string in en.json, object in ar.json
 
-### Unused Keys (in locale files but not in code)
+### Possibly Unused Keys (no literal reference found)
 - `legacy.old_page_title`
 
 ### Summary
@@ -61,7 +63,7 @@ Scan `src/` files for translation key usage (`t('key')`, `t("key")`) and identif
 ## Step 4 — Auto-Fix (when user confirms)
 
 1. Add missing keys to ar.json with English value as placeholder (prefixed with `[AR] `)
-2. Remove orphaned keys from ar.json
+2. Do not delete possibly unused keys automatically. Remove a key only when the user explicitly selects it and the project-wide search found no dynamic or indirect usage.
 3. Fix structural mismatches
 4. Sort both files alphabetically by key for consistency
 

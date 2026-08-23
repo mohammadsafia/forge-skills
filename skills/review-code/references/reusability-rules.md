@@ -2,7 +2,9 @@
 
 # Reusability Rules — Code Examples
 
-## Sub-Component Signature (MANDATORY)
+> Compound components, `data-slot`, prop spreading, and CVA are Forge conventions. Enforce them only when the target project has adopted them; otherwise use these examples as design options.
+
+## Forge Sub-Component Signature
 
 ```typescript
 // CORRECT — full signature

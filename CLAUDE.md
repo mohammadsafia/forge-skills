@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**forge-skills** is a collection of 24 Claude Code skills for React + TypeScript development. It is a content-only package — no build step, no tests, no runtime code. All deliverables are markdown files distributed via `npx skills add mohammadsafia/forge-skills`.
+**forge-skills** is a collection of 34 agent skills for React + TypeScript development. It is primarily a content package, with a lightweight repository validator. Skills are distributed via `npx skills add mohammadsafia/forge-skills`.
 
 ## Repository Structure
 
@@ -56,7 +56,7 @@ The `description` field is critical — it determines when the skill is invoked.
 
 ## Target Tech Stack
 
-Skills generate code for: React 19, TypeScript 5 (strict), Vite 6, Tailwind CSS 4 with design tokens, shadcn/ui (Radix), TanStack React Query 5, TanStack React Table 8, React Hook Form + Zod, React Router 6, i18next, Axios, Lucide React.
+Skills support React 18 and React 19, with or without React Compiler, plus TypeScript 5 (strict), Vite, Tailwind CSS, shadcn/ui (Radix), TanStack React Query and Table, React Hook Form + Zod, React Router, i18next, Axios, and Lucide React. Agents must discover installed versions before selecting version-specific APIs.
 
 ## Key Standards Enforced Across Skills
 

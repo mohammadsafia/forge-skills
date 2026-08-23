@@ -13,7 +13,7 @@ Before extracting, scan existing shared components:
 - `src/components/shared/` — check if a similar component already exists
 - Look at compound pattern examples (`PrimeCard`, `PrimeDialog`) for the target structure
 
-See `_shared/code-standards.md` for all project rules (sections 5, 8).
+See `../_shared/code-standards.md` for the default project rules (sections 5, 8).
 
 Scan the target file(s) for:
 - JSX blocks that appear 3+ times (or 2 times with slight variations)
@@ -81,7 +81,7 @@ If the extracted component has 2+ semantic parts, use the compound pattern:
 
 ## Rules
 
-See `_shared/code-standards.md` for all project rules. Extraction-specific rules:
+See `../_shared/code-standards.md` for the default project rules. Extraction-specific rules:
 
 - Check `src/components/shared/` before creating — may already exist
 - Add `data-slot` to the extracted component's root element

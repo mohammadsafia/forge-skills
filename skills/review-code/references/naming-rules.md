@@ -1,5 +1,7 @@
 > Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
+Treat these names as the Forge profile. Enforce them only when repository instructions or consistent nearby code establish the same convention.
+
 # Naming Conventions — Code Examples
 
 ## Folder Naming

@@ -29,7 +29,7 @@ Before writing code, read:
 6. Types: `src/types/api/`
 
 See `references/folder-structure.md` for the folder structure.
-See `_shared/code-standards.md` for all project rules.
+See `../_shared/code-standards.md` for the default project rules.
 
 ## Step 3 — Generate Files (in order)
 
@@ -59,7 +59,7 @@ See `_shared/code-standards.md` for all project rules.
 
 ## Rules
 
-See `_shared/code-standards.md` for all project rules. Scaffold-specific rules:
+See `../_shared/code-standards.md` for the default project rules. Scaffold-specific rules:
 
 - Follow the folder structure in `references/folder-structure.md` exactly
 - No placeholders or TODOs — produce complete code

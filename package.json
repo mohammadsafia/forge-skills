@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/mohammadsafia/forge-skills.git"
   },
+  "scripts": {
+    "validate": "bash scripts/validate-skills.sh"
+  },
   "keywords": [
     "claude-code",
     "skills",

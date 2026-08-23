@@ -1,5 +1,7 @@
 > Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
+Token names and styling mechanisms are project-specific. First inspect the actual theme and styling configuration; focus findings on broken supported themes, accessibility, or verified convention violations.
+
 # Styling Rules — Code Examples
 
 ## Inline Color Values

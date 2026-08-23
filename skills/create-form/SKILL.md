@@ -25,7 +25,7 @@ Before writing code, read:
 
 See `references/form-pattern.md` for the form template.
 See `references/validation-patterns.md` for Zod patterns.
-See `_shared/code-standards.md` for all project rules.
+See `../_shared/code-standards.md` for the default project rules.
 
 ## Step 3 — Generate Files
 
@@ -69,7 +69,7 @@ Add exports to the feature's `index.ts`.
 
 ## Rules
 
-See `_shared/code-standards.md` for all project rules (sections 5, 7). Form-specific rules:
+See `../_shared/code-standards.md` for the default project rules (sections 5, 7). Form-specific rules:
 
 - All forms use `FormProvider`-based `FormContainer` — no raw `useForm` in pages
 - Use existing form field wrappers (`FormInput`, `FormSelect`, etc.) — don't rebuild

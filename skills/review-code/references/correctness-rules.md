@@ -1,5 +1,7 @@
 > Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
+Confirm library behavior and project configuration before applying an example. The failure path and user impact—not resemblance to the snippet—make something a finding.
+
 # Correctness Rules — Code Examples
 
 ## React Query Correctness

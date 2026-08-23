@@ -47,12 +47,17 @@ Add the English values:
 ```
 
 ### ar.json
-Add the Arabic values. If Arabic text is not provided by the user, add a placeholder:
+Add the Arabic values while preserving the complete English key structure. If Arabic text is not provided, copy the English value and prefix it with `[AR] ` so it remains visibly unfinished:
 ```json
 {
   "feature": {
     "title": "[AR] Feature Title",
-    "description": "[AR] Feature description text"
+    "description": "[AR] Feature description text",
+    "form": {
+      "name_label": "[AR] Name",
+      "name_placeholder": "[AR] Enter name",
+      "submit": "[AR] Create"
+    }
   }
 }
 ```
@@ -73,27 +78,22 @@ Prefix with `[AR] ` so untranslated strings are visible in the UI.
 ## Common Patterns
 
 ```json
-// CRUD operations
-"create": "Create",
-"edit": "Edit",
-"delete": "Delete",
-"save": "Save",
-"cancel": "Cancel",
-"confirm": "Confirm",
-
-// Table/list
-"search": "Search",
-"no_results": "No results found",
-"showing_of": "Showing {{count}} of {{total}}",
-
-// Form
-"required_field": "This field is required",
-"invalid_email": "Invalid email address",
-
-// Status
-"status": {
-  "active": "Active",
-  "inactive": "Inactive",
-  "pending": "Pending"
+{
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "create": "Create",
+  "delete": "Delete",
+  "edit": "Edit",
+  "invalid_email": "Invalid email address",
+  "no_results": "No results found",
+  "required_field": "This field is required",
+  "save": "Save",
+  "search": "Search",
+  "showing_of": "Showing {{count}} of {{total}}",
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending"
+  }
 }
 ```

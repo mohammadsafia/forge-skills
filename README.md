@@ -1,8 +1,8 @@
 # forge-skills
 
-Professional Claude Code skills for React + TypeScript development. Standards-driven code generation, review, and scaffolding.
+Professional agent skills for React + TypeScript development. Standards-driven code generation, review, and scaffolding.
 
-24 skills covering the full development lifecycle — from Figma design to production code, API integration, component creation, motion animation, code review, and git workflow.
+34 skills covering the full development lifecycle — from brainstorming, architecture, request routing, and Figma design to production code, UI/UX, performance, observability, testing, migration, security, and git workflow.
 
 ## Install
 
@@ -46,9 +46,15 @@ npx skills update
 
 ## Skills
 
+### Routing
+| Skill | Description |
+|-------|-------------|
+| `forge` | Select and coordinate the appropriate Forge skills for a building task |
+
 ### Design
 | Skill | Description |
 |-------|-------------|
+| `brainstorm-feature` | Explore product, UX, and technical approaches before implementation |
 | `figma-to-code` | Convert Figma designs into production-ready React components with correct design tokens, spacing, dark mode, RTL, and responsive behavior |
 
 ### Creation
@@ -62,11 +68,18 @@ npx skills update
 | `create-context` | React Context with provider and custom hook |
 | `scaffold-feature` | Complete feature skeleton — page, views, API, hooks, types, translations |
 | `add-motion` | Add Motion (Framer Motion) animations — enter/exit, staggered lists, gestures, layout/shared-element, page transitions — with reduced-motion a11y, performance, and RTL safety |
+| `design-system` | Tokens, component contracts, accessibility, governance, and migration |
+| `test-frontend` | Risk-based unit, component, integration, contract, and E2E testing |
 
 ### Quality
 | Skill | Description |
 |-------|-------------|
 | `review-code` | Full standards audit with structured report |
+| `review-ui-ux` | Usability, visual design, interaction, responsive, and design-QA review |
+| `review-frontend-architecture` | Frontend boundaries, state, data flow, scalability, and migration review |
+| `performance-audit` | Evidence-based waterfalls, bundles, rendering, hydration, and Web Vitals audit |
+| `observability-review` | Error, telemetry, analytics, privacy, and production-readiness review |
+| `super-security-review` | Explicit deep frontend security review |
 | `audit-a11y` | Check ARIA, keyboard nav, focus management, screen readers |
 | `audit-dark-mode` | Find hardcoded colors that break in dark mode |
 | `audit-rtl` | Find directional styling issues for right-to-left support |
@@ -78,6 +91,7 @@ npx skills update
 | `refactor-to-standards` | Bring non-compliant code to full compliance |
 | `extract-component` | DRY up repeated JSX into reusable components |
 | `migrate-endpoint` | Update full API chain when backend endpoint changes |
+| `migrate-react` | React 18→19 upgrades and incremental React Compiler adoption |
 
 ### Workflow
 | Skill | Description |
@@ -94,7 +108,7 @@ npx skills update
 
 These skills are built for projects using:
 
-- **React 19** + **TypeScript 5** (strict mode)
+- **React 18 or 19** + **TypeScript 5** (strict mode), with React Compiler-aware guidance
 - **Vite 6** build system
 - **Tailwind CSS 4** with design token system
 - **shadcn/ui** components (Radix UI)

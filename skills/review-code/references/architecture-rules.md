@@ -1,5 +1,7 @@
 > Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
+Thresholds in these examples are investigation signals, not automatic findings. Report an architectural issue only with a concrete coupling, correctness, testability, or change-cost impact.
+
 # Architecture Rules — Code Examples
 
 ## Separation of Concerns

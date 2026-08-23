@@ -1,5 +1,7 @@
 > Rules: see `_shared/code-standards.md`. This file contains code examples only.
 
+Aliases, barrels, and group ordering are project conventions. Verify they exist and are preferred locally before treating a different import style as a finding.
+
 # Import Rules — Code Examples
 
 ## Barrel Import Rules

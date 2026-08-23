@@ -1,8 +1,10 @@
 # Component Rules Reference
 
+> Most patterns here are Forge project conventions, not universal React requirements. Verify adoption in repository instructions or nearby code before reporting them.
+
 ## Conditional Rendering
 
-Always use the `Conditional` component — never `&&` or ternary for show/hide:
+When the project has adopted the `Conditional` component, prefer it for ordinary show/hide branches. Preserve inline conditionals when wrapper semantics would break mounting, focus, or exit animations:
 
 ```typescript
 // CORRECT
@@ -22,7 +24,7 @@ Always use the `Conditional` component — never `&&` or ternary for show/hide:
 
 ## cn() for Conditional Classes
 
-Use `cn()` utility — never template literal concatenation:
+When the project uses `cn()`, use it consistently for conditional classes:
 
 ```typescript
 // CORRECT
@@ -35,7 +37,7 @@ className={'base-class ' + (isActive ? 'active-class' : '')}
 
 ## Event Handler Naming
 
-All event handlers must use `handle*` prefix:
+When established locally, use `handle*` for internal handlers and reserve `on*` for callback props:
 
 ```typescript
 // CORRECT
@@ -108,7 +110,7 @@ function OrdersPage() {
 
 ## View Component Organization
 
-Each view component must be in its own folder with an `index.ts`:
+If the repository uses per-component folders and barrels, follow that structure:
 
 ```
 views/
@@ -140,7 +142,7 @@ views/Communities/CommunityCard/     WRONG (PascalCase)
 
 ## No Separator Comments
 
-Code should be self-organizing. Never use visual dividers:
+Prefer meaningful structure over decorative divider comments when that is the local convention:
 
 ```typescript
 // WRONG
@@ -162,6 +164,6 @@ Add `data-slot` attributes to semantic elements in shared components:
 ## Routing Patterns
 
 - Use `React.lazy` for lazy-loaded pages
-- Route constants must use `as const`
+- When the project exposes route constants as literal values, preserve literal inference with `as const` or `satisfies` as appropriate
 - Use `AuthGuard` to wrap protected routes
 - Nested route structure with layout components (`MainLayout`, `DashboardLayout`)

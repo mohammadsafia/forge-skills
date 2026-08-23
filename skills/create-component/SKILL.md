@@ -25,7 +25,7 @@ Scan existing shared components for patterns:
 - `src/components/shared/combobox/Combobox.tsx` for CVA + forwardRef pattern
 - `src/components/ui/` for base component primitives
 
-See `_shared/code-standards.md` for all project rules (sections 5, 8, 10).
+See `../_shared/code-standards.md` for the default project rules (sections 5, 8, 10).
 
 ### Build the variant matrix
 

@@ -1,8 +1,10 @@
 # Runtime Safety Rules Reference
 
+> Judge states by reachability. Suspense, route error boundaries, initial data, or wrapper components may already handle loading and failure states.
+
 ## Loading / Empty / Error State Coverage
 
-Every page or view that fetches data must handle **all three states**. Missing any of them creates a broken user experience.
+Every reachable loading, empty, and error state needs an intentional handling strategy somewhere in the rendering boundary.
 
 ### Missing Loading State
 

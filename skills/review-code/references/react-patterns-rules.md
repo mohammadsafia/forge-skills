@@ -1,5 +1,7 @@
 # React Patterns & Performance Rules Reference
 
+> Report performance findings only when a reference crosses a memoization/dependency boundary, computation is meaningfully expensive, or profiling demonstrates impact. React Compiler and local architecture may remove the need for manual memoization.
+
 ## Memoization Issues
 
 ### Missing useMemo / useCallback
@@ -7,7 +9,7 @@
 When a parent re-renders, every inline function or object reference is recreated. If passed as a prop to a child wrapped in `React.memo` or used in a dependency array, this causes unnecessary re-renders or re-runs.
 
 ```typescript
-// WRONG — new object reference every render, child re-renders needlessly
+// PROBLEMATIC when DataTable is memoized and reference identity defeats that optimization
 function OrdersPage() {
   const columns = [{ id: 'name', header: 'Name' }]; // recreated every render
   return <DataTable columns={columns} />;
@@ -21,7 +23,7 @@ function OrdersPage() {
 ```
 
 ```typescript
-// WRONG — new function reference every render
+// PROBLEMATIC when OrderList is memoized and callback identity matters
 function OrdersPage() {
   const handleDelete = (id: string) => deleteMutation.mutateAsync(id);
   return <OrderList onDelete={handleDelete} />;

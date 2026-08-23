@@ -16,7 +16,7 @@ Determine what to refactor:
 
 ## Step 2 — Scan for Violations
 
-Scan each file in scope against `_shared/code-standards.md` (all 12 categories).
+Scan each file in scope against `../_shared/code-standards.md` (all 12 categories), while giving project-local instructions precedence.
 Use `references/transformation-catalog.md` for before/after code examples of common transformations.
 
 Check categories:
@@ -53,7 +53,7 @@ After refactoring:
 
 ## Rules
 
-See `_shared/code-standards.md` for the complete rule set. Refactoring-specific rules:
+See `../_shared/code-standards.md` for the default rule set. Refactoring-specific rules:
 
 - Fix violations in priority order: Errors first, then Warnings
 - Preserve existing behavior — refactoring must not change functionality

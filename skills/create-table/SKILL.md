@@ -25,7 +25,7 @@ Before writing code, read:
 
 See `references/column-types.md` for column definition examples.
 See `references/search-pagination.md` for search and pagination patterns.
-See `_shared/code-standards.md` for all project rules.
+See `../_shared/code-standards.md` for the default project rules.
 
 ## Step 3 — Generate Code
 
@@ -66,7 +66,7 @@ const debouncedSearch = useDebounce(searchQuery, 300);
 
 ## Rules
 
-See `_shared/code-standards.md` for all project rules. Table-specific rules:
+See `../_shared/code-standards.md` for the default project rules. Table-specific rules:
 
 - Use existing table components from `src/components/tables/` — don't rebuild
 - Debounce search inputs (300ms) before API calls

@@ -16,7 +16,7 @@ Context should only be used for **global UI state**. Check alternatives first:
 | Server data | React Query (not Context) |
 | Local UI state | useState (not Context) |
 | URL state | nuqs (not Context) |
-| Global UI state | Context (Auth, Theme, Products, Bookmarks) |
+| Global UI state shared across a subtree | Context (for example, theme or session UI) |
 
 If the state comes from an API, use React Query instead.
 
@@ -26,7 +26,7 @@ Before writing code, read:
 1. Existing contexts in `src/lib/contexts/` for the project's context pattern
 2. Check if a similar context already exists before creating a new one
 
-See `_shared/code-standards.md` for all project rules (section 10 for hook order).
+See `../_shared/code-standards.md` for the default project rules (section 10 for hook order).
 
 ## Step 3 — Generate Files
 
@@ -88,7 +88,7 @@ Add the provider at the appropriate level in the component tree (typically in a 
 
 ## Rules
 
-See `_shared/code-standards.md` for all project rules. Context-specific rules:
+See `../_shared/code-standards.md` for the default project rules. Context-specific rules:
 
 - Memoize context value with `useMemo` to prevent unnecessary re-renders
 - Provide named actions (e.g., `openDialog()`) instead of raw setters

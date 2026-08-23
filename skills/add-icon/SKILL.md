@@ -18,7 +18,7 @@ Accept SVG from:
 
 Read `src/assets/icons/index.ts` to understand the barrel export pattern and naming conventions.
 
-See `_shared/code-standards.md` for all project rules (section 5.7).
+See `../_shared/code-standards.md` for the default project rules (section 5.7).
 
 ## Step 2 — Create Icon Component
 
@@ -73,7 +73,7 @@ import { IconName } from '@assets/icons';
 
 ## Rules
 
-See `_shared/code-standards.md` for all project rules (section 5.7). Icon-specific rules:
+See `../_shared/code-standards.md` for the default project rules (section 5.7). Icon-specific rules:
 
 - No inline SVG in components — all icons in `src/assets/icons/`
 - Named export from barrel `index.ts`

@@ -74,27 +74,37 @@ Rules:
 
 ## Workflow
 
-1. **Start work**: Create branch from base branch
+1. **Inspect first**: Determine the current state and repository defaults without changing them.
    ```bash
-   git checkout main && git pull
-   git checkout -b feature/PROJ-XXX-short-description
+   git status --short
+   git branch --show-current
+   git symbolic-ref refs/remotes/origin/HEAD
    ```
 
-2. **Commit**: Use ticket-prefixed messages
+2. **Start work**: Create a branch from the confirmed base branch. Preserve uncommitted work, and ask before pulling remote changes when synchronization was not explicitly requested.
+   ```bash
+   git switch <base-branch>
+   git pull --ff-only
+   git switch -c feature/PROJ-XXX-short-description
+   ```
+
+3. **Commit**: Use ticket-prefixed messages
    ```bash
    git add <specific-files>
    git commit -m "PROJ-XXX: Add entity list page"
    ```
 
-3. **Push**: Push with upstream tracking
+4. **Push**: Push with upstream tracking only when the user requested it
    ```bash
    git push -u origin feature/PROJ-XXX-short-description
    ```
 
-4. **PR**: Create with template
+5. **PR**: Create with template only when the user requested it
    ```bash
    gh pr create --title "PROJ-XXX: Short title" --body "..."
    ```
+
+Never assume the base branch is `main`, and never hide, discard, or overwrite unrelated working-tree changes.
 
 ## Reference Files
 
