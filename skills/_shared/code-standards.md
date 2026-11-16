@@ -21,6 +21,12 @@ Each rule has one of these levels:
 
 Before applying Project rules, discover the repository's package versions, aliases, directory layout, design tokens, reusable components, state architecture, and localization setup. Paths and names below are examples, not guaranteed locations.
 
+If the repository has `kit.lock.json` at its root, it is an app built on the RSK kit: read [rsk-kit.md](rsk-kit.md) for its layout, names and components before writing or reviewing code.
+
+### Skill steps and this profile
+
+A skill's steps, templates, and checklists describe one common project layout. They are Project rules, never Required ones. When a step names a convention this profile marks as Project (an endpoint registry, `pathBuilder`, a toast on every mutation, `Conditional.If`, where `useForm` may live, `useMemo`/`useCallback` everywhere, a `<main>` wrapper), apply it only where the repository has adopted it. When a step contradicts a Required rule here (for example, a template that skips locale-aware date formatting), the Required rule wins. Name the conflict in the output when it changed what you wrote.
+
 For React-specific decisions, read [react-version-compatibility.md](react-version-compatibility.md) and classify the target as React 18, React 19 without Compiler, or React 19 with Compiler.
 
 ## 1. Imports

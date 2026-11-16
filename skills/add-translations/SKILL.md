@@ -5,95 +5,69 @@ description: "Add new translation keys to both en.json and ar.json locale files.
 
 # Add Translations
 
-Add new translation keys to both English and Arabic locale files.
+Add new translation keys to every locale the project supports (usually English and Arabic), in the layout the project
+uses, and say which text still needs a person's approval.
 
-## Step 1 — Gather Keys
+## Step 1 — Read the Locale Layout
 
-Determine the keys to add from:
-- The user's request (explicit keys and values)
-- A new feature being built (scan components for `t('...')` calls)
-- Figma designs (extract visible text)
+Projects keep copy in one of two shapes. Find which before adding anything:
 
-## Step 2 — Determine Namespace
+| Shape | Looks like | Namespace is |
+|---|---|---|
+| One file per language | `locales/en.json`, `locales/ar.json` | a top-level key inside the file |
+| One file per namespace | `src/locales/en/<namespace>.json`, `src/locales/ar/<namespace>.json` | the file name |
 
-Translation keys are organized by feature namespace:
+If `kit.lock.json` exists at the repository root, the app is built on the RSK kit: it uses one file per namespace, loads
+every file in `src/locales/{en,ar}/` automatically, and `tests/i18n/parity.test.ts` fails when a key exists in one
+language only. Read `../_shared/rsk-kit.md` section 7.
 
-```json
-{
-  "common": { "save": "Save", "cancel": "Cancel" },
-  "orders": { "title": "Orders", "status": { "pending": "Pending" } },
-  "communities": { "title": "Communities" }
-}
-```
+Also read the project's rules (`AGENTS.md`, `CLAUDE.md`, `docs/`) for: who writes or approves Arabic, and how
+unapproved text is marked.
 
-Place keys in the correct namespace. Create a new namespace if the feature doesn't have one yet.
+## Step 2 — Gather Keys
 
-## Step 3 — Add to Both Files
+Determine the keys from the user's request, the components being built (`t('...')` calls), or the designs.
 
-### en.json
-Add the English values:
-```json
-{
-  "feature": {
-    "title": "Feature Title",
-    "description": "Feature description text",
-    "form": {
-      "name_label": "Name",
-      "name_placeholder": "Enter name",
-      "submit": "Create"
-    }
-  }
-}
-```
+## Step 3 — Choose the Namespace
 
-### ar.json
-Add the Arabic values while preserving the complete English key structure. If Arabic text is not provided, copy the English value and prefix it with `[AR] ` so it remains visibly unfinished:
-```json
-{
-  "feature": {
-    "title": "[AR] Feature Title",
-    "description": "[AR] Feature description text",
-    "form": {
-      "name_label": "[AR] Name",
-      "name_placeholder": "[AR] Enter name",
-      "submit": "[AR] Create"
-    }
-  }
-}
-```
+- A feature area gets its own namespace (RSK: a new pair of files `src/locales/en/<area>.json` and
+  `src/locales/ar/<area>.json`; the hook is `useAppTranslation('<area>')`).
+- Words used across areas (Save, Cancel) go in `common`. In RSK, sidebar labels go in `nav` under the menu entry's `id`,
+  and the kit's own messages live in `errors` and `common`: reuse them, do not copy them.
 
-Prefix with `[AR] ` so untranslated strings are visible in the UI.
+## Step 4 — Messages From the Server
+
+Decide how each server message reaches the screen before adding keys for it:
+
+| The API sends | Do |
+|---|---|
+| An error code (`code: 'visit_full'`) | Add a key per code (e.g. `errors.api.visit_full`) in both languages, map code → key in the page, and keep a general fallback key for unknown codes. |
+| Text already in the person's language (the API reads `Accept-Language` or a `lang` parameter) | Show it as sent; add no key. Check that the client sends the language. |
+| Text in one language only | Do not show it to people in the other language. Ask the API owner for codes; until then map the status to a general key. |
+
+Validation messages that the client checks itself are keys like any other copy (RSK: `errors:validation.*` exists).
+
+## Step 5 — Add to Every Locale File
+
+- Same key structure in every language; nested objects, not dotted keys, unless the project uses flat keys.
+- English text is written in full.
+- Arabic text: follow the project's rule for who writes and approves it. Text an assistant or engineer writes is a
+  proposal until the approver named by the project accepts it.
+  - If the project marks unapproved text (for example a `[AR]` prefix, or a list in the pull request), use its mark.
+  - If the project says nothing, write your best Arabic and list every new Arabic key under "Arabic to review" in the
+    output and the pull request, for the person the project names (ask who, if nobody is named). Never call it approved.
+  - Never leave an Arabic value empty or identical to the English one without saying so in that list.
+- Plurals: Arabic needs `_zero`, `_one`, `_two`, `_few`, `_many`, `_other`; English `_one`, `_other`. Pass `count`.
+- Interpolation variables (`{{name}}`) are the same in both languages. Values that are names, codes or amounts are
+  shown in `dir="ltr"` or `<bdi>` by the component (see `forge:audit-rtl`).
 
 ## Rules
 
-- Always add to **both** locale files in the same operation
-- Maintain the same key structure in both files
-- Use nested objects for grouping (not flat dot-notation keys)
-- Keep keys sorted alphabetically within each namespace
-- Never add asterisks (`*`) to labels — `required` prop handles the indicator
-- Common/shared labels go in the `common` namespace
-- Feature-specific labels go in the feature's namespace
-- Use `useAppTranslation(namespace)` hook in components
+- Add to all locale files in the same change; run the parity check if the project has one (RSK: `vp test tests/i18n`).
+- Never add asterisks (`*`) to labels; the field's `required` prop shows the marker.
+- Do not delete keys that look unused because a literal search found no `t('…')` call; keys are often built at run time.
 
-## Common Patterns
+## Output
 
-```json
-{
-  "cancel": "Cancel",
-  "confirm": "Confirm",
-  "create": "Create",
-  "delete": "Delete",
-  "edit": "Edit",
-  "invalid_email": "Invalid email address",
-  "no_results": "No results found",
-  "required_field": "This field is required",
-  "save": "Save",
-  "search": "Search",
-  "showing_of": "Showing {{count}} of {{total}}",
-  "status": {
-    "active": "Active",
-    "inactive": "Inactive",
-    "pending": "Pending"
-  }
-}
-```
+List the files changed, the new keys per namespace, the server-message mapping (code → key), and "Arabic to review"
+with each key, its Arabic text, and who is asked to approve it.

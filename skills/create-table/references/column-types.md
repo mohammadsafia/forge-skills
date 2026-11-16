@@ -1,5 +1,7 @@
 # Column Type Templates
 
+Generic template for a project without the RSK kit, written for TanStack Table v8. In an RSK app (`kit.lock.json` at the root) the kit uses TanStack Table v9 and its own `Table` and `DataTable`; follow `../../_shared/rsk-kit.md` section 6 and the kit's `src/component-docs/guides/data-tables.mdx` instead. Format dates and numbers for the locale with the project's helpers.
+
 ## Text Column
 
 ```typescript

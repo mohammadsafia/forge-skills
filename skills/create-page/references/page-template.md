@@ -1,5 +1,7 @@
 # Page Component Template
 
+Generic template for a project without the RSK kit. In an RSK app use `../../_shared/rsk-kit.md`: `Conditional` comes from `@components/utils`, the router package is `react-router`, and the page starts with `PageHeader`. Add `useMemo`/`useCallback` only where the project's rules ask for them or a consumer needs a stable identity.
+
 ## Standard Page
 
 ```typescript

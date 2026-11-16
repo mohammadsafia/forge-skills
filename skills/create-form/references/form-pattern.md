@@ -1,5 +1,48 @@
 # Form Pattern Templates
 
+## RSK App (`kit.lock.json` at the root)
+
+```tsx
+import { useForm } from 'react-hook-form';
+
+import { FormContainer, FormDatePicker, FormInput } from '@components/forms';
+
+import { useAppTranslation } from '@hooks/shared';
+import { useCreateEntityMutation } from '@hooks/mutations';
+
+import { errorMessage, formResolver } from '@utils';
+
+import { entityFormSchema, type EntityFormValues } from '@views/entity';
+
+function EntityCreatePage() {
+  const { t } = useAppTranslation('entity');
+  const createEntity = useCreateEntityMutation();
+
+  const form = useForm<EntityFormValues>({
+    resolver: formResolver<EntityFormValues>(entityFormSchema),
+    defaultValues: { name: '', startsOn: null },
+  });
+
+  const handleSubmit = (values: EntityFormValues) =>
+    createEntity.mutateAsync(values).then(undefined, (error: unknown) =>
+      form.setError('root', { message: errorMessage(error, t('saveFailed')) }),
+    );
+
+  return (
+    <FormContainer formContext={form} onSuccess={handleSubmit}>
+      <FormInput name="name" label={t('name')} required />
+      <FormDatePicker name="startsOn" label={t('startsOn')} />
+      <FormContainer.Actions submitLabel={t('create')} />
+    </FormContainer>
+  );
+}
+
+export default EntityCreatePage;
+```
+
+The generic templates below are for projects without the kit; their raw `FormProvider` + `<form>` is what
+`FormContainer` replaces.
+
 ## Create Form
 
 ```typescript

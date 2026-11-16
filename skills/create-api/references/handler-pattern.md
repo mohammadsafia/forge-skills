@@ -1,5 +1,9 @@
 # Handler Pattern Reference
 
+Generic template. In an RSK app (`kit.lock.json` at the root) the client is `httpClient` (lower case) from
+`@api/config/HttpClient`, endpoint paths are relative to a base URL that already holds the API prefix, and a failed
+request throws the API's error body with `status` added. See `../../_shared/rsk-kit.md` section 4.
+
 ## Standard Handler Template
 
 ```typescript

@@ -37,75 +37,50 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { EntityNameHandler } from '@api/handlers';
 
-import { useToast } from '@hooks/shared';
-import { useAppTranslation } from '@hooks/shared';
-
 import type { EntityNameForCreateDto, EntityNameForUpdateDto } from '@app-types';
 
-// Create mutation
 export const useCreateEntityNameMutation = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { t } = useAppTranslation('entityName');
 
   return useMutation({
     mutationKey: [EntityNameHandler.create.mutationKey],
     mutationFn: (data: EntityNameForCreateDto) => EntityNameHandler.create.request(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EntityNameHandler.list.queryKey],
-      });
-      toast({ title: t('created_successfully'), variant: 'success' });
-    },
-    onError: () => {
-      toast({ title: t('failed_to_create'), variant: 'destructive' });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [EntityNameHandler.list.queryKey] }),
   });
 };
 
-// Update mutation
 export const useUpdateEntityNameMutation = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { t } = useAppTranslation('entityName');
 
   return useMutation({
     mutationKey: [EntityNameHandler.update.mutationKey],
-    mutationFn: (payload: { id: string; data: EntityNameForUpdateDto }) =>
-      EntityNameHandler.update.request(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EntityNameHandler.list.queryKey],
-      });
-      toast({ title: t('updated_successfully'), variant: 'success' });
-    },
-    onError: () => {
-      toast({ title: t('failed_to_update'), variant: 'destructive' });
-    },
-  });
-};
-
-// Delete mutation
-export const useDeleteEntityNameMutation = () => {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { t } = useAppTranslation('entityName');
-
-  return useMutation({
-    mutationKey: [EntityNameHandler.delete.mutationKey],
-    mutationFn: (id: string) => EntityNameHandler.delete.request(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EntityNameHandler.list.queryKey],
-      });
-      toast({ title: t('deleted_successfully'), variant: 'success' });
-    },
-    onError: () => {
-      toast({ title: t('failed_to_delete'), variant: 'destructive' });
+    mutationFn: (payload: { id: string; data: EntityNameForUpdateDto }) => EntityNameHandler.update.request(payload),
+    onSuccess: (_result, { id }) => {
+      queryClient.invalidateQueries({ queryKey: [EntityNameHandler.list.queryKey] });
+      queryClient.invalidateQueries({ queryKey: [EntityNameHandler.details.queryKey, id] });
     },
   });
 };
 ```
+
+## Feedback Belongs to the Page
+
+The hook reconciles the cache; the page decides what the person sees. In an RSK app (`toast` from `useToast()`,
+`errorMessage` from `@utils`):
+
+```typescript
+const { toast } = useToast();
+const createEntity = useCreateEntityNameMutation();
+
+const handleSubmit = (values: EntityNameForCreateDto) =>
+  createEntity.mutateAsync(values).then(
+    () => toast({ title: t('created'), tone: 'success' }),
+    (error: unknown) => form.setError('root', { message: errorMessage(error, t('createFailed')) }),
+  );
+```
+
+Choose per screen: an inline error next to the form is usually clearer than a toast, and a toast is only visible where a
+toaster is mounted.
 
 ## Rules
 
@@ -113,15 +88,11 @@ export const useDeleteEntityNameMutation = () => {
 - **queryKey wrapped in array**: `[handler.queryKey]` not just `handler.queryKey`
 - **Parameterized queries** add params to the array: `[handler.queryKey, id]`
 - **Invalidate correct queries** after mutations
-- **Toast on success and error** in mutations
+- **No toast inside a hook**: the page shows success and failure (inline message, toast or redirect)
 - **Use `enabled` flag** to conditionally run queries
 - **Use `import type`** for DTO imports in the hook file
 
 ## React Query Defaults
 
-```
-staleTime: 5 minutes
-gcTime: 10 minutes
-retry: 1
-refetchOnWindowFocus: false
-```
+Read the project's query client before relying on defaults. The RSK kit's `createQueryClient` sets `retry: false`,
+`refetchOnWindowFocus: false` and `staleTime: 0`.

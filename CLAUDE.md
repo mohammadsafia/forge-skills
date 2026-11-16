@@ -17,7 +17,8 @@ skills/<skill-name>/
 
 - **SKILL.md** — YAML frontmatter (`name`, `description`) + numbered step sections + checklists. The `name` field is always prefixed with `forge:` (e.g., `forge:create-api`).
 - **references/** — Companion docs referenced by SKILL.md. Contains code templates, rule tables, naming conventions, and violation/fix catalogs. Not all skills have references; simpler skills are self-contained.
-- **evals/** — Directory reserved for skill evaluations (currently empty).
+- **evals/** — `evals.json` (cases: skill, example input, assertions, the finding each answers), `examples/` (inputs), `results/` (one file per evaluation run). Run a case by giving a fresh agent only the SKILL.md path and the example input.
+- **skills/_shared/rsk-kit.md** — facts about apps built on the RSK kit (detected by `kit.lock.json`); skills point to it instead of repeating them.
 - **package.json** — Metadata only; no dependencies, no scripts.
 
 ## Skill Authoring Conventions
