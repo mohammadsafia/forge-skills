@@ -1,5 +1,7 @@
 # Routing Patterns
 
+Generic examples for a project without the RSK kit. In an RSK app (`kit.lock.json` at the root) use `../../_shared/rsk-kit.md` section 3 instead. Every name below (`ROUTES`, `MainLayout`, `DashboardLayout`, an `allowedRoles` prop) is an example: use the names the project has.
+
 ## Lazy Loading
 
 ```typescript
@@ -64,6 +66,6 @@ navigate(ROUTES.ENTITIES.DETAIL.replace(':id', entityId));
 </Link>
 ```
 
-## Dynamic Route Prefixing
+## Language Prefixes
 
-The project uses `ALLOWED_PREFIXES` for dynamic route prefixing (e.g., `/en/entities`, `/ar/entities`). Ensure new routes work with this system.
+Some projects put the language in the path (e.g., `/en/entities`, `/ar/entities`). Find how the router adds the prefix and register the new route the same way. Do not add a prefix list the project does not have.

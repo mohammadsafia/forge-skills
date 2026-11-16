@@ -10,99 +10,75 @@ Generate the complete API integration chain: endpoint → DTOs → handler → R
 ## Step 1 — Gather Information
 
 Ask the user if not provided:
-- **Entity name** (e.g., "Order", "Product", "Community")
+- **Entity name** (e.g., "Order", "Product")
 - **HTTP methods** needed (GET list, GET by ID, POST create, PUT update, DELETE)
-- **Endpoint URL pattern** (e.g., `/api/v1/orders`)
-- **Request/response shape** (fields and types)
+- **Endpoint path** as the API documents it, and the error answers (status codes, error body, error codes)
+- **Request/response shape** (fields and types), or the OpenAPI document if the project generates DTOs
 
-## Step 2 — Scan Existing Patterns
+## Step 2 — Read the Project's API Layer
 
-Before writing code, read:
-1. Endpoint config: `src/api/config/ApiEndpoints.ts`
-2. An existing handler in `src/api/handlers/` for the handler pattern
-3. Query hooks in `src/lib/hooks/queries/` for the query hook pattern
-4. Mutation hooks in `src/lib/hooks/mutations/` for the mutation hook pattern
-5. DTO files in `src/types/api/` for naming conventions
+1. If `kit.lock.json` exists at the repository root, the app is built on the RSK kit. Read `../_shared/rsk-kit.md`
+   sections 1, 2 and 4 and follow them. In particular:
+   - the HTTP client is `httpClient` (lower case) from `@api/config/HttpClient`;
+   - the base URL already holds the API prefix, so endpoint paths are relative (`'/orders'`, not `'/api/v1/orders'`);
+   - a failed request throws the API's error body with `status` added; read it with `errorMessage` from `@utils`.
+2. Otherwise read the endpoint registry (if any), an existing handler, a query hook, a mutation hook, and the DTO
+   folder. Use the names, client and key style they use.
 
-See `references/handler-pattern.md` for the handler template.
-See `references/query-hook-pattern.md` for the hook template.
-See `references/dto-conventions.md` for DTO naming.
-See `../_shared/code-standards.md` for the default project rules (sections 3, 4).
+Before writing the first path, read the client's base URL and check that base URL + path gives the URL the API
+documents. A doubled prefix (`/api/api/...`) is the most common fault here.
+
+See `references/handler-pattern.md`, `references/query-hook-pattern.md` and `references/dto-conventions.md` for the
+generic templates. See `../_shared/code-standards.md` sections 3 and 4.
 
 ## Step 3 — Generate Files
 
-### 3a. Add Endpoint to ApiEndpoints.ts
+### 3a. Endpoint paths
 
-Plain strings only, no function callbacks:
+Add the paths to the project's registry (RSK: `ApiEndpoints` in `src/api/config/ApiEndpoints.ts`, plain strings):
+
 ```typescript
-ENTITY_NAME: {
-  LIST: '/api/v1/entity-name',
-  DETAILS: '/api/v1/entity-name/:id',
-  CREATE: '/api/v1/entity-name',
-  UPDATE: '/api/v1/entity-name/:id',
-  DELETE: '/api/v1/entity-name/:id',
+ORDERS: {
+  LIST: '/orders',
+  DETAILS: '/orders/:id',
 },
 ```
 
-### 3b. Create DTOs in `src/types/api/`
+### 3b. DTOs
 
-File: `src/types/api/EntityNameDto.ts`
-- Use `type` not `interface`
-- Follow naming: `ForReadDto`, `ForCreateDto`, `ForUpdateDto`, `ListDto`, `ListResponseDto`, `ParamsDto`
-- Mark truly optional fields with `?`
-- Reuse shared types: `ResultDto<T>`, `PrimaryImageForReadDto`, `PicklistValueDto`
-- Export through barrel `src/types/api/index.ts`
+- Generated DTOs (RSK: `pnpm dto:gen` writes `src/types/api/`) are regenerated, never edited by hand.
+- Hand-written DTOs follow the project's naming (`ForReadDto`, `ForCreateDto`, `ForUpdateDto`, `ListDto`,
+  `ParamsDto`) and are exported through the types barrel (RSK: `src/types/index.ts`, alias `@app-types`).
+- Type the error body too when the API documents one (for example `{ status, code, detail }`).
 
-### 3c. Create Handler in `src/api/handlers/`
+### 3c. Handler
 
-File: `src/api/handlers/entity-name.ts`
-- Import `ApiEndpoints`, `HttpClient` from `@api/config`
-- Import `pathBuilder` from `@utils`
-- Define request functions ABOVE handler object
-- Handler uses string `queryKey`, function REFERENCE for `request`
-- Export with `as const`
+- Request functions above the handler object, referenced by name; string `queryKey` (see
+  `references/handler-pattern.md`).
+- Use the project's client and path helper (RSK: `httpClient`, `pathBuilder` from `@utils`).
 
-### 3d. Create React Query Hooks
+### 3d. Query and mutation hooks
 
-Queries: `src/lib/hooks/queries/useEntityQuery.ts`
-```typescript
-export const useEntityListQuery = (params = {}) => {
-  return useQuery({
-    queryKey: [EntityHandler.list.queryKey, params],
-    queryFn: () => EntityHandler.list.request(buildQueryString(params)),
-  });
-};
-```
+- Query keys include every input that changes the result; parameterised queries are guarded with `enabled`.
+- Mutations reconcile the cache (invalidate, or update it directly).
+- Hooks do not decide how a result is shown. Do not put a toast in a hook. Return the mutation and let the page choose:
+  an inline message, a toast, a redirect, or nothing. A toast is only seen where a toaster is mounted (RSK: only inside
+  the signed-in shell).
+- Show server messages through `forge:add-translations` rules: map an error code to a translated message; show the
+  API's own text only when the API localises it.
 
-Mutations: `src/lib/hooks/mutations/useEntityMutation.ts`
-```typescript
-export const useCreateEntityMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationKey: [EntityHandler.create.mutationKey],
-    mutationFn: (data) => EntityHandler.create.request(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [EntityHandler.list.queryKey] });
-    },
-  });
-};
-```
+### 3e. Barrel exports
 
-No explicit return types — let TypeScript infer.
-
-### 3e. Update Barrel Exports
-
-Add exports to:
-- `src/types/api/index.ts`
-- `src/api/handlers/index.ts`
-- Hook barrel files if they exist
+Add exports to the handler, DTO and hook barrels the project has. In RSK the hook barrels
+`src/lib/hooks/queries/index.ts` and `src/lib/hooks/mutations/index.ts` are kit files that apps are expected to add
+to; mention them in the pull request.
 
 ## Checklist
 
-- [ ] Endpoint in ApiEndpoints.ts as plain string
-- [ ] DTOs with correct naming conventions
-- [ ] DTOs exported through barrel
-- [ ] Handler: request functions above, string queryKey, function reference
-- [ ] Query hook: queryKey wrapped in array, no explicit return type
-- [ ] Mutation hook: invalidates correct queries, handles errors with toast
-- [ ] All imports use path aliases and `import type` for types
+- [ ] Layout read first (RSK detected by `kit.lock.json`, or the project's own files)
+- [ ] Base URL + path checked: no doubled or missing API prefix
+- [ ] DTOs typed, including the error body; generated DTOs not edited by hand
+- [ ] Handler uses the project's client and path helper; request functions referenced by name
+- [ ] Query keys hold every input; parameterised queries guarded by `enabled`
+- [ ] Mutations reconcile the cache; no toast or other display decision inside a hook
+- [ ] Imports use path aliases and `import type` for types
