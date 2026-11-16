@@ -2,7 +2,15 @@
 
 ## Form Component Inventory
 
-Check `src/components/forms/` for the project's form component library. Common components:
+Check the project's form component folder (often `src/components/forms/`) before using any name below.
+
+In an RSK app (`kit.lock.json` at the root) the fields are: `FormInput`, `FormTextarea`, `FormNumber`, `FormSelect`,
+`FormCombobox`, `FormMultiCombobox`, `FormCheckbox`, `FormCheckboxGroup`, `FormRadioGroup`, `FormDatePicker`,
+`FormDateRange`, `FormTimePicker`, `FormChipInput`, `FormFileUploader`, with `FormSection` and `FormWizard` around them,
+all from `@components/forms`, inside `FormContainer`. There is no `FormSwitch` or `FormFileUpload`. Option fields take
+`options`, `getOptionLabel`, `getOptionValue`. See `../../_shared/rsk-kit.md` section 5.
+
+Generic inventory (names vary by project):
 
 | Component | Purpose | Key Props |
 |-----------|---------|-----------|
@@ -17,7 +25,8 @@ Check `src/components/forms/` for the project's form component library. Common c
 
 ## Usage with FormProvider
 
-All form components automatically connect to the form context via `name` prop:
+All form components connect to the form context through the `name` prop. RSK apps wrap them in
+`<FormContainer formContext={form} onSuccess={handleSubmit}>` instead of the raw provider below:
 
 ```tsx
 <FormProvider {...methods}>
