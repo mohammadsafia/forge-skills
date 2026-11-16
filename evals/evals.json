@@ -1,0 +1,142 @@
+{
+  "description": "Cases for the forge skills in an app built on the RSK kit. Each case names the finding it answers (a delivery run of a demonstration project; findings file sections cited as 'findings: <section>, line <n>') and why the skill's previous wording failed it. Run a case by giving a fresh agent only the skill's SKILL.md path and the example input; grade the written output against the assertions.",
+  "cases": [
+    {
+      "id": "create-page-rsk-role-page",
+      "skill": "create-page",
+      "input": "examples/create-page-rsk-role-page.md",
+      "finding": "findings: foundation engineer, line 47 (create-page names ALLOWED_PREFIXES, Conditional.If undefined); orchestrating the run, line 73 (create-page describes a different layout)",
+      "old_wording_fails_because": "It wrote routes in src/routes/index.ts with MainLayout/DashboardLayout and an AuthGuard roles prop, told the page to add <main>, and named ALLOWED_PREFIXES; none exist in the kit.",
+      "assertions": [
+        "Places the page at src/pages/reports/ReportsPage.tsx (default export) and its route in src/routes/router.tsx as a lazy child of the AppLayout route inside the AuthGuard route.",
+        "Adds the path to FULL_ROUTES_PATH and a menu entry to BASE_MENU (or APP_MENU) in src/routes/routes.ts, with the label in both src/locales/en/nav.json and src/locales/ar/nav.json.",
+        "Does not use ALLOWED_PREFIXES, an allowedRoles/roles prop on AuthGuard, withAuth as a real check, or a Conditional fallback prop; imports Conditional from @components/utils and uses Conditional.Else for the else case.",
+        "Does not add a <main> element; starts the page with PageHeader.",
+        "States that AuthGuard checks only sign-in and that the kit has no roles, and asks where the app keeps roles (or uses an app role source it names) instead of inventing one.",
+        "Mentions focus after route change (the kit does not move it).",
+        "SECURITY: States that hiding the menu entry or guarding the route on the client is not authorization and that the API must refuse requests from people without the role."
+      ]
+    },
+    {
+      "id": "create-api-rsk-orders",
+      "skill": "create-api",
+      "input": "examples/create-api-rsk-orders.md",
+      "finding": "findings: foundation engineer, line 47 (create-api assumes a toast); orchestrating the run, line 73 (create-api names differ from the kit)",
+      "old_wording_fails_because": "It told the agent to write '/api/v1/...' paths, use HttpClient (capital H), and toast in every mutation hook, contradicting code-standards.md section 4.",
+      "assertions": [
+        "Uses httpClient (lower case) from @api/config/HttpClient, not HttpClient.",
+        "Writes endpoint paths relative to the base URL ('/orders'), not '/api/v1/orders', and says why (the base URL already ends in /api/v1).",
+        "Puts no toast or other display decision inside the query or mutation hooks; success feedback is shown by the page.",
+        "Reads a failed request as the thrown API body with status (for example via errorMessage from @utils or error.code), not error.response.data.",
+        "Maps the order_duplicate code to a translated message rather than showing detail text.",
+        "SECURITY: Does not add the token to requests by hand or log it; relies on httpClient's withToken default, and does not disable it for these endpoints."
+      ]
+    },
+    {
+      "id": "add-translations-rsk-desks",
+      "skill": "add-translations",
+      "input": "examples/add-translations-rsk-desks.md",
+      "finding": "findings: foundation engineer, line 47 (add-translations silent on server messages and who approves Arabic); orchestrating the run, line 73 (different locale layout)",
+      "old_wording_fails_because": "It wrote to en.json/ar.json with namespaces as top-level keys, filled Arabic with '[AR] English', and said nothing about server messages or approval.",
+      "assertions": [
+        "Writes to src/locales/en/desks.json and src/locales/ar/desks.json (one file per namespace), not to en.json/ar.json.",
+        "Maps the desk_name_taken code to a translation key in both languages and does not show the API's English detail to people reading Arabic.",
+        "Writes Arabic plural forms for the count line (_zero, _one, _two, _few, _many, _other) and English _one/_other.",
+        "Lists the new Arabic text under a review heading for a named or asked-for approver, and does not call it approved.",
+        "SECURITY: Does not render the server's detail text (which carries internal identifiers) to people, and does not render any translated string as HTML."
+      ]
+    },
+    {
+      "id": "create-form-rsk-booking",
+      "skill": "create-form",
+      "input": "examples/create-form-rsk-booking.md",
+      "finding": "findings: engineer on DPP-16..19, line 94 (paths that do not exist in RSK; forbids useForm in pages while FormContainer needs it; nothing on useFieldArray); engineer on DPP-13/14, line 82 (nothing on the kit's compound components)",
+      "old_wording_fails_because": "It pointed at FormSubmitButton and views/<feature>/entity-form paths, said 'no raw useForm in pages', and had nothing on repeating groups or the kit's date and time fields.",
+      "assertions": [
+        "Calls useForm in the page and passes it to FormContainer as formContext, without calling that a violation.",
+        "Uses FormCombobox for the site, FormDatePicker for the date and FormTimePicker for the time, from @components/forms, and states their value formats (ISO date string; '10:30 AM' style time).",
+        "Builds the guests with useFieldArray, keys rows by the field id (not the index), and gives each row a number and a Remove button named with the row.",
+        "Gives each guest row (or the guest set) a group name: fieldset/legend or role=group with aria-labelledby.",
+        "Has exactly one submit button (FormContainer.Actions); every other button is type=button.",
+        "Does not reference paths or components the kit does not have (FormSubmitButton, src/components/shared/form-submit-button).",
+        "SECURITY: States that the client-side schema does not replace validation on the server."
+      ]
+    },
+    {
+      "id": "create-table-rsk-guests",
+      "skill": "create-table",
+      "input": "examples/create-table-rsk-guests.md",
+      "finding": "findings: engineer on DPP-16..19, line 94 (create-table assumes a data-table); design pass 1, line 125 (no narrow-width mode)",
+      "old_wording_fails_because": "It always built a TanStack v8 data table with search and pagination, and said nothing about plain tables or phone widths.",
+      "assertions": [
+        "Chooses the plain Table from @components/ui (not DataTable) and gives the reason (at most 5 rows, no search or paging).",
+        "Adds no search box, pagination or filters.",
+        "Handles phone width explicitly: sideways scroll in its own container, or stacked rows that keep table roles.",
+        "Names the table (caption or aria-label/labelledby) and formats the arrival time with the project's helper.",
+        "SECURITY: Renders guest names and companies as text (no dangerouslySetInnerHTML)."
+      ]
+    },
+    {
+      "id": "test-frontend-rsk-booking",
+      "skill": "test-frontend",
+      "input": "examples/test-frontend-rsk-booking.md",
+      "finding": "findings: foundation engineer, line 47 (no setup/helper); orchestrating the run, line 72 (1 s default wait fails on a slow pipeline); engineer on DPP-13/14, line 82 (driving a combobox; toaster survives cleanup); engineer on DPP-16..19, line 94 (date field and time picker); code review, line 160 item 8 (wait equal to test limit)",
+      "old_wording_fails_because": "It had no setup, no render helper, nothing on waits, the kit's fields or toasts; an agent would assert the error toast is absent and keep the 1 s wait.",
+      "assertions": [
+        "Uses // @vitest-environment happy-dom and imports test functions from vite-plus/test.",
+        "Adds or uses a whole-app render helper over the real routes and providers, with the wait set (e.g. 5 s) and the test limit well above it (e.g. 15 s), and explains why they must differ.",
+        "Drives the site field as a combobox: finds it by role combobox and label, then clicks the option 'Site B'.",
+        "Types the date in the display format (03/14/2026) and sets the time through the Hours and Minutes listboxes and Confirm.",
+        "Declines to assert that no error toast shows and explains that toast state outlives cleanup; asserts the request or page state instead.",
+        "SECURITY: Replaces the network with an adapter that refuses unlisted requests; uses no real API, credentials or real people's data."
+      ]
+    },
+    {
+      "id": "audit-rtl-rsk-guestrow",
+      "skill": "audit-rtl",
+      "input": "examples/audit-rtl-rsk-guestrow.md",
+      "finding": "findings: engineer on DPP-16..19, line 94 (no case for content-directed text); design pass 2, line 144 (recommends rtl:rotate-180 and physical overrides against logical classes)",
+      "old_wording_fails_because": "It recommended adding rtl:mr-*/rtl:text-right overrides and rtl:rotate-180, and had no rule for names inside sentences or free-text fields.",
+      "assertions": [
+        "Replaces ml-4, pr-2, text-left and border-l with ms-4, pe-2, text-start and border-s, and does not recommend adding rtl: physical overrides.",
+        "Flags 'ms-2 rtl:me-2' as a defect that fights the logical class.",
+        "Wraps the name inside the translated sentence in <bdi> (or dir=auto) and adds dir=auto to the note textarea.",
+        "Puts the phone number in dir=ltr.",
+        "Mirrors the chevron with the kit's rtl:-scale-x-100 (or says the kit's way), not rtl:rotate-180.",
+        "Lists what a code scan could not see and asks for a look in Arabic at desktop and phone width.",
+        "SECURITY: Does not suggest inserting direction control characters into stored or submitted data; direction is fixed in markup."
+      ]
+    },
+    {
+      "id": "audit-a11y-rsk-desks",
+      "skill": "audit-a11y",
+      "input": "examples/audit-a11y-rsk-desks.md",
+      "finding": "findings: design pass 2, line 144 (audit-a11y missed focus return, focus on route change, default form button, target size; class recipes not the kit's); front-end fix lane, line 235; engineer on DPP-16..19, line 94 (tokens not the kit's; nothing on fieldset/legend)",
+      "old_wording_fails_because": "Its checks were labels, clickable divs, a ring-tokens-primary focus recipe and opacity-50 disabled styles; it would pass this page clean.",
+      "assertions": [
+        "Flags that focus must return to the row's menu button when the state-opened sheet closes (or checks the kit version for useReturnFocusOnClose).",
+        "Flags the raw <button> without type inside the form: Enter in the name field would press it instead of Save.",
+        "Flags the size=sm (28 px) IconButton against the project's 40 px touch rule.",
+        "Flags the kind checkboxes as an unnamed group needing fieldset/legend or a labelled group (or the kit's FormCheckboxGroup/FormRadioGroup).",
+        "Mentions focus after the sidebar route change.",
+        "Recommends the kit's focus-ring utility and flags ring-tokens-primary as not a kit token.",
+        "States that the static audit does not replace a keyboard walk and lists walk steps under not verified.",
+        "SECURITY: Does not propose editing kit-owned files in the app to fix a kit defect; reports it as a kit defect."
+      ]
+    },
+    {
+      "id": "review-ui-ux-rsk-desks",
+      "skill": "review-ui-ux",
+      "input": "examples/review-ui-ux-rsk-desks.md",
+      "finding": "findings: design pass 2, line 144 (review-ui-ux is a checklist with no method: widths, states, keyboard steps) and line 146 (a keyboard walk found three defects that static review missed)",
+      "old_wording_fails_because": "It listed review dimensions only; an agent without a browser would give generic advice and no matrix, walk, or not-checked list.",
+      "assertions": [
+        "Gives a matrix of widths including a phone width (375 px) and 320 px, both languages, and both themes.",
+        "Lists states to reach: loading, empty first use, empty no match, error, long content, validation, success, limited access.",
+        "Gives keyboard walk steps including focus after the sheet closes, focus after navigation, and Enter in a form field.",
+        "Says rendering was not seen and lists what was not checked, instead of claiming visual findings.",
+        "SECURITY: Does not propose using real people's accounts or production data to reach states; uses test data and the project's dev sign-in."
+      ]
+    }
+  ]
+}
